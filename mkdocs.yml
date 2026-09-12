@@ -99,6 +99,9 @@ nav:
     - Portal Domain: configuration/portal_domain.md
     - Email Sending: configuration/sending_email.md
     - seaqa_web_settings.py: configuration/seaqa_web_settings.md
+  - Integrations:
+    - Overview: integrations/overview.md
+    - Jira: integrations/jira.md
   - Administration:
     - Overview: administration/overview.md
     - Backup and Restore: administration/backup_restore.md
