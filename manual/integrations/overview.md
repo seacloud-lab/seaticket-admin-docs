@@ -5,3 +5,4 @@ SeaTicket can connect to third-party services and sync their content into projec
 | Integration | Description |
 | --- | --- |
 | [Jira](jira.md) | Sync Jira issues using Atlassian OAuth 2.0 (3LO) |
+| [Linear](linear.md) | Sync Linear issues using OAuth 2.0 |

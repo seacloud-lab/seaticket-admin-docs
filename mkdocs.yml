@@ -102,6 +102,7 @@ nav:
   - Integrations:
     - Overview: integrations/overview.md
     - Jira: integrations/jira.md
+    - Linear: integrations/linear.md
   - Administration:
     - Overview: administration/overview.md
     - Backup and Restore: administration/backup_restore.md
