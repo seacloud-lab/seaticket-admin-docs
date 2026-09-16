@@ -37,12 +37,19 @@ services:
       - backend-net
     labels:
       caddy.on_demand_tls.ask: "http://seaqa-web-portal/internal/portal/custom-domain/allow-tls"
+      caddy.servers.strict_sni_host: "on"
+
       caddy_0: "https://*.${PORTAL_SERVICE_ROOT_DOMAIN:?Variable is not set or empty}"
       caddy_0.tls: "/certs/portal-fullchain.pem /certs/portal-privkey.pem"
+      caddy_0.@invalid_host.header_regexp: 'Host \*'
+      caddy_0.respond: "@invalid_host 400"
       caddy_0.reverse_proxy: "{{upstreams 80}}"
+
       caddy_1: "https://"
       caddy_1.tls: ""
       caddy_1.tls.on_demand: ""
+      caddy_1.@invalid_host.header_regexp: 'Host \*'
+      caddy_1.respond: "@invalid_host 400"
       caddy_1.reverse_proxy: "{{upstreams 80}}"
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://127.0.0.1:80/i18n/ || exit 1"]
