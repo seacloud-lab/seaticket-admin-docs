@@ -39,6 +39,9 @@ services:
       - LINEAR_CLIENT_ID=${LINEAR_CLIENT_ID:-}
       - LINEAR_CLIENT_SECRET=${LINEAR_CLIENT_SECRET:-}
       - LINEAR_REDIRECT_URL=${LINEAR_REDIRECT_URL:-}
+      - GITHUB_APP_NAME=${GITHUB_APP_NAME:-}
+      - GITHUB_APP_ID=${GITHUB_APP_ID:-}
+      - GITHUB_PRIVATE_KEY_PATH=${GITHUB_PRIVATE_KEY_PATH:-}
     networks:
       - frontend-net
       - backend-net
