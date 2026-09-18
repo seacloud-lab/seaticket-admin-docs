@@ -103,6 +103,7 @@ nav:
     - Overview: integrations/overview.md
     - Jira: integrations/jira.md
     - Linear: integrations/linear.md
+    - GitHub: integrations/github.md
   - Administration:
     - Overview: administration/overview.md
     - Backup and Restore: administration/backup_restore.md
