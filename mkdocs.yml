@@ -104,6 +104,7 @@ nav:
     - Jira: integrations/jira.md
     - Linear: integrations/linear.md
     - GitHub: integrations/github.md
+    - Discord: integrations/discord.md
   - Administration:
     - Overview: administration/overview.md
     - Backup and Restore: administration/backup_restore.md
