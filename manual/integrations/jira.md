@@ -43,29 +43,14 @@ SeaTicket also requests `offline_access` automatically when connecting, so it ca
 
 Provide the app credentials to `seaqa-web` using either the `seaticket_config.yaml` file (recommended) or environment variables.
 
-=== "seaticket_config.yaml"
+Add the following to your `seaticket_config.yaml`:
 
-    Add a `seaqa-web` section to your `seaticket_config.yaml`:
-
-    ```yaml
-    seaqa-web:
-      JIRA_CLIENT_ID: "<your-atlassian-client-id>"
-      JIRA_CLIENT_SECRET: "<your-atlassian-client-secret>"
-      JIRA_REDIRECT_URL: "https://<seaticket-host>/jira/oauth/callback/"
-    ```
-
-=== "Environment variables"
-
-    Add the following to your `.env` file:
-
-    ```env
-    JIRA_CLIENT_ID=<your-atlassian-client-id>
-    JIRA_CLIENT_SECRET=<your-atlassian-client-secret>
-    JIRA_REDIRECT_URL=https://<seaticket-host>/jira/oauth/callback/
-    ```
-
-    !!! note
-        Environment variables take precedence over `seaticket_config.yaml`. If the same key is set in both places, the environment variable wins.
+```yaml
+global:
+    JIRA_CLIENT_ID: "<your-atlassian-client-id>"
+    JIRA_CLIENT_SECRET: "<your-atlassian-client-secret>"
+    JIRA_REDIRECT_URL: "https://<seaticket-host>/jira/oauth/callback/"
+```
 
 ## Step 5: Restart SeaTicket
 

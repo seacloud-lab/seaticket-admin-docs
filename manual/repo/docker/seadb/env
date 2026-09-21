@@ -1,8 +1,0 @@
-COMPOSE_FILE='seadb.yml'
-COMPOSE_PATH_SEPARATOR=','
-
-# system settings
-TIME_ZONE=UTC
-
-# shared secret for secure communication
-SEADB_SERVER_ACCESS_TOKEN=

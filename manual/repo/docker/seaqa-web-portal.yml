@@ -1,14 +1,13 @@
 services:
-  seaqa-web:
-    image: ${SEATICKET_WEB_IMAGE:-docker.seafile.top/seafileltd/seaqa-web:0.2.0-testing}
+  seaqa-web-portal:
+    image: ${SEATICKET_WEB_IMAGE:-docker.seafile.top/seafileltd/seaqa-web:1.5.0-testing}
     restart: unless-stopped
-    container_name: seaqa-web
-    # ports:
-    #   - 80:80
+    container_name: seaqa-web-portal
     volumes:
-      - /opt/seaticket/seaticket-data/conf:/opt/seaticket/conf
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
+      - SEAQA_APP_MODE=portal
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
       - TZ=${TIME_ZONE:-UTC}
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
@@ -16,18 +15,20 @@ services:
       - SEATICKET_SERVER_PROTOCOL=${SEATICKET_SERVER_PROTOCOL:-http}
       - SEATICKET_SERVER_HOSTNAME=${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
       - ENABLE_NOTIFICATION_SERVER=${ENABLE_NOTIFICATION_SERVER:-false}
-      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-seadb}
-      - SEADB_SERVER_ACCESS_TOKEN=${SEADB_SERVER_ACCESS_TOKEN:?Variable is not set or empty}
+      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
+      - SEADB_SERVER_ACCESS_TOKEN=${JWT_PRIVATE_KEY:?Variable is not set or empty}
       - SEATICKET_CONFIG_NAME=${SEATICKET_CONFIG_NAME:-seaticket_config.yaml}
       - CONF_PATH=${CONF_PATH:-/opt/seaticket/conf}
-      - MYSQL_DB_HOST=${MYSQL_DB_HOST:?Variable is not set or empty}
+      - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
       - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
       - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
-      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:-}
+      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:?Variable is not set or empty}
       - MYSQL_DB_NAME=${MYSQL_DB_NAME:-seaticket_db}
-      - REDIS_HOST=${REDIS_HOST:?Variable is not set or empty}
+      - REDIS_HOST=${REDIS_HOST:-redis}
       - REDIS_PORT=${REDIS_PORT:-6379}
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - SEASEARCH_URL=${SEASEARCH_URL:-http://seasearch:4080}
+      - SEASEARCH_TOKEN=${SEASEARCH_TOKEN:?Variable is not set or empty}
       - S3_HOST=${S3_HOST:?Variable is not set or empty}
       - S3_FILE_BUCKET=${S3_FILE_BUCKET:?Variable is not set or empty}
       - S3_WEB_CRAWL_BUCKET=${S3_WEB_CRAWL_BUCKET:?Variable is not set or empty}
@@ -46,14 +47,36 @@ services:
       - DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET:-}
       - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN:-}
       - DISCORD_REDIRECT_URL=${DISCORD_REDIRECT_URL:-}
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      seadb:
+        condition: service_healthy
+      seasearch:
+        condition: service_healthy
     networks:
       - frontend-net
       - backend-net
     labels:
-      caddy: ${SEATICKET_SERVER_PROTOCOL:-http}://${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
-      caddy.reverse_proxy: "{{upstreams 80}}"
+      caddy.on_demand_tls.ask: "http://seaqa-web-portal/internal/portal/custom-domain/allow-tls"
+      caddy.servers.strict_sni_host: "on"
+
+      caddy_0: "https://*.${PORTAL_SERVICE_ROOT_DOMAIN:?Variable is not set or empty}"
+      caddy_0.tls: "/certs/portal-fullchain.pem /certs/portal-privkey.pem"
+      caddy_0.@invalid_host.header_regexp: 'Host \*'
+      caddy_0.respond: "@invalid_host 400"
+      caddy_0.reverse_proxy: "{{upstreams 80}}"
+
+      caddy_1: "https://"
+      caddy_1.tls: ""
+      caddy_1.tls.on_demand: ""
+      caddy_1.@invalid_host.header_regexp: 'Host \*'
+      caddy_1.respond: "@invalid_host 400"
+      caddy_1.reverse_proxy: "{{upstreams 80}}"
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://127.0.0.1:80 || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:80/i18n/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3

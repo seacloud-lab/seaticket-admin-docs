@@ -37,29 +37,14 @@ Replace `<seaticket-host>` with your SeaTicket server hostname (the value of `SE
 
 Provide the application credentials to `seaqa-web` using either the `seaticket_config.yaml` file (recommended) or environment variables.
 
-=== "seaticket_config.yaml"
+Add the following to your `seaticket_config.yaml`:
 
-    Add a `seaqa-web` section to your `seaticket_config.yaml`:
-
-    ```yaml
-    seaqa-web:
-      LINEAR_CLIENT_ID: "<your-linear-client-id>"
-      LINEAR_CLIENT_SECRET: "<your-linear-client-secret>"
-      LINEAR_REDIRECT_URL: "https://<seaticket-host>/linear/oauth/callback/"
-    ```
-
-=== "Environment variables"
-
-    Add the following to your `.env` file:
-
-    ```env
-    LINEAR_CLIENT_ID=<your-linear-client-id>
-    LINEAR_CLIENT_SECRET=<your-linear-client-secret>
-    LINEAR_REDIRECT_URL=https://<seaticket-host>/linear/oauth/callback/
-    ```
-
-    !!! note
-        Environment variables take precedence over `seaticket_config.yaml`. If the same key is set in both places, the environment variable wins.
+```yaml
+global:
+    LINEAR_CLIENT_ID: "<your-linear-client-id>"
+    LINEAR_CLIENT_SECRET: "<your-linear-client-secret>"
+    LINEAR_REDIRECT_URL: "https://<seaticket-host>/linear/oauth/callback/"
+```
 
 ## Step 4: Restart SeaTicket
 

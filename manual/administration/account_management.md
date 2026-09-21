@@ -1,7 +1,11 @@
 # Account management
 
 
-## Add a new admin account
+## First team administrator
+
+The standard Docker deployment creates the first team administrator from `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` on first startup. Use this account for normal SeaTicket work and team administration.
+
+## Add a system administrator
 
 Ensure the container is running, then enter this command:
 
@@ -9,8 +13,10 @@ Ensure the container is running, then enter this command:
 docker exec -it seaqa-web /scripts/reset-admin.sh
 ```
 
-Enter the username and password according to the prompts. You now have a new admin account.
+Enter the email address and password according to the prompts. This creates a system administrator, not a team administrator.
 
-## Forgot admin account or password?
+System administrators do not belong to a team and can only access the system administration interface. Most deployments do not need one for daily use.
 
-Simply create a new admin account as described above, and then use this new account to reset the password for the old admin account.
+## Forgot a system administrator password?
+
+Create a new system administrator as described above, then use it to reset the password for the old system administrator account.
