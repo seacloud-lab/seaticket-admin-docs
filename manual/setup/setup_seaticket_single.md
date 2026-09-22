@@ -85,7 +85,7 @@ The following fields merit particular attention:
 | `S3_KEY_ID`      | S3 storage backend key ID                                                                                                                                    | (required)                      |
 | `S3_SECRET_KEY`  | S3 storage backend secret key                                                                                                                                | (required)                      |
 | `S3_FILE_BUCKET` | Name of the bucket for saving upload files                                                                                                                   | (required)                      |
-| `S3_WEB_CRAWL_BUCKET` | Name of the bucket for saving web-crawl data                                                                                                                 | (required)                      |
+| `S3_WEB_CRAWL_BUCKET` | Name of the bucket for saving connection assets (e.g., email attachments)                                                                                     | (required)                      |
 | `LOG_TO_STDOUT` | Record logs to container standard output                                                                                                                     | `false`                         |
 | `TIME_ZONE`      | Timezone of SeaTicket server                                                                                                                                 | `UTC`                      |
 
