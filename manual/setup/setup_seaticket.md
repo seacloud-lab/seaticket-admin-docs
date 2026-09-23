@@ -46,6 +46,8 @@ Edit `/opt/seaticket/.env`. For a standard deployment, change only the required 
 | `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` | Password for the bundled MariaDB `root` user. | Required on first deployment only |
 | `INIT_SEATICKET_TEAM_ADMIN_EMAIL` | Email address for the first SeaTicket team administrator. | Required on first deployment only |
 | `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` | Password for the first SeaTicket team administrator. | Required on first deployment only |
+| `SEADB_USERNAME` | SeaDB API username. When empty, the first team administrator email is used. | Optional |
+| `SEADB_PASSWORD` | SeaDB API password. When empty, the first team administrator password is used. | Optional |
 | `S3_HOST` | S3-compatible storage endpoint. | Required |
 | `S3_KEY_ID` | S3 access key ID. | Required |
 | `S3_SECRET_KEY` | S3 secret access key. | Required |
@@ -84,6 +86,12 @@ The standard Compose deployment includes MariaDB and initializes it automaticall
 | `MYSQL_DB_NAME` | SeaTicket database name. | `seaticket_db` |
 
 On first startup, SeaTicket creates the database and user, then imports the schema. With the default persistent `SEATICKET_MYSQL_VOLUME`, later restarts and image upgrades do not re-import the schema. Keep both database passwords backed up.
+
+### SeaDB Settings
+
+On first startup, SeaDB creates its first administrator from `SEADB_USERNAME` and `SEADB_PASSWORD`. When either variable is empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` instead. SeaTicket services use these credentials with HTTP Basic authentication to access SeaDB.
+
+`JWT_PRIVATE_KEY` is required by the SeaDB service but is not an API access token. For production deployments, set a dedicated `SEADB_USERNAME` and `SEADB_PASSWORD` rather than reusing the first team administrator credentials.
 
 ### Cache Settings
 
@@ -132,7 +140,7 @@ On the first deployment, follow initialization progress:
 docker compose logs -f seaqa-web
 ```
 
-SeaTicket automatically initializes MariaDB, imports the application schema, creates the first team, creates its team administrator, and creates that administrator's initial workspace. It does not create a system administrator. Sign in with `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` to use SeaTicket.
+SeaTicket waits for MariaDB and SeaDB, initializes MariaDB, initializes SeaDB template tables, then creates the first team, its administrator, and that administrator's initial workspace. It does not create a system administrator. Sign in with `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` to use SeaTicket.
 
 System administrators are optional maintenance accounts. See [Account Management](../administration/account_management.md) when you need to create one.
 

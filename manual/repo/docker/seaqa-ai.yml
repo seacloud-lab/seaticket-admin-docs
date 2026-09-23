@@ -15,7 +15,8 @@ services:
       - SEATICKET_SERVER_PROTOCOL=${SEATICKET_SERVER_PROTOCOL:-http}
       - SEATICKET_SERVER_HOSTNAME=${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
       - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
-      - SEADB_SERVER_ACCESS_TOKEN=${JWT_PRIVATE_KEY:?Variable is not set or empty}
+      - SEADB_USER=${SEADB_USERNAME:-${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}}
       - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
       - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
       - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}

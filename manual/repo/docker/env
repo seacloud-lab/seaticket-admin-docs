@@ -42,6 +42,10 @@ PORTAL_SERVICE_ROOT_DOMAIN=portal-seaticket.com
 
 ## SeaTicket components configuration
 SEADB_SERVER_URL=http://seadb:8888
+# SeaDB API credentials. Empty values use the first SeaTicket administrator
+# credentials during the initial Docker Compose deployment.
+SEADB_USERNAME=
+SEADB_PASSWORD=
 
 ## Database (MySQL)
 MYSQL_DB_HOST=db

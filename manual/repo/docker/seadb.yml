@@ -11,14 +11,15 @@ services:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
       - TZ=${TIME_ZONE:-}
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
+      - FIRST_SEADB_USERNAME=${SEADB_USERNAME:-${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}}
+      - FIRST_SEADB_PASSWORD=${SEADB_PASSWORD:-${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}}
     networks:
       - backend-net
     healthcheck:
       test:
         - CMD-SHELL
         - |
-          code=$$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8888/ || echo 000)
-          [ "$$code" -ge 200 ] && [ "$$code" -lt 500 ]
+          curl -fsS http://127.0.0.1:8888/ping >/dev/null
       interval: 30s
       timeout: 10s
       retries: 3
