@@ -10,13 +10,13 @@
         <meta name="author" content="seaticket">
       
       
-        <link rel="canonical" href="https://manual.seaticket.ai/0.9/setup/overview/">
+        <link rel="canonical" href="https://manual.seaticket.ai/0.9/setup/setup_seaticket/">
       
       
         <link rel="prev" href="../..">
       
       
-        <link rel="next" href="../setup_seadb_single/">
+        <link rel="next" href="../setup_notification_server/">
       
       
         
@@ -27,7 +27,7 @@
     
     
       
-        <title>Overview - SeaTicket Admin Manual</title>
+        <title>Setup SeaTicket - SeaTicket Admin Manual</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#overview" class="md-skip">
+        <a href="#setup-seaticket-server" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Setup SeaTicket
             
           </span>
         </div>
@@ -474,238 +474,25 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Setup SeaTicket
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Overview
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SeaDB
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_2">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    SeaDB
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../setup_seadb_single/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SeaDB single node
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../setup_seadb_cluster/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SeaDB cluster
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    SeaTicket
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_2_3">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    SeaTicket
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../setup_seaticket_prequisites/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Setup prequisites
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../setup_seaticket_single/" class="md-nav__link">
         
   
   
@@ -721,6 +508,225 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-deployment-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download Deployment Files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure .env
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure .env">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-optional-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Optional Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seadb-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SeaDB Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s3-storage-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S3 Storage Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seasearch-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SeaSearch Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional Extensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-seaticket_configyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure seaticket_config.yaml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-seaticket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start SeaTicket
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Directory Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optseadb-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /opt/seadb-data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optseaticketseaticket-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /opt/seaticket/seaticket-data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#find-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Find Logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -740,7 +746,7 @@
   <span class="md-ellipsis">
     
   
-    Notification Server
+    Setup notification server
   
 
     
@@ -749,14 +755,6 @@
   
 
       </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
     </li>
   
 
@@ -1139,6 +1137,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../integrations/confluence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confluence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../integrations/discord/" class="md-nav__link">
         
   
@@ -1147,6 +1173,62 @@
     
   
     Discord
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/gmail/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gmail
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../integrations/microsoft-email/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Microsoft 365 and Outlook
   
 
     
@@ -1414,6 +1496,213 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#download-deployment-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Download Deployment Files
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-env" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure .env
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configure .env">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#required-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Required Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#common-optional-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common Optional Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seadb-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SeaDB Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#s3-storage-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        S3 Storage Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seasearch-settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SeaSearch Settings
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optional-extensions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Optional Extensions
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configure-seaticket_configyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configure seaticket_config.yaml
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#start-seaticket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Start SeaTicket
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directory Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Directory Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#optseadb-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /opt/seadb-data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optseaticketseaticket-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /opt/seaticket/seaticket-data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#find-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Find Logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1432,9 +1721,298 @@
   
 
 
-<h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h1>
-<p>SeaTicket depends on SeaDB to provide scalable and high performance storage for synced records.</p>
-<p>To install SeaTicket, you need to first install SeaDB.</p>
+<h1 id="setup-seaticket-server">Setup SeaTicket Server<a class="headerlink" href="#setup-seaticket-server" title="Permanent link">&para;</a></h1>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<p>Install Docker and Docker Compose by following the <a href="https://docs.docker.com/engine/install/">official Docker installation guide</a>. SeaTicket stores persistent application, database, SeaDB, SeaSearch, and Caddy data under <code>/opt</code> by default.</p>
+<p>Prepare an S3-compatible storage service before deployment. Create the following buckets and obtain credentials with read and write access to all of them:</p>
+<ul>
+<li>A bucket for uploaded files (<code>S3_FILE_BUCKET</code>).</li>
+<li>A bucket for web crawl data (<code>S3_WEB_CRAWL_BUCKET</code>).</li>
+<li>A bucket for SeaSearch data (<code>S3_SEASEARCH_BUCKET</code>).</li>
+</ul>
+<p>You will configure the S3 endpoint, access key ID, secret access key, and bucket names in <code>.env</code>.</p>
+<h2 id="download-deployment-files">Download Deployment Files<a class="headerlink" href="#download-deployment-files" title="Permanent link">&para;</a></h2>
+<p>SeaTicket uses <code>.env</code> and Docker Compose files from the same directory. Download the standard deployment files:</p>
+<div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>/opt/seaticket/seaticket-data/conf
+<span class="nb">cd</span><span class="w"> </span>/opt/seaticket
+
+wget<span class="w"> </span>-O<span class="w"> </span>.env<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/env
+wget<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/caddy.yml
+wget<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/seadb.yml
+wget<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/seaqa-web.yml
+wget<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/seaqa-ai.yml
+wget<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/seaqa-events.yml
+wget<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/seaqa-indexer.yml
+wget<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/seasearch.yml
+wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seaticket_config.yaml<span class="w"> </span>https://manual.seaticket.ai/0.9/repo/docker/seaticket_config.yaml
+</code></pre></div>
+<h2 id="configure-env">Configure <code>.env</code><a class="headerlink" href="#configure-env" title="Permanent link">&para;</a></h2>
+<p>Edit <code>/opt/seaticket/.env</code>. For a standard deployment, change only the required settings below and leave the remaining template values at their defaults.</p>
+<h3 id="required-settings">Required Settings<a class="headerlink" href="#required-settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SEATICKET_SERVER_HOSTNAME</code></td>
+<td>Public hostname or domain of the SeaTicket server.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>JWT_PRIVATE_KEY</code></td>
+<td>Random string of at least 32 characters. Generate with <code>pwgen -s 40 1</code>.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>SECRET_KEY</code></td>
+<td>Random string of at least 32 characters. Back it up and do not change it after deployment.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>MYSQL_DB_PASSWORD</code></td>
+<td>Password for the SeaTicket MariaDB user.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code></td>
+<td>Password for the bundled MariaDB <code>root</code> user.</td>
+<td>Required on first deployment only</td>
+</tr>
+<tr>
+<td><code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code></td>
+<td>Email address for the first SeaTicket team administrator.</td>
+<td>Required on first deployment only</td>
+</tr>
+<tr>
+<td><code>INIT_SEATICKET_TEAM_ADMIN_PASSWORD</code></td>
+<td>Password for the first SeaTicket team administrator.</td>
+<td>Required on first deployment only</td>
+</tr>
+<tr>
+<td><code>SEADB_USERNAME</code></td>
+<td>SeaDB API username. When empty, the first team administrator email is used.</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td><code>SEADB_PASSWORD</code></td>
+<td>SeaDB API password. When empty, the first team administrator password is used.</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td><code>S3_HOST</code></td>
+<td>S3-compatible storage endpoint.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>S3_KEY_ID</code></td>
+<td>S3 access key ID.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>S3_SECRET_KEY</code></td>
+<td>S3 secret access key.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>S3_FILE_BUCKET</code></td>
+<td>S3 bucket for uploaded files.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>S3_WEB_CRAWL_BUCKET</code></td>
+<td>S3 bucket for web crawl data.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>S3_SEASEARCH_BUCKET</code></td>
+<td>S3 bucket for SeaSearch data.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>SEASEARCH_TOKEN</code></td>
+<td>Base64 authorization token for the SeaSearch account.</td>
+<td>Required</td>
+</tr>
+</tbody>
+</table>
+<p>By default, the first SeaSearch account uses the first team administrator credentials. Generate the token after setting <code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code> and <code>INIT_SEATICKET_TEAM_ADMIN_PASSWORD</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s1">'INIT_SEATICKET_TEAM_ADMIN_EMAIL:INIT_SEATICKET_TEAM_ADMIN_PASSWORD'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64
+</code></pre></div>
+<p>Replace the placeholders in the command with their actual values and assign the result to <code>SEASEARCH_TOKEN</code>.</p>
+<h3 id="common-optional-settings">Common Optional Settings<a class="headerlink" href="#common-optional-settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SEATICKET_SERVER_PROTOCOL</code></td>
+<td>Public server protocol: <code>http</code> or <code>https</code>.</td>
+<td><code>http</code></td>
+</tr>
+<tr>
+<td><code>TIME_ZONE</code></td>
+<td>Time zone used by containers.</td>
+<td><code>UTC</code></td>
+</tr>
+<tr>
+<td><code>INIT_SEATICKET_TEAM_NAME</code></td>
+<td>Name of the first SeaTicket team.</td>
+<td><code>SeaTicket</code></td>
+</tr>
+<tr>
+<td><code>ENABLE_NOTIFICATION_SERVER</code></td>
+<td>Enable the WebSocket notification service.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>LOG_TO_STDOUT</code></td>
+<td>Write component logs to container standard output.</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="database-settings">Database Settings<a class="headerlink" href="#database-settings" title="Permanent link">&para;</a></h3>
+<p>The standard Compose deployment includes MariaDB and initializes it automatically. Do not create the database, database user, or tables manually.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MYSQL_DB_HOST</code></td>
+<td>Bundled MariaDB service hostname.</td>
+<td><code>db</code></td>
+</tr>
+<tr>
+<td><code>MYSQL_DB_PORT</code></td>
+<td>MariaDB port.</td>
+<td><code>3306</code></td>
+</tr>
+<tr>
+<td><code>MYSQL_DB_USER</code></td>
+<td>SeaTicket database user.</td>
+<td><code>seaticket</code></td>
+</tr>
+<tr>
+<td><code>MYSQL_DB_NAME</code></td>
+<td>SeaTicket database name.</td>
+<td><code>seaticket_db</code></td>
+</tr>
+</tbody>
+</table>
+<p>On first startup, SeaTicket creates the database and user, then imports the schema. With the default persistent <code>SEATICKET_MYSQL_VOLUME</code>, later restarts and image upgrades do not re-import the schema. Keep both database passwords backed up.</p>
+<h3 id="seadb-settings">SeaDB Settings<a class="headerlink" href="#seadb-settings" title="Permanent link">&para;</a></h3>
+<p>On first startup, SeaDB creates its first administrator from <code>SEADB_USERNAME</code> and <code>SEADB_PASSWORD</code>. When either variable is empty, the standard Compose deployment uses <code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code> and <code>INIT_SEATICKET_TEAM_ADMIN_PASSWORD</code> instead. SeaTicket services use these credentials with HTTP Basic authentication to access SeaDB.</p>
+<p><code>JWT_PRIVATE_KEY</code> is required by the SeaDB service but is not an API access token. For production deployments, set a dedicated <code>SEADB_USERNAME</code> and <code>SEADB_PASSWORD</code> rather than reusing the first team administrator credentials.</p>
+<h3 id="cache-settings">Cache Settings<a class="headerlink" href="#cache-settings" title="Permanent link">&para;</a></h3>
+<p>The standard deployment includes Redis. No changes are required for normal use.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REDIS_HOST</code></td>
+<td>Bundled Redis service hostname.</td>
+<td><code>redis</code></td>
+</tr>
+<tr>
+<td><code>REDIS_PORT</code></td>
+<td>Redis port.</td>
+<td><code>6379</code></td>
+</tr>
+<tr>
+<td><code>REDIS_PASSWORD</code></td>
+<td>Redis password.</td>
+<td>(none)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="s3-storage-settings">S3 Storage Settings<a class="headerlink" href="#s3-storage-settings" title="Permanent link">&para;</a></h3>
+<p><code>seaqa-web</code>, the indexer, and SeaSearch share the S3 credentials and endpoint configured above. Keep <code>S3_AWS_REGION</code>, <code>S3_USE_V4_SIGNATURE</code>, and <code>S3_PATH_STYLE_REQUEST</code> at their defaults unless required by the storage provider.</p>
+<h3 id="seasearch-settings">SeaSearch Settings<a class="headerlink" href="#seasearch-settings" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SEASEARCH_URL</code></td>
+<td>SeaSearch URL reachable from SeaTicket services.</td>
+<td><code>http://seasearch:4080</code></td>
+</tr>
+<tr>
+<td><code>SEASEARCH_TOKEN</code></td>
+<td>Base64 authorization token for the SeaSearch API.</td>
+<td>Required</td>
+</tr>
+<tr>
+<td><code>INIT_SS_ADMIN_USER</code></td>
+<td>Optional separate initial SeaSearch account.</td>
+<td>First team administrator email</td>
+</tr>
+<tr>
+<td><code>INIT_SS_ADMIN_PASSWORD</code></td>
+<td>Optional separate initial SeaSearch account password.</td>
+<td>First team administrator password</td>
+</tr>
+</tbody>
+</table>
+<p>When both <code>INIT_SS_ADMIN_USER</code> and <code>INIT_SS_ADMIN_PASSWORD</code> are set, SeaSearch uses that separate account. In this case, generate <code>SEASEARCH_TOKEN</code> from those values instead.</p>
+<h3 id="optional-extensions">Optional Extensions<a class="headerlink" href="#optional-extensions" title="Permanent link">&para;</a></h3>
+<p>The template includes the notification service but does not enable it by default. See <a href="../setup_notification_server/">Setup Notification Server</a> to enable it.</p>
+<h2 id="configure-seaticket_configyaml">Configure <code>seaticket_config.yaml</code><a class="headerlink" href="#configure-seaticket_configyaml" title="Permanent link">&para;</a></h2>
+<p>Configure LLM models and other application settings in <code>/opt/seaticket/seaticket-data/conf/seaticket_config.yaml</code>. See <a href="../../configuration/seaticket_yaml/">SeaTicket YAML Configuration</a> for details.</p>
+<h2 id="start-seaticket">Start SeaTicket<a class="headerlink" href="#start-seaticket" title="Permanent link">&para;</a></h2>
+<p>Run Docker Compose from <code>/opt/seaticket</code>:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>On the first deployment, follow initialization progress:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>seaqa-web
+</code></pre></div>
+<p>SeaTicket waits for MariaDB and SeaDB, initializes MariaDB, initializes SeaDB template tables, then creates the first team, its administrator, and that administrator's initial workspace. It does not create a system administrator. Sign in with <code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code> and <code>INIT_SEATICKET_TEAM_ADMIN_PASSWORD</code> to use SeaTicket.</p>
+<p>System administrators are optional maintenance accounts. See <a href="../../administration/account_management/">Account Management</a> when you need to create one.</p>
+<h2 id="directory-structure">Directory Structure<a class="headerlink" href="#directory-structure" title="Permanent link">&para;</a></h2>
+<h3 id="optseadb-data"><code>/opt/seadb-data</code><a class="headerlink" href="#optseadb-data" title="Permanent link">&para;</a></h3>
+<p><code>/opt/seadb-data</code> stores SeaDB data and logs.</p>
+<h3 id="optseaticketseaticket-data"><code>/opt/seaticket/seaticket-data</code><a class="headerlink" href="#optseaticketseaticket-data" title="Permanent link">&para;</a></h3>
+<p><code>/opt/seaticket/seaticket-data</code> stores SeaTicket configuration, logs, and persistent application data.</p>
+<ul>
+<li><code>conf</code>: SeaTicket configuration files.</li>
+<li><code>logs</code>: SeaTicket logs, including <code>seaqa-web.log</code>.</li>
+<li><code>seaqa-web-data</code>: Avatar files and custom media.</li>
+</ul>
+<h2 id="find-logs">Find Logs<a class="headerlink" href="#find-logs" title="Permanent link">&para;</a></h2>
+<p>To monitor service logs from the deployment directory:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>--follow
+docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>--follow<span class="w"> </span>seaqa-web
+</code></pre></div>
+<p>SeaTicket logs are stored under <code>/shared/logs</code> in the container and <code>/opt/seaticket/seaticket-data/logs</code> on the host by default.</p>
+<p>To monitor all SeaTicket log files on the host:</p>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span><span class="k">$(</span>find<span class="w"> </span>/opt/seaticket/seaticket-data/logs/<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span><span class="s1">'*.log'</span><span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="k">)</span>
+</code></pre></div>
 
 
 
@@ -1487,13 +2065,13 @@
         
         
           
-          <a href="../setup_seadb_single/" class="md-footer__link md-footer__link--next" aria-label="Next: SeaDB single node">
+          <a href="../setup_notification_server/" class="md-footer__link md-footer__link--next" aria-label="Next: Setup notification server">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                SeaDB single node
+                Setup notification server
               </div>
             </div>
             <div class="md-footer__button md-icon">

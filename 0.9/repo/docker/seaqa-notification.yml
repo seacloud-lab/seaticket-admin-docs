@@ -6,7 +6,7 @@ services:
     #ports:
     #  - 8083:8083
     volumes:
-      - /opt/seaticket/seaticket-data/conf:/opt/seaticket/conf
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
@@ -14,12 +14,15 @@ services:
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
       - SEATICKET_CONFIG_NAME=${SEATICKET_CONFIG_NAME:-seaticket_config.yaml}
       - CONF_PATH=${CONF_PATH:-/opt/seaticket/conf}
-      - REDIS_HOST=${REDIS_HOST:?Variable is not set or empty}
+      - REDIS_HOST=${REDIS_HOST:-redis}
       - REDIS_PORT=${REDIS_PORT:-6379}
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
     networks:
       - frontend-net
       - backend-net
+    depends_on:
+      redis:
+        condition: service_started
     labels:
       caddy: ${SEATICKET_SERVER_PROTOCOL:-http}://${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
       caddy.0_reverse_proxy: "/ws* {{upstreams 8083}}"

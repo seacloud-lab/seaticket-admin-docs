@@ -3,10 +3,10 @@ services:
     image: ${SEATICKET_AI_IMAGE:-docker.seafile.top/seafileltd/seaqa-ai:0.2.0-testing}
     restart: unless-stopped
     container_name: seaqa-ai
-    ports:
-      - 8887:8887
+    #ports:
+    #  - 8887:8887
     volumes:
-      - /opt/seaticket/seaticket-data/conf:/opt/seaticket/conf
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
@@ -14,18 +14,30 @@ services:
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
       - SEATICKET_SERVER_PROTOCOL=${SEATICKET_SERVER_PROTOCOL:-http}
       - SEATICKET_SERVER_HOSTNAME=${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
-      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-seadb}
-      - SEADB_SERVER_ACCESS_TOKEN=${SEADB_SERVER_ACCESS_TOKEN:?Variable is not set or empty}
-      - MYSQL_DB_HOST=${MYSQL_DB_HOST:?Variable is not set or empty}
+      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
+      - SEADB_USER=${SEADB_USERNAME:-${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}}
+      - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
       - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
       - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
-      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:-}
+      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:?Variable is not set or empty}
       - MYSQL_DB_NAME=${MYSQL_DB_NAME:-seaticket_db}
-      - REDIS_HOST=${REDIS_HOST:?Variable is not set or empty}
+      - REDIS_HOST=${REDIS_HOST:-redis}
       - REDIS_PORT=${REDIS_PORT:-6379}
       - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - SEASEARCH_URL=${SEASEARCH_URL:-http://seasearch:4080}
+      - SEASEARCH_TOKEN=${SEASEARCH_TOKEN:?Variable is not set or empty}
     networks:
       - backend-net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      seadb:
+        condition: service_healthy
+      seasearch:
+        condition: service_healthy
     healthcheck:
       test:
         - CMD-SHELL
