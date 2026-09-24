@@ -85,14 +85,8 @@ markdown_extensions:
 nav:
   - Introduction: index.md
   - Setup:
-    - Overview: setup/overview.md
-    - SeaDB:
-      - SeaDB single node: setup/setup_seadb_single.md
-      - SeaDB cluster: setup/setup_seadb_cluster.md
-    - SeaTicket:
-      - Setup prequisites: setup/setup_seaticket_prequisites.md
-      - Setup SeaTicket: setup/setup_seaticket_single.md
-      - Notification Server: setup/setup_notification_server.md
+    - Setup SeaTicket: setup/setup_seaticket.md
+    - Setup notification server: setup/setup_notification_server.md
   - Configuration:
     - Environment Variables: configuration/environment_variables.md
     - seaticket_config.yaml: configuration/seaticket_yaml.md
@@ -104,7 +98,10 @@ nav:
     - Jira: integrations/jira.md
     - Linear: integrations/linear.md
     - GitHub: integrations/github.md
+    - Confluence: integrations/confluence.md
     - Discord: integrations/discord.md
+    - Gmail: integrations/gmail.md
+    - Microsoft 365 and Outlook: integrations/microsoft-email.md
   - Administration:
     - Overview: administration/overview.md
     - Backup and Restore: administration/backup_restore.md

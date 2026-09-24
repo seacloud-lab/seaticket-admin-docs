@@ -11,9 +11,11 @@ The `.env` file will be used to specify the general settings of the components u
 ## SeaDB settings
 | Variable                        | Description                                                                                                   | Default Value                   |  
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| `SEADB_SERVER_URL`              | SeaDB server URL                                                                                              | `http://seadb`                  |
-| `SEADB_SERVER_ACCESS_TOEKN`     | Access token for SeaDB server                                                                                 | (required)                      |
-| `SEADB_STORAGE_BACKEND`     | Storage Backend for SeaDB server ( `fdb` or `pebble`)                                                                                 | `fdb`                      |
+| `SEADB_SERVER_URL`              | SeaDB server URL.                                                                                             | `http://seadb:8888`            |
+| `SEADB_USERNAME`                | SeaDB API username. If empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_EMAIL`.        | (first team administrator)     |
+| `SEADB_PASSWORD`                | SeaDB API password. If empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_PASSWORD`.     | (first team administrator)     |
+
+SeaTicket components authenticate to SeaDB with HTTP Basic authentication. `JWT_PRIVATE_KEY` configures the SeaDB service itself and is not a SeaDB API access token. For production deployments, set `SEADB_USERNAME` and `SEADB_PASSWORD` to a dedicated SeaDB administrator account instead of reusing the first team administrator credentials.
 
 ## SeaSearch Settings
 | Variable                        | Description                                                                                                   | Default Value                   |  
@@ -24,10 +26,15 @@ The `.env` file will be used to specify the general settings of the components u
 ## Mysql Settings
 | Variable                        | Description                                                                                                   | Default Value                   |  
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| `MYSQL_DB_HOST`           | The host of MySQL server                                                                                      | (required)                      |
+| `MYSQL_DB_HOST`           | The host of MySQL server. Use `db` for the bundled MariaDB service.                                          | `db`                             |
 | `MYSQL_DB_PORT`           | The port of MySQL server                                                                                      | `3306`                          |
 | `MYSQL_DB_USER`           | The user for accessing MySQL server                                                                           | `seaticket`                     |
 | `MYSQL_DB_PASSWORD`       | The password of MySQL server                                                                                  | (none)                          |
+| `MYSQL_DB_NAME`           | The SeaTicket database name                                                                                   | `seaticket_db`                   |
+| `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` | Root password for the bundled MariaDB service. Required only when it is first initialized. SeaTicket automatically creates the database, user, and schema when `MYSQL_DB_HOST=db`. | (none) |
+| `INIT_SEATICKET_TEAM_NAME` | Name of the first SeaTicket team. Used only when no team exists.                                            | `SeaTicket` |
+| `INIT_SEATICKET_TEAM_ADMIN_EMAIL` | Email address of the first team administrator. Used only when no team exists.                              | (none) |
+| `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` | Password of the first team administrator. Used only when no team exists.                                  | (none) |
 
 ## Redis Settings
 | Variable                        | Description                                                                                                   | Default Value                   |  
@@ -49,6 +56,18 @@ The `.env` file will be used to specify the general settings of the components u
 | `S3_SECRET_KEY`                 | S3 storage backend secret key                                                                                 | (required)                      |
 | `S3_FILE_BUCKET`                | Name of the bucket for saving upload files                                                                    | (required)                      |
 | `S3_WEB_CRAWL_BUCKET`           | Name of the bucket for saving connection assets (e.g., email attachments)                                      | (required)                      |
+
+## First Team Settings
+
+On a new deployment, SeaTicket automatically creates the first team, its team administrator, and the administrator's initial workspace. This account is a normal SeaTicket user and team administrator, not a system administrator. Existing teams are never changed when the container restarts.
+
+## SeaSearch Settings
+
+By default, SeaSearch creates its first account from `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD`. Set both `INIT_SS_ADMIN_USER` and `INIT_SS_ADMIN_PASSWORD` to use a separate SeaSearch account instead. In either case, set `SEASEARCH_TOKEN` to the Base64 value of the actual SeaSearch username and password:
+
+```bash
+echo -n '<username>:<password>' | base64
+```
 
 ## Advanced system systems
 | Variable                        | Description                                                                                                   | Default Value                   |  

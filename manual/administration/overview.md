@@ -1,7 +1,7 @@
 # Overview
 
-SeaTicket uses multiple tenancy mode as default. This means that every normal users are associated with a team.
+SeaTicket uses multi-tenancy by default. Every normal user belongs to a team.
 
-The system admin user is a special user that does not belong to any team and cannot use normal features of SeaTicket. It can only access the system administration interface.
+The standard Docker deployment automatically creates the first team and a team administrator. Use this account for normal SeaTicket work, including creating projects and managing team members.
 
-After deploy the server, your first step is to add a team and add users to the team.
+The system administrator is an optional maintenance account. It does not belong to any team and cannot use normal SeaTicket features; it can only access the system administration interface. Create one only when you need system-level administration.

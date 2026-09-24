@@ -1,0 +1,89 @@
+COMPOSE_FILE='caddy.yml,seadb.yml,seaqa-web.yml,seaqa-ai.yml,seaqa-events.yml,seaqa-indexer.yml,seasearch.yml'
+COMPOSE_PATH_SEPARATOR=','
+
+# Images
+SEATICKET_MYSQL_IMAGE=mariadb:10.11
+SEATICKET_REDIS_IMAGE=redis
+CADDY_IMAGE=lucaslorentz/caddy-docker-proxy:2.12-alpine
+SEADB_IMAGE=seaticket/seadb:0.2.0-testing
+SEATICKET_AI_IMAGE=docker.seafile.top/seafileltd/seaqa-ai:0.2.0-testing
+SEATICKET_EVENTS_IMAGE=docker.seafile.top/seafileltd/seaqa-events:0.2.0-testing
+SEATICKET_INDEXER_IMAGE=docker.seafile.top/seafileltd/seaqa-indexer:0.2.0-testing
+SEATICKET_NOTIFICATION_IMAGE=docker.seafile.top/seafileltd/seaqa-notification:0.2.0-testing
+SEATICKET_WEB_IMAGE=docker.seafile.top/seafileltd/seaqa-web:0.2.0-testing
+
+# Volumes
+SEATICKET_VOLUME=/opt/seaticket/seaticket-data
+SEATICKET_MYSQL_VOLUME=/opt/seaticket-mysql/db
+SEADB_VOLUME=/opt/seadb-data
+CADDY_VOLUME=/opt/caddy-data
+PORTAL_CERTS_VOLUME=/opt/caddy-certs
+SS_DATA_PATH=/opt/seasearch-data
+
+# System settings
+TIME_ZONE=UTC
+
+# SeaTicket server configuration (JWT_PRIVATE_KEY and SECRET_KEY should be different)
+JWT_PRIVATE_KEY=
+SECRET_KEY=
+SEATICKET_SERVER_HOSTNAME=
+SEATICKET_SERVER_PROTOCOL=http
+ENABLE_NOTIFICATION_SERVER=false
+
+# First team initialization (only valid on first startup)
+INIT_SEATICKET_TEAM_NAME=SeaTicket
+INIT_SEATICKET_TEAM_ADMIN_EMAIL=
+INIT_SEATICKET_TEAM_ADMIN_PASSWORD=
+
+# Portal routing values used by Docker Compose and Caddy.
+PORTAL_SERVICE_ROOT_DOMAIN=portal-seaticket.com
+
+# Non-SeaTicket components configuration
+
+## SeaTicket components configuration
+SEADB_SERVER_URL=http://seadb:8888
+# SeaDB API credentials. Empty values use the first SeaTicket administrator
+# credentials during the initial Docker Compose deployment.
+SEADB_USERNAME=
+SEADB_PASSWORD=
+
+## Database (MySQL)
+MYSQL_DB_HOST=db
+MYSQL_DB_PORT=3306
+MYSQL_DB_USER=seaticket
+MYSQL_DB_PASSWORD=
+MYSQL_DB_NAME=seaticket_db
+
+# Built-in MariaDB initialization (only valid on first startup)
+INIT_SEATICKET_MYSQL_ROOT_PASSWORD=
+
+## Redis
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+## S3
+S3_FILE_BUCKET=
+S3_WEB_CRAWL_BUCKET=
+S3_SEASEARCH_BUCKET=
+S3_HOST=
+S3_KEY_ID=
+S3_SECRET_KEY=
+S3_AWS_REGION=us-east-1
+S3_USE_V4_SIGNATURE=true
+S3_PATH_STYLE_REQUEST=true
+S3_SSE_C_KEY=
+
+## SeaSearch
+SEASEARCH_URL=http://seasearch:4080
+SEASEARCH_TOKEN=
+# By default, SeaSearch uses the first team administrator credentials.
+# Set both variables to use a dedicated SeaSearch administrator instead.
+INIT_SS_ADMIN_USER=
+INIT_SS_ADMIN_PASSWORD=
+
+## Discord (OAuth 2.0)
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+DISCORD_BOT_TOKEN=
+DISCORD_REDIRECT_URL=

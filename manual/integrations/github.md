@@ -76,29 +76,14 @@ The file has to be readable by the account the container runs as. Check its owne
 
 ### Set the app credentials
 
-=== "seaticket_config.yaml"
+Add the following to your `seaticket_config.yaml`:
 
-    Add a `seaqa-web` section to your `seaticket_config.yaml`:
-
-    ```yaml
-    seaqa-web:
-      GITHUB_APP_NAME: "<your-app-slug>"
-      GITHUB_APP_ID: "<your-app-id>"
-      GITHUB_PRIVATE_KEY_PATH: "/opt/seaticket/conf/github-app.pem"
-    ```
-
-=== "Environment variables"
-
-    Add the following to your `.env` file:
-
-    ```env
-    GITHUB_APP_NAME=<your-app-slug>
-    GITHUB_APP_ID=<your-app-id>
-    GITHUB_PRIVATE_KEY_PATH=/opt/seaticket/conf/github-app.pem
-    ```
-
-    !!! note
-        Environment variables take precedence over `seaticket_config.yaml`. If the same key is set in both places, the environment variable wins.
+```yaml
+global:
+    GITHUB_APP_NAME: "<your-app-slug>"
+    GITHUB_APP_ID: "<your-app-id>"
+    GITHUB_PRIVATE_KEY_PATH: "/opt/seaticket/conf/github-app.pem"
+```
 
 !!! warning "A wrong private key path fails silently"
     If `GITHUB_PRIVATE_KEY_PATH` does not point to a readable file, SeaTicket starts with an empty private key rather than reporting an error. The mistake surfaces later, when GitHub API calls fail.

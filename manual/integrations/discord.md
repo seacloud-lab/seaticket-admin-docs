@@ -30,7 +30,7 @@ You will need both in [Step 4](#step-4-configure-seaticket).
 
 ## Step 3: Set the redirect URL
 
-Under **OAuth2** → **Redirects**, add the following and save your changes:
+Under **OAuth2** -> **Redirects**, add the following and save your changes:
 
 ```
 https://<seaticket-host>/discord/oauth/callback/
@@ -38,13 +38,15 @@ https://<seaticket-host>/discord/oauth/callback/
 
 Replace `<seaticket-host>` with your SeaTicket server hostname (the value of `SEATICKET_SERVER_HOSTNAME`). The URL must exactly match the `DISCORD_REDIRECT_URL` configured in SeaTicket.
 
+SeaTicket requests the `bot` and `identify` OAuth scopes during installation. Do not create a separate bot invite URL; use the SeaTicket connection flow described in [Step 6](#step-6-connect-discord-in-the-ui).
+
 ## Step 4: Configure SeaTicket
 
 Provide the application credentials to `seaqa-web` using either the `seaticket_config.yaml` file (recommended) or environment variables.
 
 === "seaticket_config.yaml"
 
-    Add a `seaqa-web` section to your `seaticket_config.yaml`:
+    Add the following values under the `seaqa-web` section of `seaticket_config.yaml`:
 
     ```yaml
     seaqa-web:

@@ -189,6 +189,10 @@ global:
     tool_details: false
 ```
 
+### Thirdparty integrations
+
+Please refer [here](../integrations/overview.md) for the details.
+
 ## seaqa-ai settings
 
 The following are the default values, normally, you don't need to make any additional settings for this part
