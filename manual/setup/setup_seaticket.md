@@ -89,7 +89,7 @@ On first startup, SeaTicket creates the database and user, then imports the sche
 
 ### SeaDB Settings
 
-On first startup, SeaDB creates its first administrator from `SEADB_USERNAME` and `SEADB_PASSWORD`. When either variable is empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` instead. SeaTicket services use these credentials with HTTP Basic authentication to access SeaDB.
+Before initializing SeaDB template tables, `seaqa-web` sends a user registration request to SeaDB with the `admin` role. It uses `SEADB_USERNAME` and `SEADB_PASSWORD`; when either is empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` instead. SeaTicket services use these credentials with HTTP Basic authentication to access SeaDB.
 
 `JWT_PRIVATE_KEY` is required by the SeaDB service but is not an API access token. For production deployments, set a dedicated `SEADB_USERNAME` and `SEADB_PASSWORD` rather than reusing the first team administrator credentials.
 
@@ -140,7 +140,7 @@ On the first deployment, follow initialization progress:
 docker compose logs -f seaqa-web
 ```
 
-SeaTicket waits for MariaDB and SeaDB, initializes MariaDB, initializes SeaDB template tables, then creates the first team, its administrator, and that administrator's initial workspace. It does not create a system administrator. Sign in with `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` to use SeaTicket.
+SeaTicket waits for MariaDB and SeaDB, initializes MariaDB, sends the SeaDB administrator registration request, initializes SeaDB template tables, then creates the first team, its administrator, and that administrator's initial workspace. It does not create a system administrator. Sign in with `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` to use SeaTicket.
 
 System administrators are optional maintenance accounts. See [Account Management](../administration/account_management.md) when you need to create one.
 

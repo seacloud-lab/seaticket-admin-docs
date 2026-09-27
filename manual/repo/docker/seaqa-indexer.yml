@@ -40,8 +40,6 @@ services:
         condition: service_started
       seadb:
         condition: service_healthy
-      seasearch:
-        condition: service_healthy
     healthcheck:
       test:
         - CMD-SHELL

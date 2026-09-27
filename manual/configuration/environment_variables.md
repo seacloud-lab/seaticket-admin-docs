@@ -15,7 +15,7 @@ The `.env` file will be used to specify the general settings of the components u
 | `SEADB_USERNAME`                | SeaDB API username. If empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_EMAIL`.        | (first team administrator)     |
 | `SEADB_PASSWORD`                | SeaDB API password. If empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_PASSWORD`.     | (first team administrator)     |
 
-SeaTicket components authenticate to SeaDB with HTTP Basic authentication. `JWT_PRIVATE_KEY` configures the SeaDB service itself and is not a SeaDB API access token. For production deployments, set `SEADB_USERNAME` and `SEADB_PASSWORD` to a dedicated SeaDB administrator account instead of reusing the first team administrator credentials.
+Before initializing template tables, `seaqa-web` sends a registration request for a SeaDB user with the `admin` role using these credentials. SeaTicket components authenticate to SeaDB with HTTP Basic authentication. `JWT_PRIVATE_KEY` configures the SeaDB service itself and is not a SeaDB API access token. For production deployments, set `SEADB_USERNAME` and `SEADB_PASSWORD` to a dedicated SeaDB administrator account instead of reusing the first team administrator credentials.
 
 ## SeaSearch Settings
 | Variable                        | Description                                                                                                   | Default Value                   |  

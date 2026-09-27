@@ -55,8 +55,6 @@ services:
         condition: service_started
       seadb:
         condition: service_healthy
-      seasearch:
-        condition: service_healthy
     networks:
       - frontend-net
       - backend-net
