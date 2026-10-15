@@ -57,8 +57,8 @@ services:
       - SEATICKET_SERVER_HOSTNAME=${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
       - ENABLE_NOTIFICATION_SERVER=${ENABLE_NOTIFICATION_SERVER:-false}
       - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
-      - SEADB_USER=${SEADB_USERNAME:-${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}}
-      - SEADB_PASSWORD=${SEADB_PASSWORD:-${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}}
+      - SEADB_USER=${SEADB_USERNAME:-${MYSQL_DB_USER:-seaticket}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${MYSQL_DB_PASSWORD:?Variable is not set or empty}}
       - SEATICKET_CONFIG_NAME=${SEATICKET_CONFIG_NAME:-seaticket_config.yaml}
       - CONF_PATH=${CONF_PATH:-/opt/seaticket/conf}
       - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
@@ -66,7 +66,8 @@ services:
       - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
       - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:?Variable is not set or empty}
       - MYSQL_DB_NAME=${MYSQL_DB_NAME:-seaticket_db}
-      - INIT_SEATICKET_MYSQL_ROOT_PASSWORD=${INIT_SEATICKET_MYSQL_ROOT_PASSWORD:?Variable is not set or empty}
+      - INIT_SEATICKET_MYSQL_ROOT_PASSWORD=${INIT_SEATICKET_MYSQL_ROOT_PASSWORD:-}
+      - INIT_SEADB_ROOT_PASSWORD=${INIT_SEADB_ROOT_PASSWORD:-${INIT_SEATICKET_MYSQL_ROOT_PASSWORD:-}}
       - INIT_SEATICKET_TEAM_NAME=${INIT_SEATICKET_TEAM_NAME:-SeaTicket}
       - INIT_SEATICKET_TEAM_ADMIN_EMAIL=${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}
       - INIT_SEATICKET_TEAM_ADMIN_PASSWORD=${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}
@@ -93,8 +94,6 @@ services:
       redis:
         condition: service_started
       seadb:
-        condition: service_healthy
-      seasearch:
         condition: service_healthy
     labels:
       caddy: ${SEATICKET_SERVER_PROTOCOL:-http}://${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}

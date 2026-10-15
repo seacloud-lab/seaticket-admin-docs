@@ -12,10 +12,15 @@ The `.env` file will be used to specify the general settings of the components u
 | Variable                        | Description                                                                                                   | Default Value                   |  
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
 | `SEADB_SERVER_URL`              | SeaDB server URL.                                                                                             | `http://seadb:8888`            |
-| `SEADB_USERNAME`                | SeaDB API username. If empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_EMAIL`.        | (first team administrator)     |
-| `SEADB_PASSWORD`                | SeaDB API password. If empty, the standard Compose deployment uses `INIT_SEATICKET_TEAM_ADMIN_PASSWORD`.     | (first team administrator)     |
+| `INIT_SEADB_ROOT_PASSWORD`      | Optional separate SeaDB root password. Used only to initialize SeaDB and create its application account. If empty, Compose uses the MySQL initialization root password. | `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` |
+| `SEADB_USERNAME`                | Optional separate SeaDB API username. If empty, Compose uses the MySQL application username. | `MYSQL_DB_USER` (`seaticket` if unset) |
+| `SEADB_PASSWORD`                | Optional separate SeaDB API password. If empty, Compose uses the MySQL application password. | `MYSQL_DB_PASSWORD` |
 
-SeaTicket components authenticate to SeaDB with HTTP Basic authentication. `JWT_PRIVATE_KEY` configures the SeaDB service itself and is not a SeaDB API access token. For production deployments, set `SEADB_USERNAME` and `SEADB_PASSWORD` to a dedicated SeaDB administrator account instead of reusing the first team administrator credentials.
+By default, SeaDB reuses the MySQL root password for initialization and the MySQL application username/password for API access. Leave all three SeaDB credential variables empty for a standard deployment. Set any of them to use separate credentials; each variable falls back independently.
+
+SeaTicket components authenticate to SeaDB with HTTP Basic authentication. Compose maps the resolved username to `SEADB_USER` inside the containers. On first deployment, SeaDB runs `sea-db init` to create `root`; `seaqa-web` then uses that root account to register the non-root application account with `default_role`. `JWT_PRIVATE_KEY` configures the SeaDB service itself and is not a SeaDB API access token.
+
+After successful initialization, remove both `INIT_SEADB_ROOT_PASSWORD` and `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` from `.env` and recreate the containers with `docker compose up -d`. Keep MySQL application credentials and any separate SeaDB application credentials available on every startup. For existing deployments that used first-team credentials for SeaDB, explicitly set `SEADB_USERNAME` and `SEADB_PASSWORD` to those existing values before adopting these defaults. See [SeaDB Settings](../setup/setup_seaticket.md#seadb-settings) for initialization and default-template SQL commands.
 
 ## SeaSearch Settings
 | Variable                        | Description                                                                                                   | Default Value                   |  
@@ -31,7 +36,7 @@ SeaTicket components authenticate to SeaDB with HTTP Basic authentication. `JWT_
 | `MYSQL_DB_USER`           | The user for accessing MySQL server                                                                           | `seaticket`                     |
 | `MYSQL_DB_PASSWORD`       | The password of MySQL server                                                                                  | (none)                          |
 | `MYSQL_DB_NAME`           | The SeaTicket database name                                                                                   | `seaticket_db`                   |
-| `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` | Root password for the bundled MariaDB service. Required only when it is first initialized. SeaTicket automatically creates the database, user, and schema when `MYSQL_DB_HOST=db`. | (none) |
+| `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` | Root password for MySQL/MariaDB, bundled or external. Required for the first automatic database, user, and schema initialization. May be removed after successful deployment; subsequent startups use the application account and persistent initialization state. | (none) |
 | `INIT_SEATICKET_TEAM_NAME` | Name of the first SeaTicket team. Used only when no team exists.                                            | `SeaTicket` |
 | `INIT_SEATICKET_TEAM_ADMIN_EMAIL` | Email address of the first team administrator. Used only when no team exists.                              | (none) |
 | `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` | Password of the first team administrator. Used only when no team exists.                                  | (none) |
