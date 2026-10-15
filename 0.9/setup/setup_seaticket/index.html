@@ -1784,6 +1784,11 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 <td>Required on first deployment only</td>
 </tr>
 <tr>
+<td><code>INIT_SEADB_ROOT_PASSWORD</code></td>
+<td>Optional separate SeaDB <code>root</code> password. When empty, uses <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> for initialization.</td>
+<td>Optional</td>
+</tr>
+<tr>
 <td><code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code></td>
 <td>Email address for the first SeaTicket team administrator.</td>
 <td>Required on first deployment only</td>
@@ -1795,12 +1800,12 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 </tr>
 <tr>
 <td><code>SEADB_USERNAME</code></td>
-<td>SeaDB API username. When empty, the first team administrator email is used.</td>
+<td>Optional separate SeaDB API username. When empty, uses <code>MYSQL_DB_USER</code> (default <code>seaticket</code>).</td>
 <td>Optional</td>
 </tr>
 <tr>
 <td><code>SEADB_PASSWORD</code></td>
-<td>SeaDB API password. When empty, the first team administrator password is used.</td>
+<td>Optional separate SeaDB API password. When empty, uses <code>MYSQL_DB_PASSWORD</code>.</td>
 <td>Optional</td>
 </tr>
 <tr>
@@ -1894,7 +1899,7 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 <tbody>
 <tr>
 <td><code>MYSQL_DB_HOST</code></td>
-<td>Bundled MariaDB service hostname.</td>
+<td>MySQL/MariaDB hostname; use <code>db</code> for bundled MariaDB.</td>
 <td><code>db</code></td>
 </tr>
 <tr>
@@ -1914,10 +1919,12 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 </tr>
 </tbody>
 </table>
-<p>On first startup, SeaTicket creates the database and user, then imports the schema. With the default persistent <code>SEATICKET_MYSQL_VOLUME</code>, later restarts and image upgrades do not re-import the schema. Keep both database passwords backed up.</p>
+<p>On first startup, the entrypoint runs <code>/scripts/init_mysql.py</code>. This script uses PyMySQL and <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> to create the database and user, then imports <code>sql/mysql.sql</code> with the <code>mysql</code> client if the database has no tables. Credentials for the import are stored in a private temporary option file that is removed afterward. It records successful initialization in <code>seaqa-web-data/.mysql-initialized</code> under <code>SEATICKET_VOLUME</code>. Subsequent startups use the application account and skip root initialization. Keep the MySQL data and SeaTicket application data persistent and back up both database passwords.</p>
+<p>For an external MySQL/MariaDB server, set <code>MYSQL_DB_HOST</code> and <code>MYSQL_DB_PORT</code> to its address and provide that server's root password in <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> for the first initialization. The server must allow root connections from the <code>seaqa-web</code> container and permit database creation, user creation, and grants. Automatic initialization is supported regardless of the hostname. When the bundled database is not needed, remove the <code>db</code> service from <code>seaqa-web.yml</code> and remove its <code>depends_on</code> entries from all enabled Compose files, including <code>seaqa-web.yml</code>, <code>seaqa-ai.yml</code>, <code>seaqa-events.yml</code>, <code>seaqa-indexer.yml</code>, and <code>seaqa-web-portal.yml</code> if enabled.</p>
 <h3 id="seadb-settings">SeaDB Settings<a class="headerlink" href="#seadb-settings" title="Permanent link">&para;</a></h3>
-<p>On first startup, SeaDB creates its first administrator from <code>SEADB_USERNAME</code> and <code>SEADB_PASSWORD</code>. When either variable is empty, the standard Compose deployment uses <code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code> and <code>INIT_SEATICKET_TEAM_ADMIN_PASSWORD</code> instead. SeaTicket services use these credentials with HTTP Basic authentication to access SeaDB.</p>
-<p><code>JWT_PRIVATE_KEY</code> is required by the SeaDB service but is not an API access token. For production deployments, set a dedicated <code>SEADB_USERNAME</code> and <code>SEADB_PASSWORD</code> rather than reusing the first team administrator credentials.</p>
+<p>By default, SeaDB uses <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> as its initial root password and <code>MYSQL_DB_USER</code> / <code>MYSQL_DB_PASSWORD</code> as its application credentials. You can leave <code>INIT_SEADB_ROOT_PASSWORD</code>, <code>SEADB_USERNAME</code>, and <code>SEADB_PASSWORD</code> empty. Set any of these variables to use separate SeaDB credentials; each override is independent.</p>
+<p>On first startup with an empty or missing data directory, the SeaDB container maps the resolved initialization password to <code>SEADB_ROOT_PASSWORD</code> and runs <code>sea-db init</code> to create the <code>root</code> administrator. The <code>seaqa-web</code> container then authenticates as <code>root</code> to create the resolved application account, assigning <code>default_role</code>. Compose supplies the resolved username as <code>SEADB_USER</code> inside all SeaTicket containers. SeaTicket services use the application credentials with HTTP Basic authentication to access SeaDB.</p>
+<p>For an existing deployment that used the first team administrator credentials for SeaDB, explicitly set <code>SEADB_USERNAME</code> and <code>SEADB_PASSWORD</code> to the existing SeaDB account values before updating the Compose files. The new defaults do not modify existing accounts. <code>JWT_PRIVATE_KEY</code> is required by the SeaDB service but is not an API access token.</p>
 <h3 id="cache-settings">Cache Settings<a class="headerlink" href="#cache-settings" title="Permanent link">&para;</a></h3>
 <p>The standard deployment includes Redis. No changes are required for normal use.</p>
 <table>
@@ -1992,7 +1999,8 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 <p>On the first deployment, follow initialization progress:</p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>seaqa-web
 </code></pre></div>
-<p>SeaTicket waits for MariaDB and SeaDB, initializes MariaDB, initializes SeaDB template tables, then creates the first team, its administrator, and that administrator's initial workspace. It does not create a system administrator. Sign in with <code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code> and <code>INIT_SEATICKET_TEAM_ADMIN_PASSWORD</code> to use SeaTicket.</p>
+<p>SeaDB initializes its storage and root account before starting its HTTP service. SeaTicket waits for MySQL/MariaDB and SeaDB, initializes the MySQL database, creates the SeaDB application account, initializes SeaDB template tables, then creates the first team, its administrator, and that administrator's initial workspace. It does not create a system administrator. Sign in with <code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code> and <code>INIT_SEATICKET_TEAM_ADMIN_PASSWORD</code> to use SeaTicket.</p>
+<p>After deployment succeeds, remove <code>INIT_SEADB_ROOT_PASSWORD</code> and <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> from <code>.env</code> and run <code>docker compose up -d</code> to recreate affected containers. Keep the root passwords backed up for maintenance. Normal restarts use persistent initialization state and application credentials. Keep MySQL application credentials (also used by SeaDB by default), any separate SeaDB credentials, and first-team credentials used as the SeaSearch defaults in <code>.env</code>.</p>
 <p>System administrators are optional maintenance accounts. See <a href="../../administration/account_management/">Account Management</a> when you need to create one.</p>
 <h2 id="directory-structure">Directory Structure<a class="headerlink" href="#directory-structure" title="Permanent link">&para;</a></h2>
 <h3 id="optseadb-data"><code>/opt/seadb-data</code><a class="headerlink" href="#optseadb-data" title="Permanent link">&para;</a></h3>

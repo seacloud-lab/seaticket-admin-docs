@@ -40,13 +40,6 @@ PORTAL_SERVICE_ROOT_DOMAIN=portal-seaticket.com
 
 # Non-SeaTicket components configuration
 
-## SeaTicket components configuration
-SEADB_SERVER_URL=http://seadb:8888
-# SeaDB API credentials. Empty values use the first SeaTicket administrator
-# credentials during the initial Docker Compose deployment.
-SEADB_USERNAME=
-SEADB_PASSWORD=
-
 ## Database (MySQL)
 MYSQL_DB_HOST=db
 MYSQL_DB_PORT=3306
@@ -54,8 +47,18 @@ MYSQL_DB_USER=seaticket
 MYSQL_DB_PASSWORD=
 MYSQL_DB_NAME=seaticket_db
 
-# Built-in MariaDB initialization (only valid on first startup)
+### MySQL/MariaDB root password (built-in or external; required for initialization only)
 INIT_SEATICKET_MYSQL_ROOT_PASSWORD=
+
+## SeaDB
+SEADB_SERVER_URL=http://seadb:8888
+# Defaults to INIT_SEATICKET_MYSQL_ROOT_PASSWORD; used only during initialization.
+# Set this to use a separate SeaDB root password.
+INIT_SEADB_ROOT_PASSWORD=
+# Defaults to MYSQL_DB_USER and MYSQL_DB_PASSWORD respectively on every startup.
+# Set these to use separate SeaDB application credentials (created with default_role).
+SEADB_USERNAME=
+SEADB_PASSWORD=
 
 ## Redis
 REDIS_HOST=redis

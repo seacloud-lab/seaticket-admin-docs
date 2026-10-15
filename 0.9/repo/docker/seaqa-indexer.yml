@@ -14,8 +14,8 @@ services:
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
       - SECRET_KEY=${SECRET_KEY:?Variable is not set or empty}
       - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
-      - SEADB_USER=${SEADB_USERNAME:-${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}}
-      - SEADB_PASSWORD=${SEADB_PASSWORD:-${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}}
+      - SEADB_USER=${SEADB_USERNAME:-${MYSQL_DB_USER:-seaticket}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${MYSQL_DB_PASSWORD:?Variable is not set or empty}}
       - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
       - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
       - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
@@ -39,8 +39,6 @@ services:
       redis:
         condition: service_started
       seadb:
-        condition: service_healthy
-      seasearch:
         condition: service_healthy
     healthcheck:
       test:
