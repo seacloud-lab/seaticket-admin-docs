@@ -53,14 +53,45 @@ After successful initialization, remove both `INIT_SEADB_ROOT_PASSWORD` and `INI
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
 | `ENABLE_NOTIFICATION_SERVER`    | Enable the WebSocket notification client in `seaqa-web`                                                       | `false`                         |
 
-## S3 Settings
-| Variable                        | Description                                                                                                   | Default Value                   |  
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| `S3_HOST`                       | S3 storage backend API endpoint URL (e.g., `https://s3-endpoint.example.com`. For AWS S3, the `S3_HOST` can be set from `https://s3.<region>.amazonaws.com`) | (required)                      |
-| `S3_KEY_ID`                     | S3 storage backend key ID                                                                                     | (required)                      |
-| `S3_SECRET_KEY`                 | S3 storage backend secret key                                                                                 | (required)                      |
-| `S3_FILE_BUCKET`                | Name of the bucket for saving upload files                                                                    | (required)                      |
-| `S3_WEB_CRAWL_BUCKET`           | Name of the bucket for saving connection assets (e.g., email attachments)                                      | (required)                      |
+## Storage Settings
+
+The Docker deployment defaults to local disk for both attachments and SeaSearch. No S3 service is required with these defaults.
+
+| Variable | Description | Default Value |
+| --- | --- | --- |
+| `ATTACHMENT_STORAGE_BACKEND` | Attachment backend used by the web service, IO service, indexer, and optional portal. Available values: `disk`, `s3`. | `disk` |
+| `SS_STORAGE_TYPE` | Optional SeaSearch backend override (`disk` or `s3`). Unset or empty values fall back to `ATTACHMENT_STORAGE_BACKEND`, then `disk`. | Follows `ATTACHMENT_STORAGE_BACKEND` |
+| `SEATICKET_VOLUME` | Host directory for SeaTicket configuration, logs, and persistent application data. | `/opt/seaticket/seaticket-data` |
+| `SS_DATA_PATH` | Host directory for persistent SeaSearch data. | `/opt/seasearch-data` |
+
+!!! note "Local attachment storage"
+
+    With `ATTACHMENT_STORAGE_BACKEND=disk`, attachments are saved under `${SEATICKET_VOLUME}/data/attachments` on the host (`/opt/seaticket/seaticket-data/data/attachments` by default), in `project_attachments` and `connection_attachments` subdirectories. Back up this directory along with the other persistent application data.
+
+    The web and indexer images fix the internal root at `/opt/seaticket/data/attachments`, with `/opt/seaticket/data` linked to `/shared/data`. Do not configure `ATTACHMENT_STORAGE_LOCAL_ROOT` in `.env` or `seaticket_config.yaml`.
+
+!!! warning "Changing storage backends"
+
+    Existing S3 deployments must set `ATTACHMENT_STORAGE_BACKEND=s3` explicitly before using the new deployment defaults. Changing `ATTACHMENT_STORAGE_BACKEND` or `SS_STORAGE_TYPE` does not migrate existing data.
+
+## Optional S3 Settings
+
+Leave these values empty for a default `disk` deployment. Configure them only when attachments or SeaSearch use `s3`. See [Use S3 as the storage backend](../setup/setup_seaticket.md#use-s3-as-the-storage-backend) for an example.
+
+| Variable | Description | Required when / Default Value |
+| --- | --- | --- |
+| `S3_HOST` | S3-compatible endpoint, e.g., `https://s3-endpoint.example.com` or `https://s3.<region>.amazonaws.com`. | Attachments or SeaSearch use S3 |
+| `S3_KEY_ID` | S3 access key ID. | Attachments or SeaSearch use S3 |
+| `S3_SECRET_KEY` | S3 secret access key. | Attachments or SeaSearch use S3 |
+| `S3_FILE_BUCKET` | Bucket for uploaded files. | `ATTACHMENT_STORAGE_BACKEND=s3` |
+| `S3_WEB_CRAWL_BUCKET` | Bucket for connection assets, such as email attachments. | `ATTACHMENT_STORAGE_BACKEND=s3` |
+| `S3_SEASEARCH_BUCKET` | Bucket for SeaSearch data. Mapped to `S3_SS_BUCKET` unless explicitly overridden by that variable. | Resolved `SS_STORAGE_TYPE=s3` |
+| `S3_AWS_REGION` | AWS region for SeaSearch S3 requests. | `us-east-1` |
+| `S3_USE_V4_SIGNATURE` | Use Signature Version 4 for SeaSearch S3 requests. | `true` |
+| `S3_PATH_STYLE_REQUEST` | Use path-style S3 requests in SeaSearch. | `true` |
+| `S3_SSE_C_KEY` | Optional SeaSearch SSE-C encryption key. Requires HTTPS and Signature Version 4. | Empty |
+
+The four advanced options above configure SeaSearch. The attachment backend uses Signature Version 4 and path-style requests directly and does not read these options. Create the buckets required by the selected backends and grant the configured credentials read and write access.
 
 ## First Team Settings
 
