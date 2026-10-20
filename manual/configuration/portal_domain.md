@@ -5,6 +5,8 @@ SeaTicket can expose a project's support portal through either of these domain t
 - A project subdomain managed by the SeaTicket administrator, such as `example.portal-seaticket.com`.
 - A custom domain managed by the project administrator, such as `support.yourdomain.com`.
 
+Single-server deployments default to `ENABLE_PORTAL_DOMAIN: false` and serve portals at `/portals/<token>/` on the main SeaTicket site. This mode does not require a separate Portal-mode instance or portal-domain DNS and TLS configuration. Follow this guide to enable separate portal domains explicitly.
+
 This guide uses the following example values:
 
 | Item | Example |
@@ -18,7 +20,7 @@ This guide uses the following example values:
 
 !!! important
 
-    `PORTAL_SERVICE_ROOT_DOMAIN` configures domain matching inside SeaTicket. It does not create DNS records, start the Portal-mode service, create reverse proxy routes, or issue TLS certificates. Complete all of the application, DNS, service, ingress, and TLS steps below.
+    Portal domains require `ENABLE_PORTAL_DOMAIN: true` in the `seaqa-web` configuration shared by both Web instances. Setting `PORTAL_SERVICE_ROOT_DOMAIN` or starting a Portal-mode instance alone does not enable portal domains. These settings do not create DNS records, start the Portal-mode service, create reverse proxy routes, or issue TLS certificates. Complete all of the application, DNS, service, ingress, and TLS steps below.
 
 ## Deployment architecture
 
@@ -65,10 +67,11 @@ Keeping this mount in a separate Compose file makes Portal support optional. Dep
 
 ## Configure the portal service root domain
 
-Add the following setting to `/opt/seaticket/seaticket-data/conf/seaticket_config.yaml`:
+Enable portal domains and set the root domain in `/opt/seaticket/seaticket-data/conf/seaticket_config.yaml`, shared by the main and Portal-mode Web instances:
 
 ```yaml
 seaqa-web:
+  ENABLE_PORTAL_DOMAIN: true
   PORTAL_SERVICE_ROOT_DOMAIN: portal-seaticket.com
 ```
 
@@ -235,7 +238,7 @@ Prefer a subdomain for the custom domain. A DNS zone apex cannot normally use a 
 
 ## Deployment checklist
 
-- `PORTAL_SERVICE_ROOT_DOMAIN` is set in `seaticket_config.yaml`.
+- `ENABLE_PORTAL_DOMAIN: true` and `PORTAL_SERVICE_ROOT_DOMAIN` are set in the `seaqa-web` section of the `seaticket_config.yaml` shared by both Web instances.
 - A separate `seaqa-web` instance is running with `SEAQA_APP_MODE=portal`.
 - Both Web instances use the same SeaTicket configuration and backend services.
 - Both Web instances were restarted after the configuration change.
@@ -246,3 +249,12 @@ Prefer a subdomain for the custom domain. A DNS zone apex cannot normally use a 
 - The main-mode `seaqa-web` container can query `8.8.8.8` and `1.1.1.1` over UDP and TCP port 53.
 - A project portal opens successfully through its generated subdomain.
 - Each custom domain has its CNAME, TXT verification record, ingress route, and TLS certificate.
+
+## Upgrade checklist for existing portal-domain deployments
+
+Portal domains now default to disabled. Existing deployments that relied on the previous default must explicitly enable them when upgrading; retaining `PORTAL_SERVICE_ROOT_DOMAIN` and a running Portal-mode instance is not sufficient. Without the switch, SeaTicket uses main-site portal paths, disables portal-domain resolution and custom-domain management, and rejects custom-domain TLS authorization requests.
+
+1. Before upgrading, add `ENABLE_PORTAL_DOMAIN: true` alongside the existing `PORTAL_SERVICE_ROOT_DOMAIN` in the shared `seaqa-web` YAML configuration shown above.
+2. Confirm that both Web instances load this configuration, and retain the existing Portal-mode service, DNS, ingress routes, and TLS configuration.
+3. Upgrade both Web instances to the same SeaTicket image version and restart both so they load the explicit switch.
+4. Verify that a project portal opens through its subdomain, custom-domain management remains available, and the TLS authorization endpoint approves a verified custom domain whose project portal is enabled.
