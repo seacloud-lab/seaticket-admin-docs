@@ -89,9 +89,3 @@ SEASEARCH_TOKEN=
 # Set both variables to use a dedicated SeaSearch administrator instead.
 INIT_SS_ADMIN_USER=
 INIT_SS_ADMIN_PASSWORD=
-
-## Discord (OAuth 2.0)
-DISCORD_CLIENT_ID=
-DISCORD_CLIENT_SECRET=
-DISCORD_BOT_TOKEN=
-DISCORD_REDIRECT_URL=

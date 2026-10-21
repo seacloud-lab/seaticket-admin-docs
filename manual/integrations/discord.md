@@ -42,44 +42,23 @@ SeaTicket requests the `bot` and `identify` OAuth scopes during installation. Do
 
 ## Step 4: Configure SeaTicket
 
-Provide the application credentials to `seaqa-web` using either the `seaticket_config.yaml` file (recommended) or environment variables.
+Add the following values under the existing `global` section of `seaticket_config.yaml`. Both the web service and indexer need access to the bot token:
 
-=== "seaticket_config.yaml"
-
-    Add the following values under the `seaqa-web` section of `seaticket_config.yaml`:
-
-    ```yaml
-    seaqa-web:
-      DISCORD_CLIENT_ID: "<your-client-id>"
-      DISCORD_CLIENT_SECRET: "<your-client-secret>"
-      DISCORD_BOT_TOKEN: "<your-bot-token>"
-      DISCORD_REDIRECT_URL: "https://<seaticket-host>/discord/oauth/callback/"
-    ```
-
-=== "Environment variables"
-
-    Add the following to your `.env` file:
-
-    ```env
-    DISCORD_CLIENT_ID=<your-client-id>
-    DISCORD_CLIENT_SECRET=<your-client-secret>
-    DISCORD_BOT_TOKEN=<your-bot-token>
-    DISCORD_REDIRECT_URL=https://<seaticket-host>/discord/oauth/callback/
-    ```
-
-    !!! note
-        Environment variables take precedence over `seaticket_config.yaml`. If the same key is set in both places, the environment variable wins.
+```yaml
+global:
+    DISCORD_CLIENT_ID: "<your-client-id>"
+    DISCORD_CLIENT_SECRET: "<your-client-secret>"
+    DISCORD_BOT_TOKEN: "<your-bot-token>"
+    DISCORD_REDIRECT_URL: "https://<seaticket-host>/discord/oauth/callback/"
+```
 
 ## Step 5: Restart SeaTicket
 
-Restart `seaqa-web` for the new settings to take effect:
+Restart `seaqa-web` and `seaqa-indexer` for the new settings to take effect:
 
 ```bash
-docker compose restart seaqa-web
+docker compose restart seaqa-web seaqa-indexer
 ```
-
-!!! note
-    If you used environment variables instead, recreate the container with `docker compose up -d seaqa-web` so it picks up the new variables.
 
 ## Step 6: Connect Discord in the UI
 
@@ -95,7 +74,7 @@ The permissions SeaTicket needs (View Channel and Read Message History) are requ
 
 ## Troubleshooting
 
-- **"Discord OAuth settings are invalid."** At least one of `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, and `DISCORD_REDIRECT_URL` is empty when `seaqa-web` reads its configuration. Check the values under the `seaqa-web` section of `seaticket_config.yaml` (or as environment variables) and restart the container.
+- **"Discord OAuth settings are invalid."** At least one of `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, and `DISCORD_REDIRECT_URL` is empty when `seaqa-web` reads its configuration. Check the values under the `global` section of `seaticket_config.yaml` and restart the services. Values in `.env` are not automatically forwarded to the containers.
 - **"Invalid Discord OAuth state."** or **"Discord server information was not returned."** The authorization flow was interrupted, or no server was selected. Start the connection again from **Install Discord Bot**.
 - **"Failed to authorize Discord."** The Client Secret or the redirect URL does not match what is registered in the Discord application. Check both, then restart `seaqa-web`.
 - **The Channel list is empty.** The server has no forum channel, or the bot was not granted access to it. Add a forum channel or install the bot again.
