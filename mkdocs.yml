@@ -106,5 +106,4 @@ nav:
     - Backup and Restore: administration/backup_restore.md
     - Cleanup Database: administration/cleanup_database.md
     - Index management: administration/index_management.md
-    - Column management: administration/column_management.md
     - Security features: administration/security_features.md
