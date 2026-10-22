@@ -253,14 +253,3 @@ The Docker examples set this value through `.env`.
 seaqa-web:
   ENABLE_NOTIFICATION_SERVER: false
 ```
-
-## Portal domain settings
-
-Set `PORTAL_SERVICE_ROOT_DOMAIN` to provide each project with a portal subdomain, such as `example.seaticket-portal.ai`:
-
-```yaml
-seaqa-web:
-  PORTAL_SERVICE_ROOT_DOMAIN: seaticket-portal.ai
-```
-
-The root domain must not include a scheme, port, wildcard, or path. Public Portal domains must be routed to a separate Web instance running with `SEAQA_APP_MODE=portal`. DNS, service topology, reverse proxy, TLS, and custom domain configuration are described in [Portal Domain](./portal_domain.md).
