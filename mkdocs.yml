@@ -90,7 +90,6 @@ nav:
   - Configuration:
     - Environment Variables: configuration/environment_variables.md
     - seaticket_config.yaml: configuration/seaticket_yaml.md
-    - Portal Domain: configuration/portal_domain.md
     - Email Sending: configuration/sending_email.md
     - seaqa_web_settings.py: configuration/seaqa_web_settings.md
   - Integrations:
