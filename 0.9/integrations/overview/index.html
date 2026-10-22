@@ -1279,7 +1279,12 @@
 
 
 <h1 id="integrations">Integrations<a class="headerlink" href="#integrations" title="Permanent link">&para;</a></h1>
-<p>SeaTicket can connect to third-party services and sync their content into projects. Each integration uses OAuth: register an app with the service provider, then add its credentials to SeaTicket.</p>
+<p>SeaTicket can connect to third-party services and sync their content into projects. Integrations use OAuth or provider-specific application authentication. Register an app with the service provider and configure its credentials as described on the integration's page. Email connections can instead use the unified OAuth client without registering your own app, or an optional client that you manage.</p>
+<p>Configure your own integration credentials in the <code>global</code> section of <code>seaticket_config.yaml</code>, not in <code>.env</code>. Merge settings into the existing <code>global</code> section rather than creating a duplicate YAML key. See each integration's page for the required settings and services to restart.</p>
+<div class="admonition note">
+<p class="admonition-title">Migrating integration credentials from .env</p>
+<p>Docker Compose does not automatically inject every value from the project <code>.env</code> into containers. The deployment templates no longer forward third-party integration credentials from <code>.env</code>. Before upgrading, move any existing integration credentials, including all four <code>DISCORD_*</code> settings, to <code>global</code> in <code>seaticket_config.yaml</code> and restart the affected services. If you previously added custom environment mappings, remove those mappings and recreate the affected containers so stale or empty environment values do not override the YAML settings.</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -1310,11 +1315,11 @@
 </tr>
 <tr>
 <td><a href="../gmail/">Gmail</a></td>
-<td>Connect a personal Gmail mailbox using OAuth 2.0</td>
+<td>Connect a Gmail mailbox or alias using a unified or self-managed OAuth client</td>
 </tr>
 <tr>
 <td><a href="../microsoft-email/">Microsoft 365 and Outlook</a></td>
-<td>Connect a personal Microsoft 365 or Outlook mailbox using OAuth 2.0</td>
+<td>Connect a mailbox, alias, or Microsoft 365 shared mailbox using a unified or self-managed OAuth client</td>
 </tr>
 </tbody>
 </table>

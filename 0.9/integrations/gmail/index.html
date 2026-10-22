@@ -1007,6 +1007,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#supported-connection-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported connection types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1018,6 +1029,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#connect-gmail-using-the-unified-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect Gmail using the unified client
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-your-own-oauth-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use your own OAuth client
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use your own OAuth client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#step-1-create-a-google-oauth-client" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1027,8 +1061,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#step-2-configure-seaticket" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1038,8 +1072,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#step-3-restart-seaticket" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1049,15 +1083,9 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-connect-gmail-in-the-ui" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 4: Connect Gmail in the UI
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1370,6 +1398,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#supported-connection-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Supported connection types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1381,6 +1420,29 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#connect-gmail-using-the-unified-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect Gmail using the unified client
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-your-own-oauth-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use your own OAuth client
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Use your own OAuth client">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#step-1-create-a-google-oauth-client" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1390,8 +1452,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#step-2-configure-seaticket" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1401,8 +1463,8 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#step-3-restart-seaticket" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1412,15 +1474,9 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#step-4-connect-gmail-in-the-ui" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 4: Connect Gmail in the UI
-      
-    </span>
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1456,19 +1512,58 @@
 
 
 <h1 id="gmail">Gmail<a class="headerlink" href="#gmail" title="Permanent link">&para;</a></h1>
-<p>SeaTicket can connect a personal Gmail mailbox to a project using OAuth 2.0. The connection can send email replies and perform mailbox operations through the Gmail API.</p>
+<p>SeaTicket connects Gmail mailboxes and aliases to projects using OAuth 2.0. Connections can send email replies and perform mailbox operations through the Gmail API. Both Gmail accounts and Google Workspace users with Gmail enabled can authorize a mailbox.</p>
+<p>By default, use the unified OAuth client: a system administrator does not need to register a Google application or configure a client ID and secret. Deployments that need their own application identity can <a href="#use-your-own-oauth-client">use their own OAuth client</a>.</p>
+<h2 id="supported-connection-types">Supported connection types<a class="headerlink" href="#supported-connection-types" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Authorization and behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Personal</td>
+<td>Authorize the Google account whose Gmail mailbox the project should use. This can be a Gmail account or a Google Workspace user account.</td>
+</tr>
+<tr>
+<td>Alias</td>
+<td>Authorize the account that owns the mailbox, then use an alias configured and permitted as a sending identity for that mailbox. An alias is not a separate sign-in account or mailbox.</td>
+</tr>
+</tbody>
+</table>
 <div class="admonition note">
-<p class="admonition-title">Personal accounts only</p>
-<p>The SeaTicket user interface currently supports OAuth connections for <strong>personal</strong> Gmail accounts only. The project admin who creates the connection authorizes their own mailbox.</p>
+<p class="admonition-title">Gmail service accounts are not supported</p>
+<p>Gmail connections use user-delegated OAuth authorization. Service-account authentication, including domain-wide delegation, is not supported. There is no separate Gmail shared-mailbox connection type; shared-mailbox connections are available for Microsoft 365 only.</p>
 </div>
-<p>Before a project admin can connect a mailbox, a system administrator must register an OAuth application with Google and configure SeaTicket with its credentials.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
 <li>A SeaTicket hostname that is publicly reachable over HTTPS, because Google redirects the user's browser back to SeaTicket.</li>
-<li>Access to <a href="https://console.cloud.google.com/">Google Cloud Console</a>.</li>
-<li>A project admin who can sign in to the personal Gmail mailbox that will be connected.</li>
+<li>A project admin who can complete authorization with a Google account that has access to the intended Gmail mailbox.</li>
+<li>For an alias, configure the address as an allowed sending identity in Gmail before connecting it. See <a href="https://support.google.com/mail/answer/22370">Send emails from a different address or alias</a>.</li>
+<li>Access to <a href="https://console.cloud.google.com/">Google Cloud Console</a> only if you choose to manage your own OAuth client.</li>
 </ul>
-<h2 id="step-1-create-a-google-oauth-client">Step 1: Create a Google OAuth client<a class="headerlink" href="#step-1-create-a-google-oauth-client" title="Permanent link">&para;</a></h2>
+<h2 id="connect-gmail-using-the-unified-client">Connect Gmail using the unified client<a class="headerlink" href="#connect-gmail-using-the-unified-client" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Sign in as a project admin and open the project's <strong>Connections</strong>.</li>
+<li>Click <strong>New connection</strong>, choose <strong>Email</strong>, and select <strong>Gmail</strong> as the provider.</li>
+<li>Choose a personal-mailbox or alias connection, as appropriate.</li>
+<li>Start OAuth authorization and sign in to the Google account that owns the mailbox. For an alias, authorize its underlying mailbox account, not the alias address as a separate account.</li>
+<li>Review the requested access and approve it. Your organization's Google Workspace policies may require administrator approval.</li>
+<li>Back in the connection dialog, verify the mailbox and sender address. For an alias connection, specify the configured alias as the sender, then save the connection.</li>
+</ol>
+<p>Project-admin permission is required to create the connection; it does not mean the authorized Google account must be the same address as the SeaTicket administrator's login.</p>
+<h2 id="use-your-own-oauth-client">Use your own OAuth client<a class="headerlink" href="#use-your-own-oauth-client" title="Permanent link">&para;</a></h2>
+<p>This is optional. A self-managed client may be appropriate when you need:</p>
+<ul>
+<li><strong>Your own product branding:</strong> use an application name, logo, and policy links that identify your business on Google's consent screen, especially for a public commercial service.</li>
+<li><strong>An organization-internal application:</strong> eligible Google Workspace organizations can restrict the app to internal users. Internal-only apps may qualify for verification exceptions; this does not remove OAuth consent or organization access-policy requirements.</li>
+<li><strong>Independent security and compliance administration:</strong> control the app registration, credentials, permissions, and lifecycle under your organization's policies. A self-managed client alone does not guarantee a particular token-routing or data-residency arrangement.</li>
+<li><strong>Independent API quota management:</strong> manage the Google Cloud project and its project-level quotas separately rather than sharing a client project's quota. Per-user and other Gmail API limits still apply.</li>
+</ul>
+<p>Review Google's <a href="https://support.google.com/cloud/answer/9110914">OAuth verification requirements and exceptions</a> and <a href="https://developers.google.com/workspace/gmail/api/reference/quota">Gmail API usage limits</a>. External apps requesting restricted scopes may require verification and, where applicable, a security assessment. Internal status is not a blanket exemption from all security requirements.</p>
+<h3 id="step-1-create-a-google-oauth-client">Step 1: Create a Google OAuth client<a class="headerlink" href="#step-1-create-a-google-oauth-client" title="Permanent link">&para;</a></h3>
 <ol>
 <li>In <a href="https://console.cloud.google.com/">Google Cloud Console</a>, create or select a project.</li>
 <li>Enable the <strong>Gmail API</strong> for the project.</li>
@@ -1482,7 +1577,7 @@
 <ol>
 <li>Copy the client ID and client secret.</li>
 </ol>
-<p>SeaTicket requests these Gmail API scopes for a personal mailbox:</p>
+<p>Gmail mailbox access uses the following scopes:</p>
 <table>
 <thead>
 <tr>
@@ -1501,46 +1596,32 @@
 </tr>
 <tr>
 <td><code>https://www.googleapis.com/auth/gmail.settings.basic</code></td>
-<td>Discover the authorized mailbox's sending identity</td>
+<td>Discover mailbox sending identities, including configured aliases</td>
 </tr>
 </tbody>
 </table>
 <p>Google may require OAuth consent-screen verification before non-test users can authorize scopes that it classifies as sensitive or restricted. Follow the requirements shown in Google Cloud Console for your application.</p>
-<h2 id="step-2-configure-seaticket">Step 2: Configure SeaTicket<a class="headerlink" href="#step-2-configure-seaticket" title="Permanent link">&para;</a></h2>
-<p>Add the following to <code>seaticket_config.yaml</code>:</p>
+<h3 id="step-2-configure-seaticket">Step 2: Configure SeaTicket<a class="headerlink" href="#step-2-configure-seaticket" title="Permanent link">&para;</a></h3>
+<p>Merge the following into the existing <code>global</code> section of <code>seaticket_config.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">global</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">GOOGLE_EMAIL_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-google-client-id&gt;"</span>
 <span class="w">    </span><span class="nt">GOOGLE_EMAIL_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-google-client-secret&gt;"</span>
 </code></pre></div>
-<h2 id="step-3-restart-seaticket">Step 3: Restart SeaTicket<a class="headerlink" href="#step-3-restart-seaticket" title="Permanent link">&para;</a></h2>
+<h3 id="step-3-restart-seaticket">Step 3: Restart SeaTicket<a class="headerlink" href="#step-3-restart-seaticket" title="Permanent link">&para;</a></h3>
 <p>Restart <code>seaqa-web</code> for the new settings to take effect:</p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>seaqa-web
 </code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you used environment variables instead, recreate the container with <code>docker compose up -d seaqa-web</code> so it picks up the new variables.</p>
-</div>
-<h2 id="step-4-connect-gmail-in-the-ui">Step 4: Connect Gmail in the UI<a class="headerlink" href="#step-4-connect-gmail-in-the-ui" title="Permanent link">&para;</a></h2>
-<ol>
-<li>Sign in as a project admin and open the project's <strong>Connections</strong>.</li>
-<li>Click <strong>New connection</strong> and choose <strong>Email</strong>.</li>
-<li>Choose <strong>Gmail</strong> as the OAuth provider.</li>
-<li>Start authorization. SeaTicket opens the Google sign-in page in a popup window.</li>
-<li>Sign in to the personal Gmail mailbox that this project should use and approve the requested access.</li>
-<li>When SeaTicket returns to the connection dialog, verify the discovered sender address and save the connection.</li>
-</ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The OAuth authorization request and connection creation require project-admin permission. The authorized mailbox is the personal mailbox of the project admin completing this flow.</p>
-</div>
+<p>Then create the connection using the mailbox or alias authorization flow described above, with your self-managed client.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>"Email OAuth provider is not configured."</strong> <code>GOOGLE_EMAIL_CLIENT_ID</code> or <code>GOOGLE_EMAIL_CLIENT_SECRET</code> is missing from the configuration loaded by <code>seaqa-web</code>. Check the values and restart the container.</li>
-<li><strong>The redirect URI does not match.</strong> The redirect URI in Google Cloud Console must exactly match <code>https://&lt;seaticket-host&gt;/api/v1/connections/email/oauth/callback/</code>.</li>
+<li><strong>"Email OAuth provider is not configured."</strong> If you use a self-managed client, confirm that both <code>GOOGLE_EMAIL_CLIENT_ID</code> and <code>GOOGLE_EMAIL_CLIENT_SECRET</code> are present under <code>global</code> in <code>seaticket_config.yaml</code>, then restart <code>seaqa-web</code>. Adding them to <code>.env</code> alone does not configure the container.</li>
+<li><strong>The redirect URI does not match with your own client.</strong> The redirect URI in Google Cloud Console must exactly match <code>https://&lt;seaticket-host&gt;/api/v1/connections/email/oauth/callback/</code>.</li>
 <li><strong>The authorization popup does not open.</strong> Allow popups for the SeaTicket site in the browser, then start authorization again.</li>
 <li><strong>The callback reports that the request is missing or expired.</strong> OAuth authorization requests expire after 10 minutes. Start the authorization again and complete it in the same browser session.</li>
 <li><strong>Google does not return a refresh token.</strong> Confirm that the redirect URI is correct and that the user approved the consent request. Revoke the application's access in the Google account if needed, then authorize again.</li>
 <li><strong>The sender address cannot be discovered.</strong> Verify that the authorized Google account has a usable Gmail sending identity and granted the required Gmail API permissions.</li>
+<li><strong>An alias cannot send replies.</strong> Confirm that the address is configured and verified as an allowed sending identity for the authorized mailbox. Authorizing an account does not grant permission to send from an arbitrary address.</li>
+<li><strong>Authorization is blocked by your organization.</strong> Ask your Google Workspace administrator to review the OAuth app and requested scopes under the organization's access policies. Using an internal client does not bypass those policies.</li>
 </ul>
 
 

@@ -1533,40 +1533,17 @@
 <p>Replace <code>&lt;seaticket-host&gt;</code> with your SeaTicket server hostname (the value of <code>SEATICKET_SERVER_HOSTNAME</code>). The URL must exactly match the <code>DISCORD_REDIRECT_URL</code> configured in SeaTicket.</p>
 <p>SeaTicket requests the <code>bot</code> and <code>identify</code> OAuth scopes during installation. Do not create a separate bot invite URL; use the SeaTicket connection flow described in <a href="#step-6-connect-discord-in-the-ui">Step 6</a>.</p>
 <h2 id="step-4-configure-seaticket">Step 4: Configure SeaTicket<a class="headerlink" href="#step-4-configure-seaticket" title="Permanent link">&para;</a></h2>
-<p>Provide the application credentials to <code>seaqa-web</code> using either the <code>seaticket_config.yaml</code> file (recommended) or environment variables.</p>
-<div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">seaticket_config.yaml</label><label for="__tabbed_1_2">Environment variables</label></div>
-<div class="tabbed-content">
-<div class="tabbed-block">
-<p>Add the following values under the <code>seaqa-web</code> section of <code>seaticket_config.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="nt">seaqa-web</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">DISCORD_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-client-id&gt;"</span>
-<span class="w">  </span><span class="nt">DISCORD_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-client-secret&gt;"</span>
-<span class="w">  </span><span class="nt">DISCORD_BOT_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-bot-token&gt;"</span>
-<span class="w">  </span><span class="nt">DISCORD_REDIRECT_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://&lt;seaticket-host&gt;/discord/oauth/callback/"</span>
+<p>Add the following values under the existing <code>global</code> section of <code>seaticket_config.yaml</code>. Both the web service and indexer need access to the bot token:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">global</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">DISCORD_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-client-id&gt;"</span>
+<span class="w">    </span><span class="nt">DISCORD_CLIENT_SECRET</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-client-secret&gt;"</span>
+<span class="w">    </span><span class="nt">DISCORD_BOT_TOKEN</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-bot-token&gt;"</span>
+<span class="w">    </span><span class="nt">DISCORD_REDIRECT_URL</span><span class="p">:</span><span class="w"> </span><span class="s">"https://&lt;seaticket-host&gt;/discord/oauth/callback/"</span>
 </code></pre></div>
-</div>
-<div class="tabbed-block">
-<p>Add the following to your <code>.env</code> file:</p>
-<div class="highlight"><pre><span></span><code>DISCORD_CLIENT_ID=&lt;your-client-id&gt;
-DISCORD_CLIENT_SECRET=&lt;your-client-secret&gt;
-DISCORD_BOT_TOKEN=&lt;your-bot-token&gt;
-DISCORD_REDIRECT_URL=https://&lt;seaticket-host&gt;/discord/oauth/callback/
-</code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Environment variables take precedence over <code>seaticket_config.yaml</code>. If the same key is set in both places, the environment variable wins.</p>
-</div>
-</div>
-</div>
-</div>
 <h2 id="step-5-restart-seaticket">Step 5: Restart SeaTicket<a class="headerlink" href="#step-5-restart-seaticket" title="Permanent link">&para;</a></h2>
-<p>Restart <code>seaqa-web</code> for the new settings to take effect:</p>
-<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>seaqa-web
+<p>Restart <code>seaqa-web</code> and <code>seaqa-indexer</code> for the new settings to take effect:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>seaqa-web<span class="w"> </span>seaqa-indexer
 </code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you used environment variables instead, recreate the container with <code>docker compose up -d seaqa-web</code> so it picks up the new variables.</p>
-</div>
 <h2 id="step-6-connect-discord-in-the-ui">Step 6: Connect Discord in the UI<a class="headerlink" href="#step-6-connect-discord-in-the-ui" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Sign in as a project admin and open the project's <strong>Connections</strong>.</li>
@@ -1581,7 +1558,7 @@ DISCORD_REDIRECT_URL=https://&lt;seaticket-host&gt;/discord/oauth/callback/
 </div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>"Discord OAuth settings are invalid."</strong> At least one of <code>DISCORD_CLIENT_ID</code>, <code>DISCORD_CLIENT_SECRET</code>, and <code>DISCORD_REDIRECT_URL</code> is empty when <code>seaqa-web</code> reads its configuration. Check the values under the <code>seaqa-web</code> section of <code>seaticket_config.yaml</code> (or as environment variables) and restart the container.</li>
+<li><strong>"Discord OAuth settings are invalid."</strong> At least one of <code>DISCORD_CLIENT_ID</code>, <code>DISCORD_CLIENT_SECRET</code>, and <code>DISCORD_REDIRECT_URL</code> is empty when <code>seaqa-web</code> reads its configuration. Check the values under the <code>global</code> section of <code>seaticket_config.yaml</code> and restart the services. Values in <code>.env</code> are not automatically forwarded to the containers.</li>
 <li><strong>"Invalid Discord OAuth state."</strong> or <strong>"Discord server information was not returned."</strong> The authorization flow was interrupted, or no server was selected. Start the connection again from <strong>Install Discord Bot</strong>.</li>
 <li><strong>"Failed to authorize Discord."</strong> The Client Secret or the redirect URL does not match what is registered in the Discord application. Check both, then restart <code>seaqa-web</code>.</li>
 <li><strong>The Channel list is empty.</strong> The server has no forum channel, or the bot was not granted access to it. Add a forum channel or install the bot again.</li>

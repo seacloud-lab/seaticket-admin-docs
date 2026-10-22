@@ -1544,7 +1544,7 @@
 </table>
 <p>SeaTicket also requests <code>offline_access</code> automatically when connecting, so it can obtain a refresh token and keep the connection valid. This scope is sent in the authorization request and does not need to be added to the app.</p>
 <h2 id="step-4-configure-seaticket">Step 4: Configure SeaTicket<a class="headerlink" href="#step-4-configure-seaticket" title="Permanent link">&para;</a></h2>
-<p>Provide the app credentials to <code>seaqa-web</code> using either the <code>seaticket_config.yaml</code> file (recommended) or environment variables.</p>
+<p>Configure the app credentials in the <code>global</code> section of <code>seaticket_config.yaml</code>.</p>
 <p>Add the following to your <code>seaticket_config.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">global</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">JIRA_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-atlassian-client-id&gt;"</span>
@@ -1555,10 +1555,6 @@
 <p>Restart <code>seaqa-web</code> for the new settings to take effect:</p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>seaqa-web
 </code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you used environment variables instead, recreate the container with <code>docker compose up -d seaqa-web</code> so it picks up the new variables.</p>
-</div>
 <h2 id="step-6-connect-jira-in-the-ui">Step 6: Connect Jira in the UI<a class="headerlink" href="#step-6-connect-jira-in-the-ui" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Sign in as a project admin and open the project's <strong>Connections</strong>.</li>
@@ -1569,7 +1565,7 @@
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>The callback URL does not match.</strong> The value of <code>JIRA_REDIRECT_URL</code> must exactly match the Callback URL registered in the Atlassian app, including the scheme and trailing slash.</li>
-<li><strong>"Jira OAuth settings are invalid."</strong> The three <code>JIRA_*</code> settings are empty in the config that <code>seaqa-web</code> actually loaded. Check that the credentials are present under the <code>seaqa-web</code> section of <code>seaticket_config.yaml</code> (or as environment variables) and that the container was restarted.</li>
+<li><strong>"Jira OAuth settings are invalid."</strong> The three <code>JIRA_*</code> settings are empty in the config that <code>seaqa-web</code> actually loaded. Check that the credentials are present under the <code>global</code> section of <code>seaticket_config.yaml</code> and that the container was restarted.</li>
 <li><strong>The connection fails after you grant access.</strong> Ensure your SeaTicket hostname is publicly reachable, because Atlassian redirects the browser back to the callback URL.</li>
 </ul>
 

@@ -65,7 +65,12 @@ REDIS_HOST=redis
 REDIS_PORT=6379
 REDIS_PASSWORD=
 
-## S3
+## Storage (disk by default; no S3 service required)
+ATTACHMENT_STORAGE_BACKEND=disk
+# Optional SeaSearch override. Empty means follow ATTACHMENT_STORAGE_BACKEND.
+SS_STORAGE_TYPE=
+
+## Optional S3 settings (only needed when attachments or SeaSearch use s3)
 S3_FILE_BUCKET=
 S3_WEB_CRAWL_BUCKET=
 S3_SEASEARCH_BUCKET=
@@ -84,9 +89,3 @@ SEASEARCH_TOKEN=
 # Set both variables to use a dedicated SeaSearch administrator instead.
 INIT_SS_ADMIN_USER=
 INIT_SS_ADMIN_PASSWORD=
-
-## Discord (OAuth 2.0)
-DISCORD_CLIENT_ID=
-DISCORD_CLIENT_SECRET=
-DISCORD_BOT_TOKEN=
-DISCORD_REDIRECT_URL=

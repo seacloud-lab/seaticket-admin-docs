@@ -1508,7 +1508,7 @@
 </code></pre></div>
 <p>Replace <code>&lt;seaticket-host&gt;</code> with your SeaTicket server hostname (the value of <code>SEATICKET_SERVER_HOSTNAME</code>). The callback URL must exactly match the <code>LINEAR_REDIRECT_URL</code> configured in SeaTicket. You can register more than one callback URL; enter each on its own line.</p>
 <h2 id="step-3-configure-seaticket">Step 3: Configure SeaTicket<a class="headerlink" href="#step-3-configure-seaticket" title="Permanent link">&para;</a></h2>
-<p>Provide the application credentials to <code>seaqa-web</code> using either the <code>seaticket_config.yaml</code> file (recommended) or environment variables.</p>
+<p>Configure the application credentials in the <code>global</code> section of <code>seaticket_config.yaml</code>.</p>
 <p>Add the following to your <code>seaticket_config.yaml</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">global</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">LINEAR_CLIENT_ID</span><span class="p">:</span><span class="w"> </span><span class="s">"&lt;your-linear-client-id&gt;"</span>
@@ -1519,10 +1519,6 @@
 <p>Restart <code>seaqa-web</code> for the new settings to take effect:</p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>seaqa-web
 </code></pre></div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If you used environment variables instead, recreate the container with <code>docker compose up -d seaqa-web</code> so it picks up the new variables.</p>
-</div>
 <h2 id="step-5-connect-linear-in-the-ui">Step 5: Connect Linear in the UI<a class="headerlink" href="#step-5-connect-linear-in-the-ui" title="Permanent link">&para;</a></h2>
 <ol>
 <li>Sign in as a project admin and open the project's <strong>Connections</strong>.</li>
@@ -1533,7 +1529,7 @@
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>The callback URL does not match.</strong> The value of <code>LINEAR_REDIRECT_URL</code> must exactly match one of the callback URLs registered in the Linear application, including the scheme and trailing slash.</li>
-<li><strong>"Linear OAuth settings are invalid."</strong> At least one of the <code>LINEAR_*</code> settings is empty when <code>seaqa-web</code> reads its configuration. Check that the credentials are present under the <code>seaqa-web</code> section of <code>seaticket_config.yaml</code> (or set as environment variables) and that the container was restarted.</li>
+<li><strong>"Linear OAuth settings are invalid."</strong> At least one of the <code>LINEAR_*</code> settings is empty when <code>seaqa-web</code> reads its configuration. Check that the credentials are present under the <code>global</code> section of <code>seaticket_config.yaml</code> and that the container was restarted.</li>
 <li><strong>The connection fails after you grant access.</strong> Ensure your SeaTicket hostname is publicly reachable, because Linear redirects the browser back to the callback URL.</li>
 <li><strong>You cannot select a Team.</strong> SeaTicket only lists teams after Linear has been authorized for the project. Complete the authorization to enable the Team field.</li>
 </ul>

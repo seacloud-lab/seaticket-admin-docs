@@ -525,10 +525,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Getting started
       
     </span>
   </a>
@@ -614,13 +614,30 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#s3-storage-settings" class="md-nav__link">
+  <a href="#storage-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        S3 Storage Settings
+        Storage Settings
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Storage Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-s3-as-the-storage-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use S3 as the storage backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -701,6 +718,17 @@
     <span class="md-ellipsis">
       
         /opt/seaticket/seaticket-data
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#optseasearch-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /opt/seasearch-data
       
     </span>
   </a>
@@ -1503,10 +1531,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#getting-started" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Getting started
       
     </span>
   </a>
@@ -1592,13 +1620,30 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#s3-storage-settings" class="md-nav__link">
+  <a href="#storage-settings" class="md-nav__link">
     <span class="md-ellipsis">
       
-        S3 Storage Settings
+        Storage Settings
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Storage Settings">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-s3-as-the-storage-backend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use S3 as the storage backend
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1685,6 +1730,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#optseasearch-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /opt/seasearch-data
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1722,15 +1778,13 @@
 
 
 <h1 id="setup-seaticket-server">Setup SeaTicket Server<a class="headerlink" href="#setup-seaticket-server" title="Permanent link">&para;</a></h1>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<p>Install Docker and Docker Compose by following the <a href="https://docs.docker.com/engine/install/">official Docker installation guide</a>. SeaTicket stores persistent application, database, SeaDB, SeaSearch, and Caddy data under <code>/opt</code> by default.</p>
-<p>Prepare an S3-compatible storage service before deployment. Create the following buckets and obtain credentials with read and write access to all of them:</p>
+<h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
+<p>The following assumptions and conventions are used in the rest of this document:</p>
 <ul>
-<li>A bucket for uploaded files (<code>S3_FILE_BUCKET</code>).</li>
-<li>A bucket for web crawl data (<code>S3_WEB_CRAWL_BUCKET</code>).</li>
-<li>A bucket for SeaSearch data (<code>S3_SEASEARCH_BUCKET</code>).</li>
+<li><code>/opt/seaticket</code> is the directory for storing SeaTicket Docker Compose files and <code>.env</code>. If you choose a different directory, adjust all paths accordingly.</li>
+<li>SeaTicket uses Docker bind mounts to persist data on the host. The default host paths are <code>/opt/seaticket/seaticket-data</code> for application data, <code>/opt/seaticket-mysql/db</code> for MySQL/MariaDB, <code>/opt/seadb-data</code> for SeaDB, <code>/opt/seasearch-data</code> for SeaSearch, and <code>/opt/caddy-data</code> for Caddy. It is recommended to keep these defaults. If you change them, account for the new paths when following these instructions.</li>
+<li>SeaTicket configuration files, application logs, and locally stored attachments are kept under <code>/opt/seaticket/seaticket-data</code>, in the <code>conf</code>, <code>logs</code>, and <code>data/attachments</code> directories, respectively. This directory is mounted at <code>/shared</code> inside the SeaTicket containers.</li>
 </ul>
-<p>You will configure the S3 endpoint, access key ID, secret access key, and bucket names in <code>.env</code>.</p>
 <h2 id="download-deployment-files">Download Deployment Files<a class="headerlink" href="#download-deployment-files" title="Permanent link">&para;</a></h2>
 <p>SeaTicket uses <code>.env</code> and Docker Compose files from the same directory. Download the standard deployment files:</p>
 <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>/opt/seaticket/seaticket-data/conf
@@ -1807,36 +1861,6 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 <td><code>SEADB_PASSWORD</code></td>
 <td>Optional separate SeaDB API password. When empty, uses <code>MYSQL_DB_PASSWORD</code>.</td>
 <td>Optional</td>
-</tr>
-<tr>
-<td><code>S3_HOST</code></td>
-<td>S3-compatible storage endpoint.</td>
-<td>Required</td>
-</tr>
-<tr>
-<td><code>S3_KEY_ID</code></td>
-<td>S3 access key ID.</td>
-<td>Required</td>
-</tr>
-<tr>
-<td><code>S3_SECRET_KEY</code></td>
-<td>S3 secret access key.</td>
-<td>Required</td>
-</tr>
-<tr>
-<td><code>S3_FILE_BUCKET</code></td>
-<td>S3 bucket for uploaded files.</td>
-<td>Required</td>
-</tr>
-<tr>
-<td><code>S3_WEB_CRAWL_BUCKET</code></td>
-<td>S3 bucket for web crawl data.</td>
-<td>Required</td>
-</tr>
-<tr>
-<td><code>S3_SEASEARCH_BUCKET</code></td>
-<td>S3 bucket for SeaSearch data.</td>
-<td>Required</td>
 </tr>
 <tr>
 <td><code>SEASEARCH_TOKEN</code></td>
@@ -1953,8 +1977,127 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 </tr>
 </tbody>
 </table>
-<h3 id="s3-storage-settings">S3 Storage Settings<a class="headerlink" href="#s3-storage-settings" title="Permanent link">&para;</a></h3>
-<p><code>seaqa-web</code>, the indexer, and SeaSearch share the S3 credentials and endpoint configured above. Keep <code>S3_AWS_REGION</code>, <code>S3_USE_V4_SIGNATURE</code>, and <code>S3_PATH_STYLE_REQUEST</code> at their defaults unless required by the storage provider.</p>
+<h3 id="storage-settings">Storage Settings<a class="headerlink" href="#storage-settings" title="Permanent link">&para;</a></h3>
+<p>Leave the storage settings at their defaults for a local-disk deployment without S3:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ATTACHMENT_STORAGE_BACKEND</code></td>
+<td>Attachment storage backend: <code>disk</code> or <code>s3</code>. Used by the web service, IO service, indexer, and optional portal.</td>
+<td><code>disk</code></td>
+</tr>
+<tr>
+<td><code>SS_STORAGE_TYPE</code></td>
+<td>Optional SeaSearch storage override: <code>disk</code> or <code>s3</code>. If unset or empty, uses <code>ATTACHMENT_STORAGE_BACKEND</code>; if both are unset or empty, uses <code>disk</code>.</td>
+<td>Follows <code>ATTACHMENT_STORAGE_BACKEND</code></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Attachment storage with disk backend</p>
+<p>With <code>ATTACHMENT_STORAGE_BACKEND=disk</code>, attachments are saved to <code>${SEATICKET_VOLUME}/data/attachments</code> on the host (<code>/opt/seaticket/seaticket-data/data/attachments</code> by default). This directory contains <code>project_attachments</code> and <code>connection_attachments</code> and must be included in backups.</p>
+<p>Inside the web and indexer containers, <code>/opt/seaticket/data</code> links to <code>/shared/data</code>. The image fixes the attachment root at <code>/opt/seaticket/data/attachments</code>; no attachment-root setting is required in <code>.env</code> or <code>seaticket_config.yaml</code>. All attachment services must share the same <code>SEATICKET_VOLUME</code>.</p>
+</div>
+<p>When SeaSearch uses <code>disk</code>, its data is persisted under <code>${SS_DATA_PATH}</code> on the host (<code>/opt/seasearch-data</code> by default).</p>
+<div class="admonition warning">
+<p class="admonition-title">Existing deployments</p>
+<p>Existing S3 deployments must explicitly set <code>ATTACHMENT_STORAGE_BACKEND=s3</code> before adopting these deployment files. SeaSearch follows that setting unless <code>SS_STORAGE_TYPE</code> is explicitly set. Changing a storage backend does not migrate existing attachments or search data.</p>
+</div>
+<h4 id="use-s3-as-the-storage-backend">Use S3 as the storage backend<a class="headerlink" href="#use-s3-as-the-storage-backend" title="Permanent link">&para;</a></h4>
+<p>Skip this section for the default <code>disk</code> deployment. To store both attachments and SeaSearch data in S3, set:</p>
+<div class="highlight"><pre><span></span><code>ATTACHMENT_STORAGE_BACKEND=s3
+# Leave SS_STORAGE_TYPE empty to follow ATTACHMENT_STORAGE_BACKEND.
+SS_STORAGE_TYPE=
+S3_HOST=https://s3-endpoint.example.com
+S3_KEY_ID=your-access-key-id
+S3_SECRET_KEY=your-secret-access-key
+S3_FILE_BUCKET=seaticket-files
+S3_WEB_CRAWL_BUCKET=seaticket-connections
+S3_SEASEARCH_BUCKET=seaticket-search
+</code></pre></div>
+<p>Create the buckets needed by the selected backends and grant the credentials read and write access to them. The components using S3 share the following endpoint and credentials:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Required when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>S3_HOST</code></td>
+<td>S3-compatible storage endpoint.</td>
+<td>Attachments or SeaSearch use S3</td>
+</tr>
+<tr>
+<td><code>S3_KEY_ID</code></td>
+<td>S3 access key ID.</td>
+<td>Attachments or SeaSearch use S3</td>
+</tr>
+<tr>
+<td><code>S3_SECRET_KEY</code></td>
+<td>S3 secret access key.</td>
+<td>Attachments or SeaSearch use S3</td>
+</tr>
+<tr>
+<td><code>S3_FILE_BUCKET</code></td>
+<td>Bucket for uploaded files.</td>
+<td><code>ATTACHMENT_STORAGE_BACKEND=s3</code></td>
+</tr>
+<tr>
+<td><code>S3_WEB_CRAWL_BUCKET</code></td>
+<td>Bucket for connection assets, such as email attachments.</td>
+<td><code>ATTACHMENT_STORAGE_BACKEND=s3</code></td>
+</tr>
+<tr>
+<td><code>S3_SEASEARCH_BUCKET</code></td>
+<td>Bucket for SeaSearch data. Compose maps this to <code>S3_SS_BUCKET</code> unless that variable is explicitly set.</td>
+<td>Resolved <code>SS_STORAGE_TYPE=s3</code></td>
+</tr>
+</tbody>
+</table>
+<p>Advanced S3 options are normally left at their defaults:</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>S3_AWS_REGION</code></td>
+<td>AWS region used by SeaSearch.</td>
+<td><code>us-east-1</code></td>
+</tr>
+<tr>
+<td><code>S3_USE_V4_SIGNATURE</code></td>
+<td>Use Signature Version 4 for SeaSearch S3 requests.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>S3_PATH_STYLE_REQUEST</code></td>
+<td>Use path-style S3 requests in SeaSearch.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>S3_SSE_C_KEY</code></td>
+<td>Optional SeaSearch SSE-C encryption key. Requires HTTPS and Signature Version 4.</td>
+<td>Empty</td>
+</tr>
+</tbody>
+</table>
+<p>These advanced options configure SeaSearch. The attachment backend currently uses Signature Version 4 and path-style requests directly; it does not read these four options.</p>
+<p>To use different storage backends, set <code>SS_STORAGE_TYPE</code> explicitly. For example, <code>ATTACHMENT_STORAGE_BACKEND=disk</code> with <code>SS_STORAGE_TYPE=s3</code> keeps attachments on disk and stores SeaSearch data in S3; only the shared S3 credentials, endpoint, and SeaSearch bucket are needed.</p>
 <h3 id="seasearch-settings">SeaSearch Settings<a class="headerlink" href="#seasearch-settings" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
@@ -2011,7 +2154,10 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 <li><code>conf</code>: SeaTicket configuration files.</li>
 <li><code>logs</code>: SeaTicket logs, including <code>seaqa-web.log</code>.</li>
 <li><code>seaqa-web-data</code>: Avatar files and custom media.</li>
+<li><code>data/attachments</code>: Project and connection attachments when using the <code>disk</code> backend.</li>
 </ul>
+<h3 id="optseasearch-data"><code>/opt/seasearch-data</code><a class="headerlink" href="#optseasearch-data" title="Permanent link">&para;</a></h3>
+<p>The default <code>SS_DATA_PATH</code> stores persistent SeaSearch data. With the <code>disk</code> backend, keep this directory backed up along with the SeaTicket application data.</p>
 <h2 id="find-logs">Find Logs<a class="headerlink" href="#find-logs" title="Permanent link">&para;</a></h2>
 <p>To monitor service logs from the deployment directory:</p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>--follow
