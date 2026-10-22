@@ -256,11 +256,20 @@ seaqa-web:
 
 ## Portal domain settings
 
-Set `PORTAL_SERVICE_ROOT_DOMAIN` to provide each project with a portal subdomain, such as `example.seaticket-portal.ai`:
+`ENABLE_PORTAL_DOMAIN` defaults to `false`. Single-server deployments serve portals at `/portals/<token>/` on the main SeaTicket site without a separate Portal-mode instance.
+
+To enable separate portal domains and provide each project with a subdomain, such as `example.seaticket-portal.ai`, set both options in the `seaqa-web` section shared by the main and Portal-mode Web instances:
 
 ```yaml
 seaqa-web:
+  ENABLE_PORTAL_DOMAIN: true
   PORTAL_SERVICE_ROOT_DOMAIN: seaticket-portal.ai
 ```
+
+Setting only `PORTAL_SERVICE_ROOT_DOMAIN` or starting a Web instance with `SEAQA_APP_MODE=portal` does not enable portal domains. Both instances read the same `seaqa-web` section; restart both after changing these settings.
+
+!!! important "Upgrading an existing portal-domain deployment"
+
+    Explicitly set `ENABLE_PORTAL_DOMAIN: true` in the shared configuration before upgrading. Deployments that relied on the previous default will otherwise switch to main-site portal paths, disabling portal-domain resolution, custom-domain management, and custom-domain TLS authorization. Follow the [portal-domain upgrade checklist](./portal_domain.md#upgrade-checklist-for-existing-portal-domain-deployments).
 
 The root domain must not include a scheme, port, wildcard, or path. Public Portal domains must be routed to a separate Web instance running with `SEAQA_APP_MODE=portal`. DNS, service topology, reverse proxy, TLS, and custom domain configuration are described in [Portal Domain](./portal_domain.md).
