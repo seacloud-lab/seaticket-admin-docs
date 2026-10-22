@@ -1,19 +1,51 @@
 # Microsoft 365 and Outlook
 
-SeaTicket can connect a personal Microsoft 365 or Outlook mailbox to a project using OAuth 2.0. The connection can send email replies and perform mailbox operations through Microsoft Graph.
+SeaTicket connects Microsoft 365 and Outlook mailboxes, aliases, and Microsoft 365 shared mailboxes to projects using OAuth 2.0. Connections can send email replies and perform mailbox operations through Microsoft Graph.
 
-!!! note "Personal accounts only"
-    The SeaTicket user interface currently supports OAuth connections for **personal** Microsoft 365 and Outlook accounts only. The project admin who creates the connection authorizes their own mailbox.
+By default, use the unified OAuth client: a system administrator does not need to register a Microsoft Entra application or configure a client ID and secret. Deployments that need their own application identity can [use their own OAuth client](#use-your-own-oauth-client).
 
-Before a project admin can connect a mailbox, a system administrator must register an application in Microsoft Entra ID and configure SeaTicket with its credentials.
+## Supported connection types
+
+| Type | Authorization and behavior |
+| --- | --- |
+| Personal | Authorize a user with a Microsoft 365 or Outlook mailbox. This connection type is not limited to consumer Microsoft accounts; organization user mailboxes are also supported. |
+| Alias | Authorize the user who owns the mailbox and use an alias that the mailbox is permitted to send from. An alias is not a separate mailbox or sign-in account. |
+| Shared mailbox | Authorize a Microsoft 365 user who has access to the shared mailbox, then specify the shared mailbox address. Do not sign in directly as the shared mailbox. This type is available for Microsoft 365, not consumer Outlook accounts. |
 
 ## Prerequisites
 
 - A SeaTicket hostname that is publicly reachable over HTTPS, because Microsoft redirects the user's browser back to SeaTicket.
-- Access to the [Microsoft Entra admin center](https://entra.microsoft.com/).
-- A project admin who can sign in to the personal Microsoft 365 or Outlook mailbox that will be connected.
+- A project admin who can complete authorization with a Microsoft account that has access to the intended mailbox.
+- For an alias, the address must belong to the authorized mailbox, and the organization's Exchange Online settings must permit sending from aliases where applicable.
+- For a shared mailbox, an organization administrator must grant the authorizing user the required mailbox access and sending rights, such as **Full Access** and **Send As**, or **Send on Behalf** where appropriate. OAuth consent alone does not grant these rights.
+- Access to the [Microsoft Entra admin center](https://entra.microsoft.com/) only if you choose to manage your own OAuth client or need tenant-admin approval.
 
-## Step 1: Register a Microsoft Entra application
+## Connect using the unified client
+
+1. Sign in as a project admin and open the project's **Connections**.
+2. Click **New connection**, choose **Email**, and select **Microsoft** as the provider.
+3. Choose the connection type: personal mailbox, alias, or shared mailbox.
+4. Start OAuth authorization. For a personal mailbox or alias, sign in as the mailbox owner. For a shared mailbox, sign in as a user with delegated access to that mailbox.
+5. Review the requested access and approve it. Your organization's tenant policies may require administrator consent.
+6. Back in the connection dialog, verify the mailbox and sender address. For an alias, specify the permitted alias; for a shared mailbox, specify its address. Save the connection.
+
+Project-admin permission is required to create the connection. The authorizing Microsoft account does not have to use the same address as the SeaTicket administrator's login.
+
+!!! note "Shared mailbox permissions"
+    Shared-mailbox access uses delegated user authorization. The authorizing user must have mailbox permissions in Exchange Online as well as the required Microsoft Graph consent. An alias does not have its own mailbox; a shared mailbox does. See Microsoft's guidance on [shared and delegated mail access](https://learn.microsoft.com/en-us/graph/outlook-share-messages-folders) and [sending mail from another user](https://learn.microsoft.com/en-us/graph/outlook-send-mail-from-other-user).
+
+## Use your own OAuth client
+
+This is optional. A self-managed client may be appropriate for:
+
+- **Product branding and trust:** manage your own application identity, publisher information, and consent experience for a commercial service.
+- **Internal deployments:** register an application restricted to the intended organization and manage it through the tenant's consent and access policies. Administrator approval may still be required.
+- **Security and compliance:** control the app registration, credentials, permissions, and lifecycle under your organization's policies. A self-managed client alone does not guarantee a particular token-routing or data-residency arrangement.
+- **Independent application administration:** manage usage and service limits separately where Microsoft applies app-specific limits. Microsoft Graph also applies user-, tenant-, and service-specific throttling; a separate client does not remove those limits.
+
+For details, see Microsoft's [application registration guidance](https://learn.microsoft.com/en-us/entra/identity-platform/quickstart-register-app), [consent framework](https://learn.microsoft.com/en-us/entra/identity-platform/consent-framework), and [Microsoft Graph throttling guidance](https://learn.microsoft.com/en-us/graph/throttling).
+
+### Step 1: Register a Microsoft Entra application
 
 1. Open the [Microsoft Entra admin center](https://entra.microsoft.com/) and go to **App registrations**.
 2. Click **New registration**, enter an application name, and select the account types your deployment needs.
@@ -34,14 +66,16 @@ Replace `<seaticket-host>` with the public SeaTicket URL. SeaTicket derives this
 | `User.Read` | Discover the authorized mailbox identity |
 | `Mail.ReadWrite` | Read and manage mailbox messages |
 | `Mail.Send` | Send email replies |
+| `Mail.ReadWrite.Shared` | Read and manage shared-mailbox messages when using shared-mailbox connections |
+| `Mail.Send.Shared` | Send mail from a shared mailbox when using shared-mailbox connections |
 
 7. Grant tenant admin consent if your Microsoft Entra tenant requires it.
 
-SeaTicket also requests the standard `openid`, `profile`, `email`, and `offline_access` scopes. `offline_access` allows SeaTicket to refresh the authorization token without requiring the project admin to sign in again for each operation.
+For user-mailbox authorization, SeaTicket also requests the standard `openid`, `profile`, `email`, and `offline_access` scopes. Shared-mailbox authorization uses the delegated shared-mail permissions and `offline_access`. The latter allows SeaTicket to refresh authorization without requiring the user to sign in again for each operation. Add permissions for the connection types you intend to use; mailbox access and sending rights must also be configured in Exchange Online.
 
-## Step 2: Configure SeaTicket
+### Step 2: Configure SeaTicket
 
-Add the following to `seaticket_config.yaml`:
+Merge the following into the existing `global` section of `seaticket_config.yaml`:
 
 ```yaml
 global:
@@ -49,7 +83,7 @@ global:
     MICROSOFT_EMAIL_CLIENT_SECRET: "<your-microsoft-client-secret>"
 ```
 
-## Step 3: Restart SeaTicket
+### Step 3: Restart SeaTicket
 
 Restart `seaqa-web` for the new settings to take effect:
 
@@ -57,26 +91,16 @@ Restart `seaqa-web` for the new settings to take effect:
 docker compose restart seaqa-web
 ```
 
-!!! note
-    If you used environment variables instead, recreate the container with `docker compose up -d seaqa-web` so it picks up the new variables.
-
-## Step 4: Connect Microsoft 365 or Outlook in the UI
-
-1. Sign in as a project admin and open the project's **Connections**.
-2. Click **New connection** and choose **Email**.
-3. Choose **Microsoft** as the OAuth provider.
-4. Start authorization. SeaTicket opens the Microsoft sign-in page in a popup window.
-5. Sign in to the personal Microsoft 365 or Outlook mailbox that this project should use and approve the requested access.
-6. When SeaTicket returns to the connection dialog, verify the discovered sender address and save the connection.
-
-!!! note
-    The OAuth authorization request and connection creation require project-admin permission. The authorized mailbox is the personal mailbox of the project admin completing this flow.
+Then create the connection using the mailbox, alias, or shared-mailbox authorization flow described above, with your self-managed client.
 
 ## Troubleshooting
 
-- **"Email OAuth provider is not configured."** `MICROSOFT_EMAIL_CLIENT_ID` or `MICROSOFT_EMAIL_CLIENT_SECRET` is missing from the configuration loaded by `seaqa-web`. Check the values and restart the container.
-- **The redirect URI does not match.** The redirect URI in Microsoft Entra must exactly match `https://<seaticket-host>/api/v1/connections/email/oauth/callback/`.
+- **"Email OAuth provider is not configured."** If you use a self-managed client, confirm that both `MICROSOFT_EMAIL_CLIENT_ID` and `MICROSOFT_EMAIL_CLIENT_SECRET` are present under `global` in `seaticket_config.yaml`, then restart `seaqa-web`. Adding them to `.env` alone does not configure the container.
+- **The redirect URI does not match with your own client.** The redirect URI in Microsoft Entra must exactly match `https://<seaticket-host>/api/v1/connections/email/oauth/callback/`.
 - **The authorization popup does not open.** Allow popups for the SeaTicket site in the browser, then start authorization again.
 - **The callback reports that the request is missing or expired.** OAuth authorization requests expire after 10 minutes. Start the authorization again and complete it in the same browser session.
 - **Microsoft does not return a refresh token.** Confirm that the redirect URI is correct, `offline_access` was approved, and the user approved the consent request. Revoke the application's access if needed, then authorize again.
 - **The sender address cannot be discovered.** Verify that the authorized account has a usable Microsoft 365 or Outlook mailbox and granted the required Microsoft Graph permissions.
+- **A shared mailbox cannot be accessed or cannot send replies.** Confirm that authorization was completed by a user with access to the shared mailbox, the shared mailbox address is correct, and both delegated Graph permissions and Exchange Online mailbox/sending rights have been granted.
+- **An alias cannot send replies.** Check that the alias belongs to the authorized mailbox and that sending from aliases is enabled where required by the organization's Exchange Online configuration.
+- **Administrator approval is required.** Ask the tenant administrator to review the application and requested permissions. Using a unified or self-managed client does not bypass tenant consent policies.

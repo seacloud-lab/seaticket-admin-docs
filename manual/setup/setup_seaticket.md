@@ -1,16 +1,12 @@
 # Setup SeaTicket Server
 
-## Prerequisites
+## Getting started
 
-Install Docker and Docker Compose by following the [official Docker installation guide](https://docs.docker.com/engine/install/). SeaTicket stores persistent application, database, SeaDB, SeaSearch, and Caddy data under `/opt` by default.
+The following assumptions and conventions are used in the rest of this document:
 
-Prepare an S3-compatible storage service before deployment. Create the following buckets and obtain credentials with read and write access to all of them:
-
-- A bucket for uploaded files (`S3_FILE_BUCKET`).
-- A bucket for web crawl data (`S3_WEB_CRAWL_BUCKET`).
-- A bucket for SeaSearch data (`S3_SEASEARCH_BUCKET`).
-
-You will configure the S3 endpoint, access key ID, secret access key, and bucket names in `.env`.
+- `/opt/seaticket` is the directory for storing SeaTicket Docker Compose files and `.env`. If you choose a different directory, adjust all paths accordingly.
+- SeaTicket uses Docker bind mounts to persist data on the host. The default host paths are `/opt/seaticket/seaticket-data` for application data, `/opt/seaticket-mysql/db` for MySQL/MariaDB, `/opt/seadb-data` for SeaDB, `/opt/seasearch-data` for SeaSearch, and `/opt/caddy-data` for Caddy. It is recommended to keep these defaults. If you change them, account for the new paths when following these instructions.
+- SeaTicket configuration files, application logs, and locally stored attachments are kept under `/opt/seaticket/seaticket-data`, in the `conf`, `logs`, and `data/attachments` directories, respectively. This directory is mounted at `/shared` inside the SeaTicket containers.
 
 ## Download Deployment Files
 
@@ -49,12 +45,6 @@ Edit `/opt/seaticket/.env`. For a standard deployment, change only the required 
 | `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` | Password for the first SeaTicket team administrator. | Required on first deployment only |
 | `SEADB_USERNAME` | Optional separate SeaDB API username. When empty, uses `MYSQL_DB_USER` (default `seaticket`). | Optional |
 | `SEADB_PASSWORD` | Optional separate SeaDB API password. When empty, uses `MYSQL_DB_PASSWORD`. | Optional |
-| `S3_HOST` | S3-compatible storage endpoint. | Required |
-| `S3_KEY_ID` | S3 access key ID. | Required |
-| `S3_SECRET_KEY` | S3 secret access key. | Required |
-| `S3_FILE_BUCKET` | S3 bucket for uploaded files. | Required |
-| `S3_WEB_CRAWL_BUCKET` | S3 bucket for web crawl data. | Required |
-| `S3_SEASEARCH_BUCKET` | S3 bucket for SeaSearch data. | Required |
 | `SEASEARCH_TOKEN` | Base64 authorization token for the SeaSearch account. | Required |
 
 By default, the first SeaSearch account uses the first team administrator credentials. Generate the token after setting `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD`:
@@ -108,9 +98,66 @@ The standard deployment includes Redis. No changes are required for normal use.
 | `REDIS_PORT` | Redis port. | `6379` |
 | `REDIS_PASSWORD` | Redis password. | (none) |
 
-### S3 Storage Settings
+### Storage Settings
 
-`seaqa-web`, the indexer, and SeaSearch share the S3 credentials and endpoint configured above. Keep `S3_AWS_REGION`, `S3_USE_V4_SIGNATURE`, and `S3_PATH_STYLE_REQUEST` at their defaults unless required by the storage provider.
+Leave the storage settings at their defaults for a local-disk deployment without S3:
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `ATTACHMENT_STORAGE_BACKEND` | Attachment storage backend: `disk` or `s3`. Used by the web service, IO service, indexer, and optional portal. | `disk` |
+| `SS_STORAGE_TYPE` | Optional SeaSearch storage override: `disk` or `s3`. If unset or empty, uses `ATTACHMENT_STORAGE_BACKEND`; if both are unset or empty, uses `disk`. | Follows `ATTACHMENT_STORAGE_BACKEND` |
+
+!!! note "Attachment storage with disk backend"
+
+    With `ATTACHMENT_STORAGE_BACKEND=disk`, attachments are saved to `${SEATICKET_VOLUME}/data/attachments` on the host (`/opt/seaticket/seaticket-data/data/attachments` by default). This directory contains `project_attachments` and `connection_attachments` and must be included in backups.
+
+    Inside the web and indexer containers, `/opt/seaticket/data` links to `/shared/data`. The image fixes the attachment root at `/opt/seaticket/data/attachments`; no attachment-root setting is required in `.env` or `seaticket_config.yaml`. All attachment services must share the same `SEATICKET_VOLUME`.
+
+When SeaSearch uses `disk`, its data is persisted under `${SS_DATA_PATH}` on the host (`/opt/seasearch-data` by default).
+
+!!! warning "Existing deployments"
+
+    Existing S3 deployments must explicitly set `ATTACHMENT_STORAGE_BACKEND=s3` before adopting these deployment files. SeaSearch follows that setting unless `SS_STORAGE_TYPE` is explicitly set. Changing a storage backend does not migrate existing attachments or search data.
+
+#### Use S3 as the storage backend
+
+Skip this section for the default `disk` deployment. To store both attachments and SeaSearch data in S3, set:
+
+```dotenv
+ATTACHMENT_STORAGE_BACKEND=s3
+# Leave SS_STORAGE_TYPE empty to follow ATTACHMENT_STORAGE_BACKEND.
+SS_STORAGE_TYPE=
+S3_HOST=https://s3-endpoint.example.com
+S3_KEY_ID=your-access-key-id
+S3_SECRET_KEY=your-secret-access-key
+S3_FILE_BUCKET=seaticket-files
+S3_WEB_CRAWL_BUCKET=seaticket-connections
+S3_SEASEARCH_BUCKET=seaticket-search
+```
+
+Create the buckets needed by the selected backends and grant the credentials read and write access to them. The components using S3 share the following endpoint and credentials:
+
+| Variable | Description | Required when |
+| --- | --- | --- |
+| `S3_HOST` | S3-compatible storage endpoint. | Attachments or SeaSearch use S3 |
+| `S3_KEY_ID` | S3 access key ID. | Attachments or SeaSearch use S3 |
+| `S3_SECRET_KEY` | S3 secret access key. | Attachments or SeaSearch use S3 |
+| `S3_FILE_BUCKET` | Bucket for uploaded files. | `ATTACHMENT_STORAGE_BACKEND=s3` |
+| `S3_WEB_CRAWL_BUCKET` | Bucket for connection assets, such as email attachments. | `ATTACHMENT_STORAGE_BACKEND=s3` |
+| `S3_SEASEARCH_BUCKET` | Bucket for SeaSearch data. Compose maps this to `S3_SS_BUCKET` unless that variable is explicitly set. | Resolved `SS_STORAGE_TYPE=s3` |
+
+Advanced S3 options are normally left at their defaults:
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `S3_AWS_REGION` | AWS region used by SeaSearch. | `us-east-1` |
+| `S3_USE_V4_SIGNATURE` | Use Signature Version 4 for SeaSearch S3 requests. | `true` |
+| `S3_PATH_STYLE_REQUEST` | Use path-style S3 requests in SeaSearch. | `true` |
+| `S3_SSE_C_KEY` | Optional SeaSearch SSE-C encryption key. Requires HTTPS and Signature Version 4. | Empty |
+
+These advanced options configure SeaSearch. The attachment backend currently uses Signature Version 4 and path-style requests directly; it does not read these four options.
+
+To use different storage backends, set `SS_STORAGE_TYPE` explicitly. For example, `ATTACHMENT_STORAGE_BACKEND=disk` with `SS_STORAGE_TYPE=s3` keeps attachments on disk and stores SeaSearch data in S3; only the shared S3 credentials, endpoint, and SeaSearch bucket are needed.
 
 ### SeaSearch Settings
 
@@ -164,6 +211,11 @@ System administrators are optional maintenance accounts. See [Account Management
 - `conf`: SeaTicket configuration files.
 - `logs`: SeaTicket logs, including `seaqa-web.log`.
 - `seaqa-web-data`: Avatar files and custom media.
+- `data/attachments`: Project and connection attachments when using the `disk` backend.
+
+### `/opt/seasearch-data`
+
+The default `SS_DATA_PATH` stores persistent SeaSearch data. With the `disk` backend, keep this directory backed up along with the SeaTicket application data.
 
 ## Find Logs
 

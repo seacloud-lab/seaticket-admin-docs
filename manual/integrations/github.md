@@ -96,9 +96,6 @@ Restart `seaqa-web` for the new settings to take effect:
 docker compose restart seaqa-web
 ```
 
-!!! note
-    If you used environment variables instead, recreate the container with `docker compose up -d seaqa-web` so it picks up the new variables.
-
 ## Step 8: Install the app and connect in the UI
 
 1. Sign in as a project admin and open the project's **Connections**.

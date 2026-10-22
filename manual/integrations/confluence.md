@@ -45,7 +45,7 @@ SeaTicket also requests `offline_access` when connecting. This allows SeaTicket 
 
 ## Step 4: Configure SeaTicket
 
-Provide the app credentials to `seaqa-web` using either the `seaticket_config.yaml` file (recommended) or environment variables.
+Configure the app credentials in the `global` section of `seaticket_config.yaml`.
 
 Add the following to your `seaticket_config.yaml`:
 
@@ -63,9 +63,6 @@ Restart `seaqa-web` for the new settings to take effect:
 ```bash
 docker compose restart seaqa-web
 ```
-
-!!! note
-    If you used environment variables instead, recreate the container with `docker compose up -d seaqa-web` so it picks up the new variables.
 
 ## Step 6: Connect Confluence in the UI
 
