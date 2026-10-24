@@ -1,0 +1,4 @@
+services:
+  caddy:
+    volumes:
+      - "${PORTAL_CERTS_VOLUME:-/opt/caddy-certs}:/certs:ro"

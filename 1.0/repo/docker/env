@@ -1,0 +1,93 @@
+COMPOSE_FILE='caddy.yml,seadb.yml,seaticket.yml,seasearch.yml'
+COMPOSE_PATH_SEPARATOR=','
+
+# Images
+SEATICKET_MYSQL_IMAGE=mariadb:10.11
+SEATICKET_REDIS_IMAGE=redis
+CADDY_IMAGE=lucaslorentz/caddy-docker-proxy:2.12-alpine
+SEADB_IMAGE=seaticket/seadb:1.0-latest
+SEATICKET_AI_IMAGE=seafileltd/seaticket-ai:1.0-latest
+SEATICKET_EVENTS_IMAGE=seafileltd/seaticket-events:1.0-latest
+SEATICKET_INDEXER_IMAGE=seafileltd/seaticket-indexer:1.0-latest
+SEATICKET_NOTIFICATION_IMAGE=seafileltd/seaticket-notification:1.0-latest
+# Shared by the main web service and the optional portal.
+SEATICKET_WEB_IMAGE=seafileltd/seaticket:1.0-latest
+
+# Volumes
+SEATICKET_VOLUME=/opt/seaticket/seaticket-data
+SEATICKET_MYSQL_VOLUME=/opt/seaticket-mysql/db
+SEADB_VOLUME=/opt/seadb-data
+CADDY_VOLUME=/opt/caddy-data
+PORTAL_CERTS_VOLUME=/opt/caddy-certs
+SS_DATA_PATH=/opt/seasearch-data
+
+# System settings
+TIME_ZONE=UTC
+
+# SeaTicket server configuration (JWT_PRIVATE_KEY and SECRET_KEY should be different)
+JWT_PRIVATE_KEY=
+SECRET_KEY=
+SEATICKET_SERVER_HOSTNAME=
+SEATICKET_SERVER_PROTOCOL=http
+ENABLE_NOTIFICATION_SERVER=false
+
+# First team initialization (only valid on first startup)
+INIT_SEATICKET_TEAM_NAME=SeaTicket
+INIT_SEATICKET_TEAM_ADMIN_EMAIL=
+INIT_SEATICKET_TEAM_ADMIN_PASSWORD=
+
+# Portal routing values used by Docker Compose and Caddy.
+PORTAL_SERVICE_ROOT_DOMAIN=portal-seaticket.com
+
+# Non-SeaTicket components configuration
+
+## Database (MySQL)
+MYSQL_DB_HOST=db
+MYSQL_DB_PORT=3306
+MYSQL_DB_USER=seaticket
+MYSQL_DB_PASSWORD=
+MYSQL_DB_NAME=seaticket_db
+
+### MySQL/MariaDB root password (built-in or external; required for initialization only)
+INIT_SEATICKET_MYSQL_ROOT_PASSWORD=
+
+## SeaDB
+SEADB_SERVER_URL=http://seadb:8888
+# Defaults to INIT_SEATICKET_MYSQL_ROOT_PASSWORD; used only during initialization.
+# Set this to use a separate SeaDB root password.
+INIT_SEADB_ROOT_PASSWORD=
+# Defaults to MYSQL_DB_USER and MYSQL_DB_PASSWORD respectively on every startup.
+# Set these to use separate SeaDB application credentials (created with default_role).
+SEADB_USERNAME=
+SEADB_PASSWORD=
+
+## Redis
+REDIS_HOST=redis
+REDIS_PORT=6379
+REDIS_PASSWORD=
+
+## Storage (disk by default; no S3 service required)
+ATTACHMENT_STORAGE_BACKEND=disk
+# Optional SeaSearch override. Empty means follow ATTACHMENT_STORAGE_BACKEND.
+SS_STORAGE_TYPE=
+
+## Optional S3 settings (only needed when attachments or SeaSearch use s3)
+S3_FILE_BUCKET=
+S3_WEB_CRAWL_BUCKET=
+S3_SEASEARCH_BUCKET=
+S3_HOST=
+S3_KEY_ID=
+S3_SECRET_KEY=
+S3_AWS_REGION=us-east-1
+S3_USE_V4_SIGNATURE=true
+S3_PATH_STYLE_REQUEST=true
+S3_SSE_C_KEY=
+
+## SeaSearch
+SEASEARCH_URL=http://seasearch:4080
+# Preconfigured internal account; no changes are needed for a standard deployment.
+# These public template credentials are only for SeaSearch without published ports.
+# If you customize the account, update SEASEARCH_TOKEN to Base64(username:password).
+INIT_SS_ADMIN_USER=seaticket
+INIT_SS_ADMIN_PASSWORD=HHd45u99hdZYiSjUQqr1ylUPyP1e1XzHfSubdPz2
+SEASEARCH_TOKEN=c2VhdGlja2V0OkhIZDQ1dTk5aGRaWWlTalVRcXIxeWxVUHlQMWUxWHpIZlN1YmRQejI=

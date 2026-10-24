@@ -1,0 +1,11 @@
+global:
+  LLM_MODELS:
+    - type: 
+      key: 
+      model: 
+      label: 
+  EMBEDDING_MODEL:
+    type: 
+    url: 
+    key: 
+    model: 

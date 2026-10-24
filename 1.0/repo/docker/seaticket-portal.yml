@@ -1,0 +1,87 @@
+services:
+  seaticket-portal:
+    image: ${SEATICKET_WEB_IMAGE:-seafileltd/seaticket:1.0-latest}
+    restart: unless-stopped
+    container_name: seaticket-portal
+    volumes:
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
+    environment:
+      - SEAQA_APP_MODE=portal
+      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - TZ=${TIME_ZONE:-UTC}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
+      - SECRET_KEY=${SECRET_KEY:?Variable is not set or empty}
+      - SEATICKET_SERVER_PROTOCOL=${SEATICKET_SERVER_PROTOCOL:-http}
+      - SEATICKET_SERVER_HOSTNAME=${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
+      - ENABLE_NOTIFICATION_SERVER=${ENABLE_NOTIFICATION_SERVER:-false}
+      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
+      - SEADB_USER=${SEADB_USERNAME:-${MYSQL_DB_USER:-seaticket}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${MYSQL_DB_PASSWORD:?Variable is not set or empty}}
+      - SEAQA_CONFIG_NAME=${SEAQA_CONFIG_NAME:-seaticket_config.yaml}
+      - CONF_PATH=${CONF_PATH:-/opt/seaticket/conf}
+      - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
+      - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
+      - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
+      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:?Variable is not set or empty}
+      - MYSQL_DB_NAME=${MYSQL_DB_NAME:-seaticket_db}
+      - INIT_SEATICKET_MYSQL_ROOT_PASSWORD=${INIT_SEATICKET_MYSQL_ROOT_PASSWORD:-}
+      - INIT_SEADB_ROOT_PASSWORD=${INIT_SEADB_ROOT_PASSWORD:-${INIT_SEATICKET_MYSQL_ROOT_PASSWORD:-}}
+      - INIT_SEATICKET_TEAM_NAME=${INIT_SEATICKET_TEAM_NAME:-SeaTicket}
+      - INIT_SEATICKET_TEAM_ADMIN_EMAIL=${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}
+      - INIT_SEATICKET_TEAM_ADMIN_PASSWORD=${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - SEASEARCH_URL=${SEASEARCH_URL:-http://seasearch:4080}
+      - SEASEARCH_TOKEN=${SEASEARCH_TOKEN:?Variable is not set or empty}
+      - ATTACHMENT_STORAGE_BACKEND=${ATTACHMENT_STORAGE_BACKEND:-disk}
+      - S3_HOST=${S3_HOST:-}
+      - S3_FILE_BUCKET=${S3_FILE_BUCKET:-}
+      - S3_WEB_CRAWL_BUCKET=${S3_WEB_CRAWL_BUCKET:-}
+      - S3_KEY_ID=${S3_KEY_ID:-}
+      - S3_SECRET_KEY=${S3_SECRET_KEY:-}
+      - S3_AWS_REGION=${S3_AWS_REGION:-us-east-1}
+      - S3_USE_V4_SIGNATURE=${S3_USE_V4_SIGNATURE:-true}
+      - S3_PATH_STYLE_REQUEST=${S3_PATH_STYLE_REQUEST:-true}
+      - S3_SSE_C_KEY=${S3_SSE_C_KEY:-}
+    depends_on:
+      seaticket:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      seadb:
+        condition: service_healthy
+    networks:
+      - frontend-net
+      - backend-net
+    labels:
+      caddy.on_demand_tls.ask: "http://seaticket-portal/internal/portal/custom-domain/allow-tls"
+      caddy.servers.strict_sni_host: "on"
+
+      caddy_0: "https://*.${PORTAL_SERVICE_ROOT_DOMAIN:?Variable is not set or empty}"
+      caddy_0.tls: "/certs/portal-fullchain.pem /certs/portal-privkey.pem"
+      caddy_0.@invalid_host.header_regexp: 'Host \*'
+      caddy_0.respond: "@invalid_host 400"
+      caddy_0.reverse_proxy: "{{upstreams 80}}"
+
+      caddy_1: "https://"
+      caddy_1.tls: ""
+      caddy_1.tls.on_demand: ""
+      caddy_1.@invalid_host.header_regexp: 'Host \*'
+      caddy_1.respond: "@invalid_host 400"
+      caddy_1.reverse_proxy: "{{upstreams 80}}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:80/i18n/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  frontend-net:
+    name: frontend-net
+  backend-net:
+    name: backend-net
