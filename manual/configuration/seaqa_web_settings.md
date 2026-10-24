@@ -1,6 +1,6 @@
 # seaqa_web_settings.py
 
-`seaqa_web_settings.py` is used to customize the SeaTicket web (seaqa-web) settings.
+`seaqa_web_settings.py` is used to customize the SeaTicket web (`seaticket`) settings.
 
 
 ## Team role permissions

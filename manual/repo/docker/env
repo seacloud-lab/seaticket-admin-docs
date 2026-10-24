@@ -1,16 +1,17 @@
-COMPOSE_FILE='caddy.yml,seadb.yml,seaqa-web.yml,seaqa-ai.yml,seaqa-events.yml,seaqa-indexer.yml,seasearch.yml'
+COMPOSE_FILE='caddy.yml,seadb.yml,seaticket.yml,seasearch.yml'
 COMPOSE_PATH_SEPARATOR=','
 
 # Images
 SEATICKET_MYSQL_IMAGE=mariadb:10.11
 SEATICKET_REDIS_IMAGE=redis
 CADDY_IMAGE=lucaslorentz/caddy-docker-proxy:2.12-alpine
-SEADB_IMAGE=seaticket/seadb:0.2.0-testing
-SEATICKET_AI_IMAGE=docker.seafile.top/seafileltd/seaqa-ai:0.2.0-testing
-SEATICKET_EVENTS_IMAGE=docker.seafile.top/seafileltd/seaqa-events:0.2.0-testing
-SEATICKET_INDEXER_IMAGE=docker.seafile.top/seafileltd/seaqa-indexer:0.2.0-testing
-SEATICKET_NOTIFICATION_IMAGE=docker.seafile.top/seafileltd/seaqa-notification:0.2.0-testing
-SEATICKET_WEB_IMAGE=docker.seafile.top/seafileltd/seaqa-web:0.2.0-testing
+SEADB_IMAGE=seaticket/seadb:1.0-latest
+SEATICKET_AI_IMAGE=seafileltd/seaticket-ai:1.0-latest
+SEATICKET_EVENTS_IMAGE=seafileltd/seaticket-events:1.0-latest
+SEATICKET_INDEXER_IMAGE=seafileltd/seaticket-indexer:1.0-latest
+SEATICKET_NOTIFICATION_IMAGE=seafileltd/seaticket-notification:1.0-latest
+# Shared by the main web service and the optional portal.
+SEATICKET_WEB_IMAGE=seafileltd/seaticket:1.0-latest
 
 # Volumes
 SEATICKET_VOLUME=/opt/seaticket/seaticket-data
@@ -84,8 +85,9 @@ S3_SSE_C_KEY=
 
 ## SeaSearch
 SEASEARCH_URL=http://seasearch:4080
-SEASEARCH_TOKEN=
-# By default, SeaSearch uses the first team administrator credentials.
-# Set both variables to use a dedicated SeaSearch administrator instead.
-INIT_SS_ADMIN_USER=
-INIT_SS_ADMIN_PASSWORD=
+# Preconfigured internal account; no changes are needed for a standard deployment.
+# These public template credentials are only for SeaSearch without published ports.
+# If you customize the account, update SEASEARCH_TOKEN to Base64(username:password).
+INIT_SS_ADMIN_USER=seaticket
+INIT_SS_ADMIN_PASSWORD=HHd45u99hdZYiSjUQqr1ylUPyP1e1XzHfSubdPz2
+SEASEARCH_TOKEN=c2VhdGlja2V0OkhIZDQ1dTk5aGRaWWlTalVRcXIxeWxVUHlQMWUxWHpIZlN1YmRQejI=

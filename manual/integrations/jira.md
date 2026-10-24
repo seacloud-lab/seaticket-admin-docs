@@ -54,10 +54,10 @@ global:
 
 ## Step 5: Restart SeaTicket
 
-Restart `seaqa-web` for the new settings to take effect:
+Restart `seaticket` for the new settings to take effect:
 
 ```bash
-docker compose restart seaqa-web
+docker compose restart seaticket
 ```
 
 ## Step 6: Connect Jira in the UI
@@ -70,5 +70,5 @@ docker compose restart seaqa-web
 ## Troubleshooting
 
 - **The callback URL does not match.** The value of `JIRA_REDIRECT_URL` must exactly match the Callback URL registered in the Atlassian app, including the scheme and trailing slash.
-- **"Jira OAuth settings are invalid."** The three `JIRA_*` settings are empty in the config that `seaqa-web` actually loaded. Check that the credentials are present under the `global` section of `seaticket_config.yaml` and that the container was restarted.
+- **"Jira OAuth settings are invalid."** The three `JIRA_*` settings are empty in the config that `seaticket` actually loaded. Check that the credentials are present under the `global` section of `seaticket_config.yaml` and that the container was restarted.
 - **The connection fails after you grant access.** Ensure your SeaTicket hostname is publicly reachable, because Atlassian redirects the browser back to the callback URL.

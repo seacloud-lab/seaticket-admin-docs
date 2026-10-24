@@ -85,17 +85,17 @@ global:
 
 ### Step 3: Restart SeaTicket
 
-Restart `seaqa-web` for the new settings to take effect:
+Restart `seaticket` for the new settings to take effect:
 
 ```bash
-docker compose restart seaqa-web
+docker compose restart seaticket
 ```
 
 Then create the connection using the mailbox, alias, or shared-mailbox authorization flow described above, with your self-managed client.
 
 ## Troubleshooting
 
-- **"Email OAuth provider is not configured."** If you use a self-managed client, confirm that both `MICROSOFT_EMAIL_CLIENT_ID` and `MICROSOFT_EMAIL_CLIENT_SECRET` are present under `global` in `seaticket_config.yaml`, then restart `seaqa-web`. Adding them to `.env` alone does not configure the container.
+- **"Email OAuth provider is not configured."** If you use a self-managed client, confirm that both `MICROSOFT_EMAIL_CLIENT_ID` and `MICROSOFT_EMAIL_CLIENT_SECRET` are present under `global` in `seaticket_config.yaml`, then restart `seaticket`.
 - **The redirect URI does not match with your own client.** The redirect URI in Microsoft Entra must exactly match `https://<seaticket-host>/api/v1/connections/email/oauth/callback/`.
 - **The authorization popup does not open.** Allow popups for the SeaTicket site in the browser, then start authorization again.
 - **The callback reports that the request is missing or expired.** OAuth authorization requests expire after 10 minutes. Start the authorization again and complete it in the same browser session.

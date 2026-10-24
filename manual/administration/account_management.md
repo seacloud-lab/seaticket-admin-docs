@@ -10,7 +10,7 @@ The standard Docker deployment creates the first team administrator from `INIT_S
 Ensure the container is running, then enter this command:
 
 ```bash
-docker exec -it seaqa-web /scripts/reset-admin.sh
+docker exec -it seaticket /scripts/reset-admin.sh
 ```
 
 Enter the email address and password according to the prompts. This creates a system administrator, not a team administrator.

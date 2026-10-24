@@ -58,10 +58,10 @@ global:
 
 ## Step 5: Restart SeaTicket
 
-Restart `seaqa-web` for the new settings to take effect:
+Restart `seaticket` for the new settings to take effect:
 
 ```bash
-docker compose restart seaqa-web
+docker compose restart seaticket
 ```
 
 ## Step 6: Connect Confluence in the UI
@@ -76,7 +76,7 @@ docker compose restart seaqa-web
 ## Troubleshooting
 
 - **The callback URL does not match.** The value of `CONFLUENCE_REDIRECT_URL` must exactly match the Callback URL in the Atlassian app, including the scheme and trailing slash.
-- **"Confluence OAuth settings are invalid."** At least one of the `CONFLUENCE_*` settings is empty in the configuration loaded by `seaqa-web`. Check the credentials and restart the container.
+- **"Confluence OAuth settings are invalid."** At least one of the `CONFLUENCE_*` settings is empty in the configuration loaded by `seaticket`. Check the credentials and restart the container.
 - **No workspace is listed.** Confirm that the authorized Atlassian account can access at least one Confluence Cloud workspace and that the app was granted the required Confluence scopes.
 - **A space is missing.** The authorized account must have permission to view that space in Confluence.
 - **The connection later stops syncing with an authorization error.** The user may have revoked access, or the Atlassian refresh token may have expired. Reconnect Confluence from the project's **Connections** page.

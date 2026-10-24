@@ -4,7 +4,7 @@ Besides [`.env`](./environment_variables.md) for general settings, the `seaticke
 
 ## File structure of seaticket_config.yaml
 
-`seaticket_config.yaml` consists of the following sections (i.e., `global` and name of each component):
+`seaticket_config.yaml` consists of `global` and component-specific sections. The section names below are configuration identifiers read by the source code, not Docker Compose service names. Use the `seaqa-*` section names and `SEAQA_*` setting names shown here for the `seaticket` and `seaticket-*` Docker services. The optional `seaticket-portal` service also reads the `seaqa-web` section.
 
 ```yaml
 global:
@@ -25,17 +25,29 @@ seaqa-web:
 
 The global section is generally used to specify configuration items that are common to all SeaTickets components.
 
-### Internal server URLs used for communication between SeaTicket components (cluster only)
+### Internal server URLs
 
-In cluster mode, you need to specify the URLs used for internal communication between components via `seaticket_config.yaml`:
+For the standard single-host Docker deployment, no internal endpoint configuration is required. Components use these built-in defaults:
+
+| Setting | Default | Used by |
+| --- | --- | --- |
+| `SEAQA_WEB_INNER_SERVER_URL` | `http://seaticket/` | AI and Notification |
+| `SEAQA_AI_INNER_SERVER_URL` | `http://seaticket-ai:8887` | Web, Portal, and Indexer |
+| `SEAQA_INDEXER_INNER_SERVER_URL` | `http://seaticket-indexer:8888` | Web, Portal, AI, and Events |
+
+The web image exposes Nginx on port 80. Gunicorn listens only on `127.0.0.1:8000` inside that container, so do not use `http://seaticket:8000/` for communication from another container.
+
+For a custom or multi-host deployment, override the relevant URLs in `seaticket_config.yaml` using the existing `SEAQA_*` names:
 
 ```yaml
 global:
   # ... other configurations
-  SEATICKET_AI_INNER_SERVER_URL: http://<your seaqa-ai server host>:8887
-  SEATICKET_INDEXER_INNER_SERVER_URL: http://<your seaqa-indexer server host>:8888
-  SEATICKET_EVENTS_INNER_SERVER_URL: http://<your seaqa-events server host>:6001
+  SEAQA_WEB_INNER_SERVER_URL: http://<your seaticket server host>/
+  SEAQA_AI_INNER_SERVER_URL: http://<your seaticket-ai server host>:8887
+  SEAQA_INDEXER_INNER_SERVER_URL: http://<your seaticket-indexer server host>:8888
 ```
+
+`SEAQA_EVENTS_INNER_SERVER_URL` is retained in the web configuration with a default of `http://seaticket-events:6001`, but the current Events component runs background workers and does not expose an HTTP listener on port 6001. No Events HTTP endpoint needs to be configured for the standard deployment.
 
 ### LLMs configurations
 

@@ -64,7 +64,7 @@ Under **Where can this GitHub App be installed?**, select **Only on this account
 
 ### Place the private key
 
-Copy the `.pem` file to the host directory that is already mounted into the `seaqa-web` container:
+Copy the `.pem` file to the host directory that is already mounted into the `seaticket` container:
 
 ```bash
 cp <downloaded>.private-key.pem /opt/seaticket/seaticket-data/conf/github-app.pem
@@ -90,10 +90,10 @@ global:
 
 ## Step 7: Restart SeaTicket
 
-Restart `seaqa-web` for the new settings to take effect:
+Restart `seaticket` for the new settings to take effect:
 
 ```bash
-docker compose restart seaqa-web
+docker compose restart seaticket
 ```
 
 ## Step 8: Install the app and connect in the UI
