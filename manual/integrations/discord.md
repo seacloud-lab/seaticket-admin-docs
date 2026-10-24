@@ -54,10 +54,10 @@ global:
 
 ## Step 5: Restart SeaTicket
 
-Restart `seaqa-web` and `seaqa-indexer` for the new settings to take effect:
+Restart `seaticket` and `seaticket-indexer` for the new settings to take effect:
 
 ```bash
-docker compose restart seaqa-web seaqa-indexer
+docker compose restart seaticket seaticket-indexer
 ```
 
 ## Step 6: Connect Discord in the UI
@@ -74,10 +74,10 @@ The permissions SeaTicket needs (View Channel and Read Message History) are requ
 
 ## Troubleshooting
 
-- **"Discord OAuth settings are invalid."** At least one of `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, and `DISCORD_REDIRECT_URL` is empty when `seaqa-web` reads its configuration. Check the values under the `global` section of `seaticket_config.yaml` and restart the services. Values in `.env` are not automatically forwarded to the containers.
+- **"Discord OAuth settings are invalid."** At least one of `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET`, and `DISCORD_REDIRECT_URL` is empty when `seaticket` reads its configuration. Check the values under the `global` section of `seaticket_config.yaml` and restart the services.
 - **"Invalid Discord OAuth state."** or **"Discord server information was not returned."** The authorization flow was interrupted, or no server was selected. Start the connection again from **Install Discord Bot**.
-- **"Failed to authorize Discord."** The Client Secret or the redirect URL does not match what is registered in the Discord application. Check both, then restart `seaqa-web`.
+- **"Failed to authorize Discord."** The Client Secret or the redirect URL does not match what is registered in the Discord application. Check both, then restart `seaticket`.
 - **The Channel list is empty.** The server has no forum channel, or the bot was not granted access to it. Add a forum channel or install the bot again.
 - **Synced posts have no content.** The bot is missing the **Message Content Intent**. Enable it under **Privileged Gateway Intents** on the **Bot** page.
-- **Bot token rejected.** SeaTicket returns `Invalid Discord bot token` when `DISCORD_BOT_TOKEN` is wrong or was reset in the Developer Portal. Copy the current token, update the setting, and restart `seaqa-web`.
+- **Bot token rejected.** SeaTicket returns `Invalid Discord bot token` when `DISCORD_BOT_TOKEN` is wrong or was reset in the Developer Portal. Copy the current token, update the setting, and restart `seaticket`.
 - **Rate limiting.** Discord returns `Discord API rate limited. Please try again later` when it throttles the request. Wait a moment and try again.

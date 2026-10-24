@@ -13,7 +13,7 @@ There are two ways to configure SMTP for system-wide emails.
 
 === "Environment variables / seaticket_config.yaml"
 
-    SeaTicket reads SMTP settings from environment variables or `seaticket_config.yaml` for `seaqa-web`.
+    SeaTicket reads SMTP settings from environment variables or the `seaqa-web` configuration section in `seaticket_config.yaml` for the `seaticket` service.
 
     | Key | Description | Example values |
     | --- | --- | --- |
@@ -51,7 +51,7 @@ Restart SeaTicket after updating SMTP configuration.
 
 ## Debugging
 
-If email sending does not work, check `seaqa-web` logs for SMTP errors. You can also use a tool like [Swaks](https://github.com/jetmore/swaks) to verify SMTP settings.
+If email sending does not work, check `seaticket` logs for SMTP errors. You can also use a tool like [Swaks](https://github.com/jetmore/swaks) to verify SMTP settings.
 
 ```bash
 swaks --auth -tls \

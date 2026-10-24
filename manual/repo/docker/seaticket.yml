@@ -1,0 +1,252 @@
+services:
+  db:
+    image: ${SEATICKET_MYSQL_IMAGE:-mariadb:10.11}
+    container_name: seaticket-mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${INIT_SEATICKET_MYSQL_ROOT_PASSWORD:-}
+      - MYSQL_LOG_CONSOLE=true
+      - MARIADB_AUTO_UPGRADE=1
+    volumes:
+      - "${SEATICKET_MYSQL_VOLUME:-/opt/seaticket-mysql/db}:/var/lib/mysql"
+    networks:
+      - backend-net
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "/usr/local/bin/healthcheck.sh",
+          "--connect",
+          "--mariadbupgrade",
+          "--innodb_initialized",
+        ]
+      interval: 20s
+      start_period: 30s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: ${SEATICKET_REDIS_IMAGE:-redis}
+    container_name: seaticket-redis
+    restart: unless-stopped
+    command:
+      - /bin/sh
+      - -c
+      - exec redis-server --requirepass "$$REDIS_PASSWORD" --save "" --appendonly no
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    networks:
+      - backend-net
+
+
+  seaticket:
+    image: ${SEATICKET_WEB_IMAGE:-seafileltd/seaticket:1.0-latest}
+    restart: unless-stopped
+    container_name: seaticket
+    # ports:
+    #   - 80:80
+    volumes:
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
+    environment:
+      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - TZ=${TIME_ZONE:-UTC}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
+      - SECRET_KEY=${SECRET_KEY:?Variable is not set or empty}
+      - SEATICKET_SERVER_PROTOCOL=${SEATICKET_SERVER_PROTOCOL:-http}
+      - SEATICKET_SERVER_HOSTNAME=${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
+      - ENABLE_NOTIFICATION_SERVER=${ENABLE_NOTIFICATION_SERVER:-false}
+      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
+      - SEADB_USER=${SEADB_USERNAME:-${MYSQL_DB_USER:-seaticket}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${MYSQL_DB_PASSWORD:?Variable is not set or empty}}
+      - SEAQA_CONFIG_NAME=${SEAQA_CONFIG_NAME:-seaticket_config.yaml}
+      - CONF_PATH=${CONF_PATH:-/opt/seaticket/conf}
+      - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
+      - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
+      - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
+      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:?Variable is not set or empty}
+      - MYSQL_DB_NAME=${MYSQL_DB_NAME:-seaticket_db}
+      - INIT_SEATICKET_MYSQL_ROOT_PASSWORD=${INIT_SEATICKET_MYSQL_ROOT_PASSWORD:-}
+      - INIT_SEADB_ROOT_PASSWORD=${INIT_SEADB_ROOT_PASSWORD:-${INIT_SEATICKET_MYSQL_ROOT_PASSWORD:-}}
+      - INIT_SEATICKET_TEAM_NAME=${INIT_SEATICKET_TEAM_NAME:-SeaTicket}
+      - INIT_SEATICKET_TEAM_ADMIN_EMAIL=${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}
+      - INIT_SEATICKET_TEAM_ADMIN_PASSWORD=${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - SEASEARCH_URL=${SEASEARCH_URL:-http://seasearch:4080}
+      - SEASEARCH_TOKEN=${SEASEARCH_TOKEN:?Variable is not set or empty}
+      - ATTACHMENT_STORAGE_BACKEND=${ATTACHMENT_STORAGE_BACKEND:-disk}
+      - S3_HOST=${S3_HOST:-}
+      - S3_FILE_BUCKET=${S3_FILE_BUCKET:-}
+      - S3_WEB_CRAWL_BUCKET=${S3_WEB_CRAWL_BUCKET:-}
+      - S3_KEY_ID=${S3_KEY_ID:-}
+      - S3_SECRET_KEY=${S3_SECRET_KEY:-}
+      - S3_AWS_REGION=${S3_AWS_REGION:-us-east-1}
+      - S3_USE_V4_SIGNATURE=${S3_USE_V4_SIGNATURE:-true}
+      - S3_PATH_STYLE_REQUEST=${S3_PATH_STYLE_REQUEST:-true}
+      - S3_SSE_C_KEY=${S3_SSE_C_KEY:-}
+    networks:
+      - frontend-net
+      - backend-net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      seadb:
+        condition: service_healthy
+    labels:
+      caddy: ${SEATICKET_SERVER_PROTOCOL:-http}://${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
+      caddy.reverse_proxy: "{{upstreams 80}}"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://127.0.0.1:80 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  seaticket-ai:
+    image: ${SEATICKET_AI_IMAGE:-seafileltd/seaticket-ai:1.0-latest}
+    restart: unless-stopped
+    container_name: seaticket-ai
+    volumes:
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
+    environment:
+      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - TZ=${TIME_ZONE:-UTC}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
+      - SEATICKET_SERVER_PROTOCOL=${SEATICKET_SERVER_PROTOCOL:-http}
+      - SEATICKET_SERVER_HOSTNAME=${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
+      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
+      - SEADB_USER=${SEADB_USERNAME:-${MYSQL_DB_USER:-seaticket}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${MYSQL_DB_PASSWORD:?Variable is not set or empty}}
+      - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
+      - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
+      - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
+      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:?Variable is not set or empty}
+      - MYSQL_DB_NAME=${MYSQL_DB_NAME:-seaticket_db}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - SEASEARCH_URL=${SEASEARCH_URL:-http://seasearch:4080}
+      - SEASEARCH_TOKEN=${SEASEARCH_TOKEN:?Variable is not set or empty}
+    networks:
+      - backend-net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      seadb:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - |
+          code=$$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8887/ || echo 000)
+          [ "$$code" -ge 200 ] && [ "$$code" -lt 500 ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  seaticket-events:
+    image: ${SEATICKET_EVENTS_IMAGE:-seafileltd/seaticket-events:1.0-latest}
+    restart: unless-stopped
+    container_name: seaticket-events
+    volumes:
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
+    environment:
+      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - TZ=${TIME_ZONE:-UTC}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
+      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
+      - SEADB_USER=${SEADB_USERNAME:-${MYSQL_DB_USER:-seaticket}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${MYSQL_DB_PASSWORD:?Variable is not set or empty}}
+      - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
+      - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
+      - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
+      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:?Variable is not set or empty}
+      - MYSQL_DB_NAME=${MYSQL_DB_NAME:-seaticket_db}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+    networks:
+      - backend-net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      seadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "pgrep -f seaqa_events.main || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  seaticket-indexer:
+    image: ${SEATICKET_INDEXER_IMAGE:-seafileltd/seaticket-indexer:1.0-latest}
+    restart: unless-stopped
+    container_name: seaticket-indexer
+    volumes:
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
+      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
+    environment:
+      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - TZ=${TIME_ZONE:-UTC}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
+      - SECRET_KEY=${SECRET_KEY:?Variable is not set or empty}
+      - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
+      - SEADB_USER=${SEADB_USERNAME:-${MYSQL_DB_USER:-seaticket}}
+      - SEADB_PASSWORD=${SEADB_PASSWORD:-${MYSQL_DB_PASSWORD:?Variable is not set or empty}}
+      - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
+      - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
+      - MYSQL_DB_USER=${MYSQL_DB_USER:-seaticket}
+      - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD:?Variable is not set or empty}
+      - MYSQL_DB_NAME=${MYSQL_DB_NAME:-seaticket_db}
+      - REDIS_HOST=${REDIS_HOST:-redis}
+      - REDIS_PORT=${REDIS_PORT:-6379}
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-}
+      - SEASEARCH_URL=${SEASEARCH_URL:-http://seasearch:4080}
+      - SEASEARCH_TOKEN=${SEASEARCH_TOKEN:?Variable is not set or empty}
+      - ATTACHMENT_STORAGE_BACKEND=${ATTACHMENT_STORAGE_BACKEND:-disk}
+      - S3_HOST=${S3_HOST:-}
+      - S3_FILE_BUCKET=${S3_FILE_BUCKET:-}
+      - S3_WEB_CRAWL_BUCKET=${S3_WEB_CRAWL_BUCKET:-}
+      - S3_KEY_ID=${S3_KEY_ID:-}
+      - S3_SECRET_KEY=${S3_SECRET_KEY:-}
+      - S3_AWS_REGION=${S3_AWS_REGION:-us-east-1}
+      - S3_USE_V4_SIGNATURE=${S3_USE_V4_SIGNATURE:-true}
+      - S3_PATH_STYLE_REQUEST=${S3_PATH_STYLE_REQUEST:-true}
+      - S3_SSE_C_KEY=${S3_SSE_C_KEY:-}
+    networks:
+      - backend-net
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      seadb:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - |
+          code=$$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8888/ || echo 000)
+          [ "$$code" -ge 200 ] && [ "$$code" -lt 500 ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  frontend-net:
+    name: frontend-net
+  backend-net:
+    name: backend-net

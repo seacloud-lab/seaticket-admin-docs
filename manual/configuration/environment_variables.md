@@ -2,6 +2,23 @@
 The `.env` file will be used to specify the general settings of the components used by the SeaTicket-docker instance and the environment variables required by each component.
 
 ## SeaTicket Settings
+The default `COMPOSE_FILE` is `caddy.yml,seadb.yml,seaticket.yml,seasearch.yml`, with `COMPOSE_PATH_SEPARATOR=','`. Add the optional Notification or Portal files only when enabling those features. Internal component URLs use built-in defaults and do not need to be added to `.env`.
+
+### Images
+
+All images below are pulled directly from Docker Hub. Portal shares `SEATICKET_WEB_IMAGE` with the main web service.
+
+| Variable | Default |
+| --- | --- |
+| `SEATICKET_WEB_IMAGE` | `seafileltd/seaticket:1.0-latest` |
+| `SEATICKET_AI_IMAGE` | `seafileltd/seaticket-ai:1.0-latest` |
+| `SEATICKET_EVENTS_IMAGE` | `seafileltd/seaticket-events:1.0-latest` |
+| `SEATICKET_INDEXER_IMAGE` | `seafileltd/seaticket-indexer:1.0-latest` |
+| `SEATICKET_NOTIFICATION_IMAGE` | `seafileltd/seaticket-notification:1.0-latest` |
+| `SEADB_IMAGE` | `seaticket/seadb:1.0-latest` |
+
+### Server settings
+
 | Variable                        | Description                                                                                                   | Default Value                   |  
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
 | `SEATICKET_SERVER_PROTOCOL`     | SeaTicket server protocol (http or https)                                                                     | `http`                          |
@@ -18,15 +35,22 @@ The `.env` file will be used to specify the general settings of the components u
 
 By default, SeaDB reuses the MySQL root password for initialization and the MySQL application username/password for API access. Leave all three SeaDB credential variables empty for a standard deployment. Set any of them to use separate credentials; each variable falls back independently.
 
-SeaTicket components authenticate to SeaDB with HTTP Basic authentication. Compose maps the resolved username to `SEADB_USER` inside the containers. On first deployment, SeaDB runs `sea-db init` to create `root`; `seaqa-web` then uses that root account to register the non-root application account with `default_role`. `JWT_PRIVATE_KEY` configures the SeaDB service itself and is not a SeaDB API access token.
+SeaTicket components authenticate to SeaDB with HTTP Basic authentication. Compose maps the resolved username to `SEADB_USER` inside the containers. On first deployment, SeaDB runs `sea-db init` to create `root`; `seaticket` then uses that root account to register the non-root application account with `default_role`. `JWT_PRIVATE_KEY` configures the SeaDB service itself and is not a SeaDB API access token.
 
-After successful initialization, remove both `INIT_SEADB_ROOT_PASSWORD` and `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` from `.env` and recreate the containers with `docker compose up -d`. Keep MySQL application credentials and any separate SeaDB application credentials available on every startup. For existing deployments that used first-team credentials for SeaDB, explicitly set `SEADB_USERNAME` and `SEADB_PASSWORD` to those existing values before adopting these defaults. See [SeaDB Settings](../setup/setup_seaticket.md#seadb-settings) for initialization and default-template SQL commands.
+After successful initialization, remove both `INIT_SEADB_ROOT_PASSWORD` and `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` from `.env` and recreate the containers with `docker compose up -d`. Keep MySQL application credentials and any separate SeaDB application credentials available on every startup. See [SeaDB Settings](../setup/setup_seaticket.md#seadb-settings) for initialization and default-template SQL commands.
 
 ## SeaSearch Settings
-| Variable                        | Description                                                                                                   | Default Value                   |  
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| `SEASEARCH_URL`                 | Your SeaSearch server API endpoint url, e.g., `http://<your seasearch host>:4080`                             | (required)                      |
-| `SEASEARCH_TOKEN`               | Your authorization token for accessing SeaSearch API, which can be constructed in `echo -n '<your_seasearch_username>:<your_seasearch_password>' | base64` | (required)                      |
+
+The standard template preconfigures an internal SeaSearch account and matching token, independently of the first SeaTicket team administrator. No changes are required for a standard deployment.
+
+| Variable | Description | Template default |
+| --- | --- | --- |
+| `SEASEARCH_URL` | SeaSearch API endpoint reachable from SeaTicket services. | `http://seasearch:4080` |
+| `INIT_SS_ADMIN_USER` | Initial SeaSearch administrator username. | `seaticket` |
+| `INIT_SS_ADMIN_PASSWORD` | Initial SeaSearch administrator password. | Pre-generated random password in `.env` |
+| `SEASEARCH_TOKEN` | Base64 value of the actual SeaSearch `username:password`. Must match the configured account. | Preconfigured to match the template account |
+
+The template credentials are public and intended only for SeaSearch without published ports. Initialization variables do not update an existing SeaSearch account. See [SeaSearch](../setup/setup_seasearch.md) for custom credentials, token generation, and existing-deployment guidance.
 
 ## Mysql Settings
 | Variable                        | Description                                                                                                   | Default Value                   |  
@@ -51,7 +75,7 @@ After successful initialization, remove both `INIT_SEADB_ROOT_PASSWORD` and `INI
 ## Notification Settings
 | Variable                        | Description                                                                                                   | Default Value                   |
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| `ENABLE_NOTIFICATION_SERVER`    | Enable the WebSocket notification client in `seaqa-web`                                                       | `false`                         |
+| `ENABLE_NOTIFICATION_SERVER`    | Enable the WebSocket notification client in `seaticket`; also add `seaticket-notification.yml` to `COMPOSE_FILE`. | `false` |
 
 ## Storage Settings
 
@@ -72,11 +96,11 @@ The Docker deployment defaults to local disk for both attachments and SeaSearch.
 
 !!! warning "Changing storage backends"
 
-    Existing S3 deployments must set `ATTACHMENT_STORAGE_BACKEND=s3` explicitly before using the new deployment defaults. Changing `ATTACHMENT_STORAGE_BACKEND` or `SS_STORAGE_TYPE` does not migrate existing data.
+    Changing `ATTACHMENT_STORAGE_BACKEND` or `SS_STORAGE_TYPE` does not automatically move data between backends.
 
 ## Optional S3 Settings
 
-Leave these values empty for a default `disk` deployment. Configure them only when attachments or SeaSearch use `s3`. See [Use S3 as the storage backend](../setup/setup_seaticket.md#use-s3-as-the-storage-backend) for an example.
+Leave these values empty for a default `disk` deployment. Configure them only when attachments or SeaSearch use `s3`. See [S3 Storage](../setup/setup_s3.md) for configuration examples.
 
 | Variable | Description | Required when / Default Value |
 | --- | --- | --- |
@@ -96,14 +120,6 @@ The four advanced options above configure SeaSearch. The attachment backend uses
 ## First Team Settings
 
 On a new deployment, SeaTicket automatically creates the first team, its team administrator, and the administrator's initial workspace. This account is a normal SeaTicket user and team administrator, not a system administrator. Existing teams are never changed when the container restarts.
-
-## SeaSearch Settings
-
-By default, SeaSearch creates its first account from `INIT_SEATICKET_TEAM_ADMIN_EMAIL` and `INIT_SEATICKET_TEAM_ADMIN_PASSWORD`. Set both `INIT_SS_ADMIN_USER` and `INIT_SS_ADMIN_PASSWORD` to use a separate SeaSearch account instead. In either case, set `SEASEARCH_TOKEN` to the Base64 value of the actual SeaSearch username and password:
-
-```bash
-echo -n '<username>:<password>' | base64
-```
 
 ## Advanced system systems
 | Variable                        | Description                                                                                                   | Default Value                   |  

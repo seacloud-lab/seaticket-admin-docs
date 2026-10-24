@@ -48,10 +48,10 @@ global:
 
 ## Step 4: Restart SeaTicket
 
-Restart `seaqa-web` for the new settings to take effect:
+Restart `seaticket` for the new settings to take effect:
 
 ```bash
-docker compose restart seaqa-web
+docker compose restart seaticket
 ```
 
 ## Step 5: Connect Linear in the UI
@@ -64,6 +64,6 @@ docker compose restart seaqa-web
 ## Troubleshooting
 
 - **The callback URL does not match.** The value of `LINEAR_REDIRECT_URL` must exactly match one of the callback URLs registered in the Linear application, including the scheme and trailing slash.
-- **"Linear OAuth settings are invalid."** At least one of the `LINEAR_*` settings is empty when `seaqa-web` reads its configuration. Check that the credentials are present under the `global` section of `seaticket_config.yaml` and that the container was restarted.
+- **"Linear OAuth settings are invalid."** At least one of the `LINEAR_*` settings is empty when `seaticket` reads its configuration. Check that the credentials are present under the `global` section of `seaticket_config.yaml` and that the container was restarted.
 - **The connection fails after you grant access.** Ensure your SeaTicket hostname is publicly reachable, because Linear redirects the browser back to the callback URL.
 - **You cannot select a Team.** SeaTicket only lists teams after Linear has been authorized for the project. Complete the authorization to enable the Team field.

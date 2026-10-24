@@ -1,8 +1,8 @@
 services:
-  seaqa-notification:
-    image: ${SEATICKET_NOTIFICATION_IMAGE:-docker.seafile.top/seafileltd/seaqa-notification:1.4.0-testing}
+  seaticket-notification:
+    image: ${SEATICKET_NOTIFICATION_IMAGE:-seafileltd/seaticket-notification:1.0-latest}
     restart: unless-stopped
-    container_name: seaqa-notification
+    container_name: seaticket-notification
     #ports:
     #  - 8083:8083
     volumes:
@@ -12,7 +12,7 @@ services:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
       - TZ=${TIME_ZONE:-UTC}
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
-      - SEATICKET_CONFIG_NAME=${SEATICKET_CONFIG_NAME:-seaticket_config.yaml}
+      - SEAQA_CONFIG_NAME=${SEAQA_CONFIG_NAME:-seaticket_config.yaml}
       - CONF_PATH=${CONF_PATH:-/opt/seaticket/conf}
       - REDIS_HOST=${REDIS_HOST:-redis}
       - REDIS_PORT=${REDIS_PORT:-6379}

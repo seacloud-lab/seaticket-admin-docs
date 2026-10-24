@@ -7,8 +7,8 @@ services:
     #ports:
     #  - "4080:4080"
     environment:
-      - SS_FIRST_ADMIN_USER=${INIT_SS_ADMIN_USER:-${INIT_SEATICKET_TEAM_ADMIN_EMAIL:?Variable is not set or empty}}
-      - SS_FIRST_ADMIN_PASSWORD=${INIT_SS_ADMIN_PASSWORD:-${INIT_SEATICKET_TEAM_ADMIN_PASSWORD:?Variable is not set or empty}}
+      - SS_FIRST_ADMIN_USER=${INIT_SS_ADMIN_USER:?Variable is not set or empty}
+      - SS_FIRST_ADMIN_PASSWORD=${INIT_SS_ADMIN_PASSWORD:?Variable is not set or empty}
       - SS_MAX_OBJ_CACHE_SIZE=${SS_MAX_OBJ_CACHE_SIZE:-10GB}
       - SS_STORAGE_TYPE=${SS_STORAGE_TYPE:-${ATTACHMENT_STORAGE_BACKEND:-disk}}
       - S3_SS_BUCKET=${S3_SS_BUCKET:-${S3_SEASEARCH_BUCKET:-}}
@@ -23,3 +23,9 @@ services:
       - SS_LOG_TO_STDOUT=${SS_LOG_TO_STDOUT:-false}
       - SS_LOG_DIR=/opt/seasearch/data/log
       - SS_LOG_LEVEL=${SS_LOG_LEVEL:-info}
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+    name: backend-net
