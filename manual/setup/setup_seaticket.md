@@ -124,10 +124,9 @@ For S3 storage, including using different backends for attachments and SeaSearch
 
 ### Optional Extensions
 
-Notification and Portal are provided as separate optional Compose files and are not enabled by default:
+Notification is provided as a separate optional Compose file and is not enabled by default:
 
 - [Setup Notification Server](setup_notification_server.md)
-- [Setup Portal](setup_portal.md)
 
 ## Configure `seaticket_config.yaml`
 
