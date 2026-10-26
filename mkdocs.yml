@@ -87,7 +87,6 @@ nav:
   - Setup:
     - Setup SeaTicket: setup/setup_seaticket.md
     - Setup notification server: setup/setup_notification_server.md
-    - Setup Portal: setup/setup_portal.md
     - Advanced topics:
       - S3 Storage: setup/setup_s3.md
       - SeaSearch: setup/setup_seasearch.md
