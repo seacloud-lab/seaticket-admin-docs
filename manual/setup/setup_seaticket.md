@@ -2,11 +2,8 @@
 
 ## Getting started
 
-The following assumptions and conventions are used in the rest of this document:
-
-- `/opt/seaticket` is the directory for storing SeaTicket Docker Compose files and `.env`. If you choose a different directory, adjust all paths accordingly.
-- SeaTicket uses Docker bind mounts to persist data on the host. The default host paths are `/opt/seaticket/seaticket-data` for application data, `/opt/seaticket-mysql/db` for MySQL/MariaDB, `/opt/seadb-data` for SeaDB, `/opt/seasearch-data` for SeaSearch, and `/opt/caddy-data` for Caddy. It is recommended to keep these defaults. If you change them, account for the new paths when following these instructions.
-- SeaTicket configuration files, application logs, and locally stored attachments are kept under `/opt/seaticket/seaticket-data`, in the `conf`, `logs`, and `data/attachments` directories, respectively. This directory is mounted at `/shared` inside the SeaTicket containers.
+- This guide uses `/opt/seaticket` as the deployment directory for Docker Compose files and `.env`.
+- Keep the default data paths unless you need to customize them. If you use different paths, adjust the commands in this guide accordingly.
 
 ## Download Deployment Files
 
@@ -33,13 +30,11 @@ COMPOSE_FILE='caddy.yml,seadb.yml,seaticket.yml,seasearch.yml'
 COMPOSE_PATH_SEPARATOR=','
 ```
 
-Components communicate using their built-in Docker service addresses. You do not need to configure internal endpoints for a single-host deployment. Keep the service names unchanged; see [internal server URLs](../configuration/seaticket_yaml.md#internal-server-urls) for custom deployments.
+Components communicate using their built-in Docker service addresses. You do not need to configure internal endpoints for a single-host deployment. Keep the service names unchanged; see [internal server URLs](../configuration/seaticket_yaml.md#internal-server-urls-optional) for custom deployments.
 
 ## Configure `.env`
 
 Edit `/opt/seaticket/.env`. For a standard deployment, change only the required settings below and leave the remaining template values at their defaults.
-
-### Required Settings
 
 | Variable | Description | Value |
 | --- | --- | --- |
@@ -48,89 +43,30 @@ Edit `/opt/seaticket/.env`. For a standard deployment, change only the required 
 | `SECRET_KEY` | Random string of at least 32 characters. Back it up and do not change it after deployment. | Required |
 | `MYSQL_DB_PASSWORD` | Password for the SeaTicket MariaDB user. | Required |
 | `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` | Password for the bundled MariaDB `root` user. | Required on first deployment only |
-| `INIT_SEADB_ROOT_PASSWORD` | Optional separate SeaDB `root` password. When empty, uses `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` for initialization. | Optional |
 | `INIT_SEATICKET_TEAM_ADMIN_EMAIL` | Email address for the first SeaTicket team administrator. | Required on first deployment only |
 | `INIT_SEATICKET_TEAM_ADMIN_PASSWORD` | Password for the first SeaTicket team administrator. | Required on first deployment only |
-| `SEADB_USERNAME` | Optional separate SeaDB API username. When empty, uses `MYSQL_DB_USER` (default `seaticket`). | Optional |
-| `SEADB_PASSWORD` | Optional separate SeaDB API password. When empty, uses `MYSQL_DB_PASSWORD`. | Optional |
 
-The template includes a dedicated internal SeaSearch account and its matching token. No SeaSearch credential changes are needed for a standard deployment. See [SeaSearch](setup_seasearch.md) for custom configuration.
-
-### Common Optional Settings
-
-| Variable | Description | Default |
-| --- | --- | --- |
-| `SEATICKET_SERVER_PROTOCOL` | Public server protocol: `http` or `https`. | `http` |
-| `TIME_ZONE` | Time zone used by containers. | `UTC` |
-| `INIT_SEATICKET_TEAM_NAME` | Name of the first SeaTicket team. | `SeaTicket` |
-| `ENABLE_NOTIFICATION_SERVER` | Enable the WebSocket notification service. | `false` |
-| `LOG_TO_STDOUT` | Write component logs to container standard output. | `false` |
-
-### Database Settings
-
-The standard Compose deployment includes MariaDB and initializes it automatically. Do not create the database, database user, or tables manually.
-
-| Variable | Description | Default |
-| --- | --- | --- |
-| `MYSQL_DB_HOST` | MySQL/MariaDB hostname; use `db` for bundled MariaDB. | `db` |
-| `MYSQL_DB_PORT` | MariaDB port. | `3306` |
-| `MYSQL_DB_USER` | SeaTicket database user. | `seaticket` |
-| `MYSQL_DB_NAME` | SeaTicket database name. | `seaticket_db` |
-
-On first startup, the entrypoint runs `/scripts/init_mysql.py`. This script uses PyMySQL and `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` to create the database and user, then imports `sql/mysql.sql` with the `mysql` client if the database has no tables. Credentials for the import are stored in a private temporary option file that is removed afterward. It records successful initialization in `seaqa-web-data/.mysql-initialized` under `SEATICKET_VOLUME`. Subsequent startups use the application account and skip root initialization. Keep the MySQL data and SeaTicket application data persistent and back up both database passwords.
-
-For an external MySQL/MariaDB server, set `MYSQL_DB_HOST` and `MYSQL_DB_PORT` to its address and provide that server's root password in `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` for the first initialization. The server must allow root connections from the `seaticket` container and permit database creation, user creation, and grants. Automatic initialization is supported regardless of the hostname. When the bundled database is not needed, remove the `db` service and all `depends_on.db` entries from `seaticket.yml`, and remove `depends_on.db` from `seaticket-portal.yml` if enabled.
-
-### SeaDB Settings
-
-By default, SeaDB uses `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` as its initial root password and `MYSQL_DB_USER` / `MYSQL_DB_PASSWORD` as its application credentials. You can leave `INIT_SEADB_ROOT_PASSWORD`, `SEADB_USERNAME`, and `SEADB_PASSWORD` empty. Set any of these variables to use separate SeaDB credentials; each override is independent.
-
-On first startup with an empty or missing data directory, the SeaDB container maps the resolved initialization password to `SEADB_ROOT_PASSWORD` and runs `sea-db init` to create the `root` administrator. The `seaticket` container then authenticates as `root` to create the resolved application account, assigning `default_role`. Compose supplies the resolved username as `SEADB_USER` inside all SeaTicket containers. SeaTicket services use the application credentials with HTTP Basic authentication to access SeaDB.
-
-`JWT_PRIVATE_KEY` is required by the SeaDB service but is not an API access token.
-
-### Cache Settings
-
-The standard deployment includes Redis. No changes are required for normal use.
-
-| Variable | Description | Default |
-| --- | --- | --- |
-| `REDIS_HOST` | Bundled Redis service hostname. | `redis` |
-| `REDIS_PORT` | Redis port. | `6379` |
-| `REDIS_PASSWORD` | Redis password. | (none) |
-
-### Storage Settings
-
-Leave the storage settings at their defaults for a local-disk deployment without S3:
-
-| Variable | Description | Default |
-| --- | --- | --- |
-| `ATTACHMENT_STORAGE_BACKEND` | Attachment storage backend: `disk` or `s3`. Used by the web service, IO service, indexer, and optional portal. | `disk` |
-| `SS_STORAGE_TYPE` | Optional SeaSearch storage override: `disk` or `s3`. If unset or empty, uses `ATTACHMENT_STORAGE_BACKEND`; if both are unset or empty, uses `disk`. | Follows `ATTACHMENT_STORAGE_BACKEND` |
-
-!!! note "Attachment storage with disk backend"
-
-    With `ATTACHMENT_STORAGE_BACKEND=disk`, attachments are saved to `${SEATICKET_VOLUME}/data/attachments` on the host (`/opt/seaticket/seaticket-data/data/attachments` by default). This directory contains `project_attachments` and `connection_attachments` and must be included in backups.
-
-    Inside the web and indexer containers, `/opt/seaticket/data` links to `/shared/data`. The image fixes the attachment root at `/opt/seaticket/data/attachments`; no attachment-root setting is required in `.env` or `seaticket_config.yaml`. All attachment services must share the same `SEATICKET_VOLUME`.
-
-When SeaSearch uses `disk`, its data is persisted under `${SS_DATA_PATH}` on the host (`/opt/seasearch-data` by default).
-
-!!! warning "Changing storage backends"
-
-    Changing a storage backend does not automatically move attachments or search data between backends.
-
-For S3 storage, including using different backends for attachments and SeaSearch, see [S3 Storage](setup_s3.md).
-
-### Optional Extensions
-
-Notification is provided as a separate optional Compose file and is not enabled by default:
-
-- [Setup Notification Server](setup_notification_server.md)
+The database and related services are initialized automatically. Keep the remaining template values at their defaults; see [Environment Variables](../configuration/environment_variables.md) for additional options.
 
 ## Configure `seaticket_config.yaml`
 
-Configure LLM models and other application settings in `/opt/seaticket/seaticket-data/conf/seaticket_config.yaml`. See [SeaTicket YAML Configuration](../configuration/seaticket_yaml.md) for details.
+Edit `/opt/seaticket/seaticket-data/conf/seaticket_config.yaml`. Configure at least one valid LLM in `global.LLM_MODELS` and an embedding model in `global.EMBEDDING_MODEL`.
+
+For example, to use OpenAI, replace the file contents with the following and fill in your API key:
+
+```yaml
+global:
+  LLM_MODELS:
+    - type: openai
+      model: gpt-4o-mini
+      key: <your-openai-api-key>
+  EMBEDDING_MODEL:
+    type: openai
+    model: text-embedding-3-small
+    key: <your-openai-api-key>
+```
+
+Use model IDs available to your account. For other providers or self-hosted services, see [LLMs configurations](../configuration/seaticket_yaml.md#llms-configurations) and [Embedding model](../configuration/seaticket_yaml.md#embedding-model) for provider-specific settings such as `type` and `url`. All other YAML settings are optional and can use their defaults.
 
 ## Start SeaTicket
 

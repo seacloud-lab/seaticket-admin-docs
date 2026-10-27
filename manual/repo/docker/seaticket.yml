@@ -46,7 +46,6 @@ services:
     # ports:
     #   - 80:80
     volumes:
-      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
@@ -111,7 +110,6 @@ services:
     restart: unless-stopped
     container_name: seaticket-ai
     volumes:
-      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
@@ -157,7 +155,6 @@ services:
     restart: unless-stopped
     container_name: seaticket-events
     volumes:
-      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
@@ -195,7 +192,6 @@ services:
     restart: unless-stopped
     container_name: seaticket-indexer
     volumes:
-      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}

@@ -3,8 +3,8 @@ services:
     image: ${SEADB_IMAGE:-seaticket/seadb:1.0-latest}
     restart: unless-stopped
     container_name: seadb
-    ports:
-      - 8888:8888
+    #ports:
+    #  - 8888:8888
     volumes:
       - ${SEADB_VOLUME:-/opt/seadb-data}:/shared
     environment:
