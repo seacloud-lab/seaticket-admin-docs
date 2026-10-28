@@ -536,6 +536,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#seaticket-server-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SeaTicket server components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#download-deployment-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1494,6 +1505,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#seaticket-server-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SeaTicket server components
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#download-deployment-files" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1624,6 +1646,15 @@
 <li>This guide uses <code>/opt/seaticket</code> as the deployment directory for Docker Compose files and <code>.env</code>.</li>
 <li>Keep the default data paths unless you need to customize them. If you use different paths, adjust the commands in this guide accordingly.</li>
 </ul>
+<h2 id="seaticket-server-components">SeaTicket server components<a class="headerlink" href="#seaticket-server-components" title="Permanent link">&para;</a></h2>
+<p>The SeaTicket server has the following components and dependencies:</p>
+<ul>
+<li>Database: SeaTicket uses MySQL/MariaDB as its default database.</li>
+<li>Redis: SeaTicket uses Redis as its cache server.</li>
+<li>Caddy: Caddy is used as the default reverse proxy.</li>
+<li>SeaDB: A multi-tenant database system used for efficiently storing synced GitHub issues, emails, and other data.</li>
+<li>SeaSearch: A multi-tenant search engine used for efficiently indexing synced GitHub issues, emails, and other data.</li>
+</ul>
 <h2 id="download-deployment-files">Download Deployment Files<a class="headerlink" href="#download-deployment-files" title="Permanent link">&para;</a></h2>
 <p>SeaTicket uses <code>.env</code> and Docker Compose files from the same directory. Download the standard deployment files:</p>
 <div class="highlight"><pre><span></span><code>mkdir<span class="w"> </span>-p<span class="w"> </span>/opt/seaticket/seaticket-data/conf
@@ -1636,7 +1667,7 @@ wget<span class="w"> </span>https://manual.seaticket.ai/1.0/repo/docker/seaticke
 wget<span class="w"> </span>https://manual.seaticket.ai/1.0/repo/docker/seasearch.yml
 wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seaticket_config.yaml<span class="w"> </span>https://manual.seaticket.ai/1.0/repo/docker/seaticket_config.yaml
 </code></pre></div>
-<p><code>seaticket.yml</code> includes the main web service, AI, Events, Indexer, MariaDB, and Redis. Notification and Portal are optional and are not required for a standard deployment. SeaTicket and SeaDB images default to <code>1.0-latest</code> on Docker Hub.</p>
+<p><code>seaticket.yml</code> includes the main web service, AI, Events, Indexer, MariaDB, and Redis. SeaTicket images default to <code>1.0-latest</code> on Docker Hub.</p>
 <p>The standard <code>.env</code> selects all required Compose files:</p>
 <div class="highlight"><pre><span></span><code>COMPOSE_FILE='caddy.yml,seadb.yml,seaticket.yml,seasearch.yml'
 COMPOSE_PATH_SEPARATOR=','
