@@ -555,89 +555,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configure .env">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#required-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#common-optional-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Optional Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#database-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Database Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#seadb-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SeaDB Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cache-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cache Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#storage-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optional-extensions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional Extensions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1596,89 +1513,6 @@
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Configure .env">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#required-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Required Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#common-optional-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Common Optional Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#database-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Database Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#seadb-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        SeaDB Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cache-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cache Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#storage-settings" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Storage Settings
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#optional-extensions" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Optional Extensions
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -1786,11 +1620,9 @@
 
 <h1 id="setup-seaticket-server">Setup SeaTicket Server<a class="headerlink" href="#setup-seaticket-server" title="Permanent link">&para;</a></h1>
 <h2 id="getting-started">Getting started<a class="headerlink" href="#getting-started" title="Permanent link">&para;</a></h2>
-<p>The following assumptions and conventions are used in the rest of this document:</p>
 <ul>
-<li><code>/opt/seaticket</code> is the directory for storing SeaTicket Docker Compose files and <code>.env</code>. If you choose a different directory, adjust all paths accordingly.</li>
-<li>SeaTicket uses Docker bind mounts to persist data on the host. The default host paths are <code>/opt/seaticket/seaticket-data</code> for application data, <code>/opt/seaticket-mysql/db</code> for MySQL/MariaDB, <code>/opt/seadb-data</code> for SeaDB, <code>/opt/seasearch-data</code> for SeaSearch, and <code>/opt/caddy-data</code> for Caddy. It is recommended to keep these defaults. If you change them, account for the new paths when following these instructions.</li>
-<li>SeaTicket configuration files, application logs, and locally stored attachments are kept under <code>/opt/seaticket/seaticket-data</code>, in the <code>conf</code>, <code>logs</code>, and <code>data/attachments</code> directories, respectively. This directory is mounted at <code>/shared</code> inside the SeaTicket containers.</li>
+<li>This guide uses <code>/opt/seaticket</code> as the deployment directory for Docker Compose files and <code>.env</code>.</li>
+<li>Keep the default data paths unless you need to customize them. If you use different paths, adjust the commands in this guide accordingly.</li>
 </ul>
 <h2 id="download-deployment-files">Download Deployment Files<a class="headerlink" href="#download-deployment-files" title="Permanent link">&para;</a></h2>
 <p>SeaTicket uses <code>.env</code> and Docker Compose files from the same directory. Download the standard deployment files:</p>
@@ -1809,10 +1641,9 @@ wget<span class="w"> </span>-O<span class="w"> </span>seaticket-data/conf/seatic
 <div class="highlight"><pre><span></span><code>COMPOSE_FILE='caddy.yml,seadb.yml,seaticket.yml,seasearch.yml'
 COMPOSE_PATH_SEPARATOR=','
 </code></pre></div>
-<p>Components communicate using their built-in Docker service addresses. You do not need to configure internal endpoints for a single-host deployment. Keep the service names unchanged; see <a href="../../configuration/seaticket_yaml/#internal-server-urls">internal server URLs</a> for custom deployments.</p>
+<p>Components communicate using their built-in Docker service addresses. You do not need to configure internal endpoints for a single-host deployment. Keep the service names unchanged; see <a href="../../configuration/seaticket_yaml/#internal-server-urls-optional">internal server URLs</a> for custom deployments.</p>
 <h2 id="configure-env">Configure <code>.env</code><a class="headerlink" href="#configure-env" title="Permanent link">&para;</a></h2>
 <p>Edit <code>/opt/seaticket/.env</code>. For a standard deployment, change only the required settings below and leave the remaining template values at their defaults.</p>
-<h3 id="required-settings">Required Settings<a class="headerlink" href="#required-settings" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1848,11 +1679,6 @@ COMPOSE_PATH_SEPARATOR=','
 <td>Required on first deployment only</td>
 </tr>
 <tr>
-<td><code>INIT_SEADB_ROOT_PASSWORD</code></td>
-<td>Optional separate SeaDB <code>root</code> password. When empty, uses <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> for initialization.</td>
-<td>Optional</td>
-</tr>
-<tr>
 <td><code>INIT_SEATICKET_TEAM_ADMIN_EMAIL</code></td>
 <td>Email address for the first SeaTicket team administrator.</td>
 <td>Required on first deployment only</td>
@@ -1862,164 +1688,23 @@ COMPOSE_PATH_SEPARATOR=','
 <td>Password for the first SeaTicket team administrator.</td>
 <td>Required on first deployment only</td>
 </tr>
-<tr>
-<td><code>SEADB_USERNAME</code></td>
-<td>Optional separate SeaDB API username. When empty, uses <code>MYSQL_DB_USER</code> (default <code>seaticket</code>).</td>
-<td>Optional</td>
-</tr>
-<tr>
-<td><code>SEADB_PASSWORD</code></td>
-<td>Optional separate SeaDB API password. When empty, uses <code>MYSQL_DB_PASSWORD</code>.</td>
-<td>Optional</td>
-</tr>
 </tbody>
 </table>
-<p>The template includes a dedicated internal SeaSearch account and its matching token. No SeaSearch credential changes are needed for a standard deployment. See <a href="../setup_seasearch/">SeaSearch</a> for custom configuration.</p>
-<h3 id="common-optional-settings">Common Optional Settings<a class="headerlink" href="#common-optional-settings" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>SEATICKET_SERVER_PROTOCOL</code></td>
-<td>Public server protocol: <code>http</code> or <code>https</code>.</td>
-<td><code>http</code></td>
-</tr>
-<tr>
-<td><code>TIME_ZONE</code></td>
-<td>Time zone used by containers.</td>
-<td><code>UTC</code></td>
-</tr>
-<tr>
-<td><code>INIT_SEATICKET_TEAM_NAME</code></td>
-<td>Name of the first SeaTicket team.</td>
-<td><code>SeaTicket</code></td>
-</tr>
-<tr>
-<td><code>ENABLE_NOTIFICATION_SERVER</code></td>
-<td>Enable the WebSocket notification service.</td>
-<td><code>false</code></td>
-</tr>
-<tr>
-<td><code>LOG_TO_STDOUT</code></td>
-<td>Write component logs to container standard output.</td>
-<td><code>false</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="database-settings">Database Settings<a class="headerlink" href="#database-settings" title="Permanent link">&para;</a></h3>
-<p>The standard Compose deployment includes MariaDB and initializes it automatically. Do not create the database, database user, or tables manually.</p>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>MYSQL_DB_HOST</code></td>
-<td>MySQL/MariaDB hostname; use <code>db</code> for bundled MariaDB.</td>
-<td><code>db</code></td>
-</tr>
-<tr>
-<td><code>MYSQL_DB_PORT</code></td>
-<td>MariaDB port.</td>
-<td><code>3306</code></td>
-</tr>
-<tr>
-<td><code>MYSQL_DB_USER</code></td>
-<td>SeaTicket database user.</td>
-<td><code>seaticket</code></td>
-</tr>
-<tr>
-<td><code>MYSQL_DB_NAME</code></td>
-<td>SeaTicket database name.</td>
-<td><code>seaticket_db</code></td>
-</tr>
-</tbody>
-</table>
-<p>On first startup, the entrypoint runs <code>/scripts/init_mysql.py</code>. This script uses PyMySQL and <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> to create the database and user, then imports <code>sql/mysql.sql</code> with the <code>mysql</code> client if the database has no tables. Credentials for the import are stored in a private temporary option file that is removed afterward. It records successful initialization in <code>seaqa-web-data/.mysql-initialized</code> under <code>SEATICKET_VOLUME</code>. Subsequent startups use the application account and skip root initialization. Keep the MySQL data and SeaTicket application data persistent and back up both database passwords.</p>
-<p>For an external MySQL/MariaDB server, set <code>MYSQL_DB_HOST</code> and <code>MYSQL_DB_PORT</code> to its address and provide that server's root password in <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> for the first initialization. The server must allow root connections from the <code>seaticket</code> container and permit database creation, user creation, and grants. Automatic initialization is supported regardless of the hostname. When the bundled database is not needed, remove the <code>db</code> service and all <code>depends_on.db</code> entries from <code>seaticket.yml</code>, and remove <code>depends_on.db</code> from <code>seaticket-portal.yml</code> if enabled.</p>
-<h3 id="seadb-settings">SeaDB Settings<a class="headerlink" href="#seadb-settings" title="Permanent link">&para;</a></h3>
-<p>By default, SeaDB uses <code>INIT_SEATICKET_MYSQL_ROOT_PASSWORD</code> as its initial root password and <code>MYSQL_DB_USER</code> / <code>MYSQL_DB_PASSWORD</code> as its application credentials. You can leave <code>INIT_SEADB_ROOT_PASSWORD</code>, <code>SEADB_USERNAME</code>, and <code>SEADB_PASSWORD</code> empty. Set any of these variables to use separate SeaDB credentials; each override is independent.</p>
-<p>On first startup with an empty or missing data directory, the SeaDB container maps the resolved initialization password to <code>SEADB_ROOT_PASSWORD</code> and runs <code>sea-db init</code> to create the <code>root</code> administrator. The <code>seaticket</code> container then authenticates as <code>root</code> to create the resolved application account, assigning <code>default_role</code>. Compose supplies the resolved username as <code>SEADB_USER</code> inside all SeaTicket containers. SeaTicket services use the application credentials with HTTP Basic authentication to access SeaDB.</p>
-<p><code>JWT_PRIVATE_KEY</code> is required by the SeaDB service but is not an API access token.</p>
-<h3 id="cache-settings">Cache Settings<a class="headerlink" href="#cache-settings" title="Permanent link">&para;</a></h3>
-<p>The standard deployment includes Redis. No changes are required for normal use.</p>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>REDIS_HOST</code></td>
-<td>Bundled Redis service hostname.</td>
-<td><code>redis</code></td>
-</tr>
-<tr>
-<td><code>REDIS_PORT</code></td>
-<td>Redis port.</td>
-<td><code>6379</code></td>
-</tr>
-<tr>
-<td><code>REDIS_PASSWORD</code></td>
-<td>Redis password.</td>
-<td>(none)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="storage-settings">Storage Settings<a class="headerlink" href="#storage-settings" title="Permanent link">&para;</a></h3>
-<p>Leave the storage settings at their defaults for a local-disk deployment without S3:</p>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>ATTACHMENT_STORAGE_BACKEND</code></td>
-<td>Attachment storage backend: <code>disk</code> or <code>s3</code>. Used by the web service, IO service, indexer, and optional portal.</td>
-<td><code>disk</code></td>
-</tr>
-<tr>
-<td><code>SS_STORAGE_TYPE</code></td>
-<td>Optional SeaSearch storage override: <code>disk</code> or <code>s3</code>. If unset or empty, uses <code>ATTACHMENT_STORAGE_BACKEND</code>; if both are unset or empty, uses <code>disk</code>.</td>
-<td>Follows <code>ATTACHMENT_STORAGE_BACKEND</code></td>
-</tr>
-</tbody>
-</table>
-<div class="admonition note">
-<p class="admonition-title">Attachment storage with disk backend</p>
-<p>With <code>ATTACHMENT_STORAGE_BACKEND=disk</code>, attachments are saved to <code>${SEATICKET_VOLUME}/data/attachments</code> on the host (<code>/opt/seaticket/seaticket-data/data/attachments</code> by default). This directory contains <code>project_attachments</code> and <code>connection_attachments</code> and must be included in backups.</p>
-<p>Inside the web and indexer containers, <code>/opt/seaticket/data</code> links to <code>/shared/data</code>. The image fixes the attachment root at <code>/opt/seaticket/data/attachments</code>; no attachment-root setting is required in <code>.env</code> or <code>seaticket_config.yaml</code>. All attachment services must share the same <code>SEATICKET_VOLUME</code>.</p>
-</div>
-<p>When SeaSearch uses <code>disk</code>, its data is persisted under <code>${SS_DATA_PATH}</code> on the host (<code>/opt/seasearch-data</code> by default).</p>
-<div class="admonition warning">
-<p class="admonition-title">Changing storage backends</p>
-<p>Changing a storage backend does not automatically move attachments or search data between backends.</p>
-</div>
-<p>For S3 storage, including using different backends for attachments and SeaSearch, see <a href="../setup_s3/">S3 Storage</a>.</p>
-<h3 id="optional-extensions">Optional Extensions<a class="headerlink" href="#optional-extensions" title="Permanent link">&para;</a></h3>
-<p>Notification is provided as a separate optional Compose file and is not enabled by default:</p>
-<ul>
-<li><a href="../setup_notification_server/">Setup Notification Server</a></li>
-</ul>
+<p>The database and related services are initialized automatically. Keep the remaining template values at their defaults; see <a href="../../configuration/environment_variables/">Environment Variables</a> for additional options.</p>
 <h2 id="configure-seaticket_configyaml">Configure <code>seaticket_config.yaml</code><a class="headerlink" href="#configure-seaticket_configyaml" title="Permanent link">&para;</a></h2>
-<p>Configure LLM models and other application settings in <code>/opt/seaticket/seaticket-data/conf/seaticket_config.yaml</code>. See <a href="../../configuration/seaticket_yaml/">SeaTicket YAML Configuration</a> for details.</p>
+<p>Edit <code>/opt/seaticket/seaticket-data/conf/seaticket_config.yaml</code>. Configure at least one valid LLM in <code>global.LLM_MODELS</code> and an embedding model in <code>global.EMBEDDING_MODEL</code>.</p>
+<p>For example, to use OpenAI, replace the file contents with the following and fill in your API key:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">global</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">LLM_MODELS</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+<span class="w">      </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
+<span class="w">      </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your-openai-api-key&gt;</span>
+<span class="w">  </span><span class="nt">EMBEDDING_MODEL</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+<span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">text-embedding-3-small</span>
+<span class="w">    </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;your-openai-api-key&gt;</span>
+</code></pre></div>
+<p>Use model IDs available to your account. For other providers or self-hosted services, see <a href="../../configuration/seaticket_yaml/#llms-configurations">LLMs configurations</a> and <a href="../../configuration/seaticket_yaml/#embedding-model">Embedding model</a> for provider-specific settings such as <code>type</code> and <code>url</code>. All other YAML settings are optional and can use their defaults.</p>
 <h2 id="start-seaticket">Start SeaTicket<a class="headerlink" href="#start-seaticket" title="Permanent link">&para;</a></h2>
 <p>Run Docker Compose from <code>/opt/seaticket</code>:</p>
 <div class="highlight"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d

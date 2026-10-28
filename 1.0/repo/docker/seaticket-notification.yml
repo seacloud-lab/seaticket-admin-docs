@@ -6,7 +6,6 @@ services:
     #ports:
     #  - 8083:8083
     volumes:
-      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
       - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}

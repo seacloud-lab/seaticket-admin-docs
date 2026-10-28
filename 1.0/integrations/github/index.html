@@ -1741,10 +1741,10 @@
 </ol>
 <h2 id="step-6-configure-seaticket">Step 6: Configure SeaTicket<a class="headerlink" href="#step-6-configure-seaticket" title="Permanent link">&para;</a></h2>
 <h3 id="place-the-private-key">Place the private key<a class="headerlink" href="#place-the-private-key" title="Permanent link">&para;</a></h3>
-<p>Copy the <code>.pem</code> file to the host directory that is already mounted into the <code>seaticket</code> container:</p>
+<p>Copy the <code>.pem</code> file to the configuration directory under the SeaTicket data directory:</p>
 <div class="highlight"><pre><span></span><code>cp<span class="w"> </span>&lt;downloaded&gt;.private-key.pem<span class="w"> </span>/opt/seaticket/seaticket-data/conf/github-app.pem
 </code></pre></div>
-<p>That host directory is mounted at <code>/opt/seaticket/conf</code>, so the path inside the container is <code>/opt/seaticket/conf/github-app.pem</code>, and no change to the compose volumes is needed.</p>
+<p>The SeaTicket data directory is mounted at <code>/shared</code>, and <code>/opt/seaticket/conf</code> is a symbolic link to <code>/shared/conf</code>. The path inside the container is therefore <code>/opt/seaticket/conf/github-app.pem</code>, and no change to the Compose volumes is needed.</p>
 <p>The file has to be readable by the account the container runs as. Check its owner and permissions after copying it, for example with <code>ls -l</code>.</p>
 <h3 id="set-the-app-credentials">Set the app credentials<a class="headerlink" href="#set-the-app-credentials" title="Permanent link">&para;</a></h3>
 <p>Add the following to your <code>seaticket_config.yaml</code>:</p>

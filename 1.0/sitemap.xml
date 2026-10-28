@@ -2,94 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://manual.seaticket.ai/1.0/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/administration/account_management/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/administration/backup_restore/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/administration/clean_database/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/administration/index_management/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/administration/overview/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/administration/security_features/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/configuration/environment_variables/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/configuration/seaqa_web_settings/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/configuration/seaticket_yaml/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/configuration/sending_email/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/integrations/confluence/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/integrations/discord/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/integrations/github/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/integrations/gmail/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/integrations/jira/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/integrations/linear/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/integrations/microsoft-email/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/integrations/overview/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/setup/setup_notification_server/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/setup/setup_s3/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/setup/setup_seasearch/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
     <url>
          <loc>https://manual.seaticket.ai/1.0/setup/setup_seaticket/</loc>
-         <lastmod>2026-10-26</lastmod>
+         <lastmod>2026-10-28</lastmod>
     </url>
 </urlset>
