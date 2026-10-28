@@ -64,13 +64,13 @@ Under **Where can this GitHub App be installed?**, select **Only on this account
 
 ### Place the private key
 
-Copy the `.pem` file to the host directory that is already mounted into the `seaticket` container:
+Copy the `.pem` file to the configuration directory under the SeaTicket data directory:
 
 ```bash
 cp <downloaded>.private-key.pem /opt/seaticket/seaticket-data/conf/github-app.pem
 ```
 
-That host directory is mounted at `/opt/seaticket/conf`, so the path inside the container is `/opt/seaticket/conf/github-app.pem`, and no change to the compose volumes is needed.
+The SeaTicket data directory is mounted at `/shared`, and `/opt/seaticket/conf` is a symbolic link to `/shared/conf`. The path inside the container is therefore `/opt/seaticket/conf/github-app.pem`, and no change to the Compose volumes is needed.
 
 The file has to be readable by the account the container runs as. Check its owner and permissions after copying it, for example with `ls -l`.
 

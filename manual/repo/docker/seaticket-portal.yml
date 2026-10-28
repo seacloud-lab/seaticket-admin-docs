@@ -4,7 +4,6 @@ services:
     restart: unless-stopped
     container_name: seaticket-portal
     volumes:
-      - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}/conf:/opt/seaticket/conf
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
       - SEAQA_APP_MODE=portal

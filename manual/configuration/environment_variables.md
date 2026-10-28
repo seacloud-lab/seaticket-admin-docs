@@ -37,7 +37,7 @@ By default, SeaDB reuses the MySQL root password for initialization and the MySQ
 
 SeaTicket components authenticate to SeaDB with HTTP Basic authentication. Compose maps the resolved username to `SEADB_USER` inside the containers. On first deployment, SeaDB runs `sea-db init` to create `root`; `seaticket` then uses that root account to register the non-root application account with `default_role`. `JWT_PRIVATE_KEY` configures the SeaDB service itself and is not a SeaDB API access token.
 
-After successful initialization, remove both `INIT_SEADB_ROOT_PASSWORD` and `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` from `.env` and recreate the containers with `docker compose up -d`. Keep MySQL application credentials and any separate SeaDB application credentials available on every startup. See [SeaDB Settings](../setup/setup_seaticket.md#seadb-settings) for initialization and default-template SQL commands.
+After successful initialization, remove both `INIT_SEADB_ROOT_PASSWORD` and `INIT_SEATICKET_MYSQL_ROOT_PASSWORD` from `.env` and recreate the containers with `docker compose up -d`. Keep MySQL application credentials and any separate SeaDB application credentials available on every startup. See [Start SeaTicket](../setup/setup_seaticket.md#start-seaticket) for deployment and initialization steps.
 
 ## SeaSearch Settings
 
