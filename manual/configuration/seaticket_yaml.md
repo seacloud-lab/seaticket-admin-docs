@@ -217,6 +217,12 @@ The following are the default values, normally, you don't need to make any addit
 
 ```yaml
 seaqa-ai:
+  MAX_STEPS: 20 # Maximum Chat execution steps per request
+  AGENT_MAX_STEPS: 20 # Default maximum execution steps per Agent phase
+  MAX_TOOL_CALLS_PER_RESPONSE: 3 # Maximum tool calls executed from one Chat model response
+  GET_RECORDS_MAX_RECORDS: 10 # Shared successful record-reading budget per Chat request or complete Agent task
+  SEARCH_TOOL_CONTENT_MAX_SIZE: 20000 # Maximum content length per record, in characters (not tokens)
+  SEARCH_TOOL_ISSUES_MAX_COMMENTS: 50 # Maximum issue comments included when reading a record
   COMPLETION_MAX_RETRIES: 2 # Maximum number of chating completion retries with LLM
   COMPLETION_RETRY_INTERVAL: 0.0 # Retry interval when AI chating completion fails
   TOOL_CALL_MAX_RETRIES: 2 # Maximum number of executing tool retries with LLM
@@ -226,6 +232,23 @@ seaqa-ai:
     generate_summary: low
     rerank_relevance: medium
 ```
+
+### Execution and record-reading limits
+
+| Setting | Default | Scope |
+| --- | --- | --- |
+| `MAX_STEPS` | `20` | Maximum execution steps for a Chat request. Existing explicit configuration overrides this default. |
+| `AGENT_MAX_STEPS` | `20` | Default maximum execution steps for each Agent phase, not for the entire task. A phase can override this limit. |
+| `MAX_TOOL_CALLS_PER_RESPONSE` | `3` | Maximum tool calls executed from a single Chat model response. This is separate from the execution-step limit. |
+| `GET_RECORDS_MAX_RECORDS` | `10` | Maximum distinct records successfully read and provided per Chat request or complete Agent task, shared across all Agent phases. |
+| `SEARCH_TOOL_CONTENT_MAX_SIZE` | `20000` | Content budget for a single record read by `get_records`, measured in characters, not tokens. |
+| `SEARCH_TOOL_ISSUES_MAX_COMMENTS` | `50` | Maximum issue comments included when reading a record. The content budget still applies. |
+
+!!! note "About `GET_RECORDS_MAX_RECORDS`"
+    Search tools return metadata, summaries, and available snippets rather than full record content. Chat and Agent use `get_records(targets=[...])` to selectively read records. Repeated reads of the same record do not consume additional record budget; invalid targets and failed reads do not consume it either. Once the record budget is exhausted, additional records cannot be read, even if execution steps remain.
+
+!!! note "About `MAX_STEPS`"
+    `MAX_STEPS`, `AGENT_MAX_STEPS`, and `MAX_TOOL_CALLS_PER_RESPONSE` must be positive integers. These are upper limits: Chat and Agent can finish earlier when enough evidence is available. Increasing execution limits can increase latency and token usage; it does not increase the shared record-reading budget.
 
 !!! tip "Model selection"
     - For the chat and agent, the models typically used include:
@@ -244,8 +267,6 @@ seaqa-ai:
     # --- Max records counter ---
     max_tickets_per_run: 100 # Maximum tickets analyzed per agent run
     max_github_issues_per_run: 100 # Maximum GitHub issues analyzed per agent run
-    max_analysis_steps: 10 # Maximum analysis steps per agent task
-    max_handling_steps: 5 # Maximum handling steps per agent task
 
     # --- Agent manager timing (seconds) ---
     enqueue_pending_events_check_intetval: 5 # Interval to check and flush pending events
@@ -254,6 +275,10 @@ seaqa-ai:
     timed_scan_interval: 3600 # Timed scanner execution interval
     timed_scan_project_cooldown: 86400 # Cooldown before re-scanning the same project
 ```
+
+!!! note "Legacy Agent step settings"
+
+    `AGENT.max_analysis_steps` (default `10`) and `AGENT.max_handling_steps` (default `5`) are still parsed for the legacy Agent implementation, but do not control the current phase-based Agent. Use `seaqa-ai.AGENT_MAX_STEPS` for the current Agent's default per-phase execution limit.
 
 ## seaqa-events settings (Optional)
 
