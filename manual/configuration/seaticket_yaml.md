@@ -276,10 +276,6 @@ seaqa-ai:
     timed_scan_project_cooldown: 86400 # Cooldown before re-scanning the same project
 ```
 
-!!! note "Legacy Agent step settings"
-
-    `AGENT.max_analysis_steps` (default `10`) and `AGENT.max_handling_steps` (default `5`) are still parsed for the legacy Agent implementation, but do not control the current phase-based Agent. Use `seaqa-ai.AGENT_MAX_STEPS` for the current Agent's default per-phase execution limit.
-
 ## seaqa-events settings (Optional)
 
 ```yaml
