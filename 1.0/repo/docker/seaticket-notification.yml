@@ -24,7 +24,7 @@ services:
         condition: service_started
     labels:
       caddy: ${SEATICKET_SERVER_PROTOCOL:-http}://${SEATICKET_SERVER_HOSTNAME:?Variable is not set or empty}
-      caddy.0_reverse_proxy: "/ws* {{upstreams 8083}}"
+      caddy.0_reverse_proxy: "/notification* {{upstreams 8083}}"
     healthcheck:
       test:
         - CMD-SHELL
