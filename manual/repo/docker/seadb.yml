@@ -1,6 +1,6 @@
 services:
   seadb:
-    image: ${SEADB_IMAGE:-seaticket/seadb:1.0-latest}
+    image: ${SEADB_IMAGE:-seaticket/seadb:0.9-latest}
     restart: unless-stopped
     container_name: seadb
     #ports:
