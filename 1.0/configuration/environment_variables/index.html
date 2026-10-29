@@ -1662,9 +1662,9 @@
 <h1 id="env">.env<a class="headerlink" href="#env" title="Permanent link">&para;</a></h1>
 <p>The <code>.env</code> file will be used to specify the general settings of the components used by the SeaTicket-docker instance and the environment variables required by each component.</p>
 <h2 id="seaticket-settings">SeaTicket Settings<a class="headerlink" href="#seaticket-settings" title="Permanent link">&para;</a></h2>
-<p>The default <code>COMPOSE_FILE</code> is <code>caddy.yml,seadb.yml,seaticket.yml,seasearch.yml</code>, with <code>COMPOSE_PATH_SEPARATOR=','</code>. Add the optional Notification or Portal files only when enabling those features. Internal component URLs use built-in defaults and do not need to be added to <code>.env</code>.</p>
+<p>The default <code>COMPOSE_FILE</code> is <code>caddy.yml,seadb.yml,seaticket.yml,seasearch.yml</code>, with <code>COMPOSE_PATH_SEPARATOR=','</code>. Add the optional Notification file only when enabling that feature. Internal component URLs use built-in defaults and do not need to be added to <code>.env</code>.</p>
 <h3 id="images">Images<a class="headerlink" href="#images" title="Permanent link">&para;</a></h3>
-<p>All images below are pulled directly from Docker Hub. Portal shares <code>SEATICKET_WEB_IMAGE</code> with the main web service.</p>
+<p>All images below are pulled directly from Docker Hub.</p>
 <table>
 <thead>
 <tr>
@@ -1909,7 +1909,7 @@
 <tbody>
 <tr>
 <td><code>ATTACHMENT_STORAGE_BACKEND</code></td>
-<td>Attachment backend used by the web service, IO service, indexer, and optional portal. Available values: <code>disk</code>, <code>s3</code>.</td>
+<td>Attachment backend used by the web service, IO service, and indexer. Available values: <code>disk</code>, <code>s3</code>.</td>
 <td><code>disk</code></td>
 </tr>
 <tr>

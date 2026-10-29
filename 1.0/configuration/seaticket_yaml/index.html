@@ -1686,7 +1686,7 @@
 <h1 id="seaticket_configyaml">seaticket_config.yaml<a class="headerlink" href="#seaticket_configyaml" title="Permanent link">&para;</a></h1>
 <p>Besides <a href="../environment_variables/"><code>.env</code></a> for general settings, the <code>seaticket_config.yaml</code> is used to specify the detailed configurations of the all components in SeaTicket docker.</p>
 <h2 id="file-structure-of-seaticket_configyaml">File structure of seaticket_config.yaml<a class="headerlink" href="#file-structure-of-seaticket_configyaml" title="Permanent link">&para;</a></h2>
-<p><code>seaticket_config.yaml</code> consists of <code>global</code> and component-specific sections. The section names below are configuration identifiers read by the source code, not Docker Compose service names. Use the <code>seaqa-*</code> section names and <code>SEAQA_*</code> setting names shown here for the <code>seaticket</code> and <code>seaticket-*</code> Docker services. The optional <code>seaticket-portal</code> service also reads the <code>seaqa-web</code> section.</p>
+<p><code>seaticket_config.yaml</code> consists of <code>global</code> and component-specific sections. The section names below are configuration identifiers read by the source code, not Docker Compose service names. Use the <code>seaqa-*</code> section names and <code>SEAQA_*</code> setting names shown here for the <code>seaticket</code> and <code>seaticket-*</code> Docker services.</p>
 <p>For an initial deployment, only <code>global.LLM_MODELS</code> and <code>global.EMBEDDING_MODEL</code> are required. All other settings and component-specific sections are optional and can be omitted to use their defaults.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">global</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">LLM_MODELS</span><span class="p">:</span>
@@ -1847,12 +1847,12 @@
 <tr>
 <td><code>SEAQA_AI_INNER_SERVER_URL</code></td>
 <td><code>http://seaticket-ai:8887</code></td>
-<td>Web, Portal, and Indexer</td>
+<td>Web and Indexer</td>
 </tr>
 <tr>
 <td><code>SEAQA_INDEXER_INNER_SERVER_URL</code></td>
 <td><code>http://seaticket-indexer:8888</code></td>
-<td>Web, Portal, AI, and Events</td>
+<td>Web, AI, and Events</td>
 </tr>
 </tbody>
 </table>
