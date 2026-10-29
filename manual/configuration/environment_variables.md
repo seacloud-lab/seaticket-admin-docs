@@ -2,11 +2,11 @@
 The `.env` file will be used to specify the general settings of the components used by the SeaTicket-docker instance and the environment variables required by each component.
 
 ## SeaTicket Settings
-The default `COMPOSE_FILE` is `caddy.yml,seadb.yml,seaticket.yml,seasearch.yml`, with `COMPOSE_PATH_SEPARATOR=','`. Add the optional Notification or Portal files only when enabling those features. Internal component URLs use built-in defaults and do not need to be added to `.env`.
+The default `COMPOSE_FILE` is `caddy.yml,seadb.yml,seaticket.yml,seasearch.yml`, with `COMPOSE_PATH_SEPARATOR=','`. Add the optional Notification file only when enabling that feature. Internal component URLs use built-in defaults and do not need to be added to `.env`.
 
 ### Images
 
-All images below are pulled directly from Docker Hub. Portal shares `SEATICKET_WEB_IMAGE` with the main web service.
+All images below are pulled directly from Docker Hub.
 
 | Variable | Default |
 | --- | --- |
@@ -83,7 +83,7 @@ The Docker deployment defaults to local disk for both attachments and SeaSearch.
 
 | Variable | Description | Default Value |
 | --- | --- | --- |
-| `ATTACHMENT_STORAGE_BACKEND` | Attachment backend used by the web service, IO service, indexer, and optional portal. Available values: `disk`, `s3`. | `disk` |
+| `ATTACHMENT_STORAGE_BACKEND` | Attachment backend used by the web service, IO service, and indexer. Available values: `disk`, `s3`. | `disk` |
 | `SS_STORAGE_TYPE` | Optional SeaSearch backend override (`disk` or `s3`). Unset or empty values fall back to `ATTACHMENT_STORAGE_BACKEND`, then `disk`. | Follows `ATTACHMENT_STORAGE_BACKEND` |
 | `SEATICKET_VOLUME` | Host directory for SeaTicket configuration, logs, and persistent application data. | `/opt/seaticket/seaticket-data` |
 | `SS_DATA_PATH` | Host directory for persistent SeaSearch data. | `/opt/seasearch-data` |

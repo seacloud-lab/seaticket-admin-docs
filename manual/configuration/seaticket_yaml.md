@@ -4,7 +4,7 @@ Besides [`.env`](./environment_variables.md) for general settings, the `seaticke
 
 ## File structure of seaticket_config.yaml
 
-`seaticket_config.yaml` consists of `global` and component-specific sections. The section names below are configuration identifiers read by the source code, not Docker Compose service names. Use the `seaqa-*` section names and `SEAQA_*` setting names shown here for the `seaticket` and `seaticket-*` Docker services. The optional `seaticket-portal` service also reads the `seaqa-web` section.
+`seaticket_config.yaml` consists of `global` and component-specific sections. The section names below are configuration identifiers read by the source code, not Docker Compose service names. Use the `seaqa-*` section names and `SEAQA_*` setting names shown here for the `seaticket` and `seaticket-*` Docker services.
 
 For an initial deployment, only `global.LLM_MODELS` and `global.EMBEDDING_MODEL` are required. All other settings and component-specific sections are optional and can be omitted to use their defaults.
 
@@ -173,8 +173,8 @@ For the standard single-host Docker deployment, no internal endpoint configurati
 | Setting | Default | Used by |
 | --- | --- | --- |
 | `SEAQA_WEB_INNER_SERVER_URL` | `http://seaticket/` | AI and Notification |
-| `SEAQA_AI_INNER_SERVER_URL` | `http://seaticket-ai:8887` | Web, Portal, and Indexer |
-| `SEAQA_INDEXER_INNER_SERVER_URL` | `http://seaticket-indexer:8888` | Web, Portal, AI, and Events |
+| `SEAQA_AI_INNER_SERVER_URL` | `http://seaticket-ai:8887` | Web and Indexer |
+| `SEAQA_INDEXER_INNER_SERVER_URL` | `http://seaticket-indexer:8888` | Web, AI, and Events |
 
 The web image exposes Nginx on port 80. Gunicorn listens only on `127.0.0.1:8000` inside that container, so do not use `http://seaticket:8000/` for communication from another container.
 

@@ -17,7 +17,6 @@ SEATICKET_VOLUME=/opt/seaticket/seaticket-data
 SEATICKET_MYSQL_VOLUME=/opt/seaticket-mysql/db
 SEADB_VOLUME=/opt/seadb-data
 CADDY_VOLUME=/opt/caddy-data
-PORTAL_CERTS_VOLUME=/opt/caddy-certs
 SS_DATA_PATH=/opt/seasearch-data
 
 # System settings
@@ -34,9 +33,6 @@ ENABLE_NOTIFICATION_SERVER=false
 INIT_SEATICKET_TEAM_NAME=SeaTicket
 INIT_SEATICKET_TEAM_ADMIN_EMAIL=
 INIT_SEATICKET_TEAM_ADMIN_PASSWORD=
-
-# Portal routing values used by Docker Compose and Caddy.
-PORTAL_SERVICE_ROOT_DOMAIN=portal-seaticket.com
 
 # Non-SeaTicket components configuration
 
