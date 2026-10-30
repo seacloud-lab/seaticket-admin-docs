@@ -110,7 +110,7 @@ System administrators are optional maintenance accounts. See [Account Management
 `/opt/seaticket/seaticket-data` stores SeaTicket configuration, logs, and persistent application data.
 
 - `conf`: SeaTicket configuration files.
-- `logs`: SeaTicket logs, including `seaqa-web.log`.
+- `logs`: SeaTicket logs, including `seaticket.log`.
 - `seaqa-web-data`: Avatar files and custom media.
 - `data/attachments`: Project and connection attachments when using the `disk` backend.
 

@@ -13,7 +13,7 @@ There are two ways to configure SMTP for system-wide emails.
 
 === "Environment variables / seaticket_config.yaml"
 
-    SeaTicket reads SMTP settings from environment variables or the `seaqa-web` configuration section in `seaticket_config.yaml` for the `seaticket` service.
+    SeaTicket reads SMTP settings from environment variables or the `seaticket` configuration section in `seaticket_config.yaml` for the `seaticket` service.
 
     | Key | Description | Example values |
     | --- | --- | --- |
