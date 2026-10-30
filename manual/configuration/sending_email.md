@@ -25,11 +25,11 @@ There are two ways to configure SMTP for system-wide emails.
     | `SERVER_EMAIL` | Sender for error reporting | `noreply@example.com` |
 
     !!! note
-        `EMAIL_USE_TLS` (and any SSL flag) cannot be set via environment variables or `seaticket_config.yaml`. Use `seaqa_web_settings.py` instead.
+        `EMAIL_USE_TLS` (and any SSL flag) cannot be set via environment variables or `seaticket_config.yaml`. Use `seaticket_settings.py` instead.
 
 === "Configuration file"
 
-    Add the following lines to `seaqa_web_settings.py`:
+    Add the following lines to `seaticket_settings.py`:
 
     ```python
     EMAIL_USE_TLS = False
