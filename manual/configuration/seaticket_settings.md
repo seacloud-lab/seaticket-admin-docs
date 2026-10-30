@@ -1,6 +1,6 @@
-# seaqa_web_settings.py
+# seaticket_settings.py
 
-`seaqa_web_settings.py` is used to customize the SeaTicket web (`seaticket`) settings.
+`seaticket_settings.py` is used to customize the SeaTicket web (`seaticket`) settings.
 
 
 ## Team role permissions
@@ -29,7 +29,7 @@ The following options can be configured per team role:
 ### Configuration example
 
 ```python
-# seaqa_web_settings.py
+# seaticket_settings.py
 ENABLED_ROLE_PERMISSIONS = {
     'free': {
         'can_add_project': True,
@@ -242,7 +242,7 @@ REQUEST_RATE_LIMIT_PERIOD = 60
 SeaTicket supports Two-Factor Authentication to enhance account security. There are two ways to enable this feature:
 
 1. System admin can enable it in the system settings page.
-2. Or add the following settings to `seaqa_web_settings.py` and restart SeaTicket.
+2. Or add the following settings to `seaticket_settings.py` and restart SeaTicket.
 
 After that, users will see a “Two-Factor Authentication” section in the user profile page and can bind an authenticator app (e.g., Google Authenticator) via QR code.
 
