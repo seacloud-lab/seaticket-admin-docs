@@ -769,14 +769,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../../configuration/seaqa_web_settings/" class="md-nav__link">
+      <a href="../../configuration/seaticket_settings/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    seaqa_web_settings.py
+    seaticket_settings.py
   
 
     
@@ -1431,14 +1431,15 @@
 
 
 <h1 id="clean-database">Clean Database<a class="headerlink" href="#clean-database" title="Permanent link">&para;</a></h1>
+<p>The SQL examples below use the default database name <code>seaticket_db</code>. If you have customized <code>MYSQL_DB_NAME</code>, use your configured database name instead.</p>
 <h2 id="session">Session<a class="headerlink" href="#session" title="Permanent link">&para;</a></h2>
-<p>Use the following command to clear expired session records in sea_qa database:</p>
-<div class="highlight"><pre><span></span><code>cd seaqa-web
+<p>Use the following command to clear expired session records in the SeaTicket database:</p>
+<div class="highlight"><pre><span></span><code>cd /opt/seaticket/seaticket
 python3 manage.py clearsessions
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Enter into the docker image, then go to <code>/opt/seaticket/seaqa-web</code></p>
+<p>Enter the SeaTicket container, then go to <code>/opt/seaticket/seaticket</code>.</p>
 </div>
 <h2 id="seaticket-indexer-periodic-cleanup">SeaTicket Indexer periodic cleanup<a class="headerlink" href="#seaticket-indexer-periodic-cleanup" title="Permanent link">&para;</a></h2>
 <p>SeaTicket Indexer runs periodic cleanup tasks (default: every 24 hours). The tasks remove records in the following databases.</p>
@@ -1456,14 +1457,14 @@ python3 manage.py clearsessions
 </ul>
 <h2 id="login">Login<a class="headerlink" href="#login" title="Permanent link">&para;</a></h2>
 <p>Use the following command to clean the login records:</p>
-<div class="highlight"><pre><span></span><code>use sea_qa;
+<div class="highlight"><pre><span></span><code>use seaticket_db;
 DELETE FROM sysadmin_extra_userloginlog WHERE to_days(now()) - to_days(login_date) &gt; 90;
 </code></pre></div>
 <h2 id="clean-chat-sessions">Clean chat sessions<a class="headerlink" href="#clean-chat-sessions" title="Permanent link">&para;</a></h2>
 <p>SeaTicket Web provides a management command to clean old chat data in batches. By default, it keeps the last 90 days.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Enter into the docker image, then go to <code>/opt/seaticket/seaqa-web</code></p>
+<p>Enter the SeaTicket container, then go to <code>/opt/seaticket/seaticket</code>.</p>
 </div>
 <div class="highlight"><pre><span></span><code>python3 manage.py clean_chat_sessions
 </code></pre></div>
@@ -1485,7 +1486,7 @@ DELETE FROM sysadmin_extra_userloginlog WHERE to_days(now()) - to_days(login_dat
 <li><code>project_notification</code></li>
 </ul>
 <p>You can also clean these tables manually as follows.</p>
-<div class="highlight"><pre><span></span><code>use sea_qa;
+<div class="highlight"><pre><span></span><code>use seaticket_db;
 DELETE FROM user_notifications WHERE `timestamp` &lt; '&lt;cutoff_date&gt;';
 
 DELETE FROM project_notification WHERE `timestamp` &lt; '&lt;cutoff_date&gt;';

@@ -16,7 +16,7 @@
         <link rel="prev" href="../seaticket_yaml/">
       
       
-        <link rel="next" href="../seaqa_web_settings/">
+        <link rel="next" href="../seaticket_settings/">
       
       
         
@@ -899,14 +899,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../seaqa_web_settings/" class="md-nav__link">
+      <a href="../seaticket_settings/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    seaqa_web_settings.py
+    seaticket_settings.py
   
 
     
@@ -1540,7 +1540,7 @@
 <div class="tabbed-set tabbed-alternate" data-tabs="1:2"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Environment variables / seaticket_config.yaml</label><label for="__tabbed_1_2">Configuration file</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<p>SeaTicket reads SMTP settings from environment variables or the <code>seaqa-web</code> configuration section in <code>seaticket_config.yaml</code> for the <code>seaticket</code> service.</p>
+<p>SeaTicket reads SMTP settings from environment variables or the <code>seaticket</code> configuration section in <code>seaticket_config.yaml</code> for the <code>seaticket</code> service.</p>
 <table>
 <thead>
 <tr>
@@ -1584,11 +1584,11 @@
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code>EMAIL_USE_TLS</code> (and any SSL flag) cannot be set via environment variables or <code>seaticket_config.yaml</code>. Use <code>seaqa_web_settings.py</code> instead.</p>
+<p><code>EMAIL_USE_TLS</code> (and any SSL flag) cannot be set via environment variables or <code>seaticket_config.yaml</code>. Use <code>seaticket_settings.py</code> instead.</p>
 </div>
 </div>
 <div class="tabbed-block">
-<p>Add the following lines to <code>seaqa_web_settings.py</code>:</p>
+<p>Add the following lines to <code>seaticket_settings.py</code>:</p>
 <div class="highlight"><pre><span></span><code><span class="n">EMAIL_USE_TLS</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">EMAIL_HOST</span> <span class="o">=</span> <span class="s1">'smtp.example.com'</span>
 <span class="n">EMAIL_HOST_USER</span> <span class="o">=</span> <span class="s1">'username@example.com'</span>
@@ -1754,13 +1754,13 @@
         
         
           
-          <a href="../seaqa_web_settings/" class="md-footer__link md-footer__link--next" aria-label="Next: seaqa_web_settings.py">
+          <a href="../seaticket_settings/" class="md-footer__link md-footer__link--next" aria-label="Next: seaticket_settings.py">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                seaqa_web_settings.py
+                seaticket_settings.py
               </div>
             </div>
             <div class="md-footer__button md-icon">

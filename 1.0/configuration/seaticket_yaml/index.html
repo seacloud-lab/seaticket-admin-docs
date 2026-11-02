@@ -884,15 +884,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#seaqa-ai-settings-optional" class="md-nav__link">
+  <a href="#seaticket-ai-settings-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        seaqa-ai settings (Optional)
+        seaticket-ai settings (Optional)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="seaqa-ai settings (Optional)">
+    <nav class="md-nav" aria-label="seaticket-ai settings (Optional)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -912,10 +912,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#seaqa-events-settings-optional" class="md-nav__link">
+  <a href="#seaticket-events-settings-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        seaqa-events settings (Optional)
+        seaticket-events settings (Optional)
       
     </span>
   </a>
@@ -923,10 +923,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#seaqa-web-notification-settings-optional" class="md-nav__link">
+  <a href="#seaticket-notification-settings-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        seaqa-web notification settings (Optional)
+        seaticket notification settings (Optional)
       
     </span>
   </a>
@@ -977,14 +977,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../seaqa_web_settings/" class="md-nav__link">
+      <a href="../seaticket_settings/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    seaqa_web_settings.py
+    seaticket_settings.py
   
 
     
@@ -1614,15 +1614,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#seaqa-ai-settings-optional" class="md-nav__link">
+  <a href="#seaticket-ai-settings-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        seaqa-ai settings (Optional)
+        seaticket-ai settings (Optional)
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="seaqa-ai settings (Optional)">
+    <nav class="md-nav" aria-label="seaticket-ai settings (Optional)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1642,10 +1642,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#seaqa-events-settings-optional" class="md-nav__link">
+  <a href="#seaticket-events-settings-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        seaqa-events settings (Optional)
+        seaticket-events settings (Optional)
       
     </span>
   </a>
@@ -1653,10 +1653,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#seaqa-web-notification-settings-optional" class="md-nav__link">
+  <a href="#seaticket-notification-settings-optional" class="md-nav__link">
     <span class="md-ellipsis">
       
-        seaqa-web notification settings (Optional)
+        seaticket notification settings (Optional)
       
     </span>
   </a>
@@ -1686,7 +1686,7 @@
 <h1 id="seaticket_configyaml">seaticket_config.yaml<a class="headerlink" href="#seaticket_configyaml" title="Permanent link">&para;</a></h1>
 <p>Besides <a href="../environment_variables/"><code>.env</code></a> for general settings, the <code>seaticket_config.yaml</code> is used to specify the detailed configurations of the all components in SeaTicket docker.</p>
 <h2 id="file-structure-of-seaticket_configyaml">File structure of seaticket_config.yaml<a class="headerlink" href="#file-structure-of-seaticket_configyaml" title="Permanent link">&para;</a></h2>
-<p><code>seaticket_config.yaml</code> consists of <code>global</code> and component-specific sections. The section names below are configuration identifiers read by the source code, not Docker Compose service names. Use the <code>seaqa-*</code> section names and <code>SEAQA_*</code> setting names shown here for the <code>seaticket</code> and <code>seaticket-*</code> Docker services.</p>
+<p><code>seaticket_config.yaml</code> consists of <code>global</code> and component-specific sections. Use <code>seaticket</code> for the web component (without <code>-web</code>) and <code>seaticket-*</code> for the other components. Internal setting names such as <code>SEAQA_*</code> remain unchanged, except for <code>SEATICKET_CONFIG_NAME</code>, <code>SEATICKET_LOG_LEVEL</code>, and <code>SEATICKET_LOG_TO_STDOUT</code>.</p>
 <p>For an initial deployment, only <code>global.LLM_MODELS</code> and <code>global.EMBEDDING_MODEL</code> are required. All other settings and component-specific sections are optional and can be omitted to use their defaults.</p>
 <div class="highlight"><pre><span></span><code><span class="nt">global</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">LLM_MODELS</span><span class="p">:</span>
@@ -1694,16 +1694,18 @@
 <span class="w">  </span><span class="nt">EMBEDDING_MODEL</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># ... embedding model configuration (required)</span>
 <span class="w">  </span><span class="c1"># ... other global settings (optional)</span>
-<span class="nt">seaqa-ai</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
-<span class="w">  </span><span class="c1"># ... special configurations for seaqa-ai</span>
-<span class="nt">seaqa-events</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
-<span class="w">  </span><span class="c1"># ... special configurations for seaqa-events</span>
-<span class="nt">seaqa-indexer</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
-<span class="w">  </span><span class="c1"># ... special configurations for seaqa-indexer</span>
-<span class="nt">seaqa-notification</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
-<span class="w">  </span><span class="c1"># ... special configurations for seaqa-notification</span>
-<span class="nt">seaqa-web</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
-<span class="w">  </span><span class="c1"># ... special configurations for seaqa-web</span>
+<span class="nt">seaticket-ai</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
+<span class="w">  </span><span class="c1"># ... special configurations for seaticket-ai</span>
+<span class="nt">seaticket-events</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
+<span class="w">  </span><span class="c1"># ... special configurations for seaticket-events</span>
+<span class="nt">seaticket-indexer</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
+<span class="w">  </span><span class="c1"># ... special configurations for seaticket-indexer</span>
+<span class="nt">seaticket-notification</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
+<span class="w">  </span><span class="c1"># ... special configurations for seaticket-notification</span>
+<span class="nt">seaticket</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
+<span class="w">  </span><span class="c1"># ... special configurations for seaticket</span>
+<span class="nt">seaticket-io</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
+<span class="w">  </span><span class="c1"># ... special configurations for seaticket-io</span>
 </code></pre></div>
 <h2 id="global-settings">Global settings<a class="headerlink" href="#global-settings" title="Permanent link">&para;</a></h2>
 <p>The <code>global</code> section contains settings shared by all SeaTicket components. Configure the LLMs and embedding model below before starting SeaTicket; the remaining global settings are optional.</p>
@@ -1737,7 +1739,7 @@
 <p class="admonition-title">Futher information about <code>tier</code> of a model</p>
 <ul>
 <li>When multiple LLMs have the same <code>tier</code>, the system will use only the LLM that explicitly specifies that <code>tier</code>, with priority given to the first entry in the <code>LLM_MODELS</code> list.</li>
-<li>If the tier specified for a service in <a href="#seaqa-ai-settings-optional">AI_UTILS_TIER</a> is not defined in <code>LLM_MODELS</code>, then the default model in <code>LLM_MODELS</code> or the first valid model in the list will be used.</li>
+<li>If the tier specified for a service in <a href="#seaticket-ai-settings-optional">AI_UTILS_TIER</a> is not defined in <code>LLM_MODELS</code>, then the default model in <code>LLM_MODELS</code> or the first valid model in the list will be used.</li>
 </ul>
 </div>
 <h4 id="llms-reference-configuration">LLMs reference configuration<a class="headerlink" href="#llms-reference-configuration" title="Permanent link">&para;</a></h4>
@@ -1880,9 +1882,9 @@
 </code></pre></div>
 <h3 id="thirdparty-integrations-optional">Thirdparty integrations (Optional)<a class="headerlink" href="#thirdparty-integrations-optional" title="Permanent link">&para;</a></h3>
 <p>Please refer <a href="../../integrations/overview/">here</a> for the details.</p>
-<h2 id="seaqa-ai-settings-optional">seaqa-ai settings (Optional)<a class="headerlink" href="#seaqa-ai-settings-optional" title="Permanent link">&para;</a></h2>
+<h2 id="seaticket-ai-settings-optional">seaticket-ai settings (Optional)<a class="headerlink" href="#seaticket-ai-settings-optional" title="Permanent link">&para;</a></h2>
 <p>The following are the default values, normally, you don't need to make any additional settings for this part</p>
-<div class="highlight"><pre><span></span><code><span class="nt">seaqa-ai</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">seaticket-ai</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">COMPLETION_MAX_RETRIES</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># Maximum number of chating completion retries with LLM</span>
 <span class="w">  </span><span class="nt">COMPLETION_RETRY_INTERVAL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"> </span><span class="c1"># Retry interval when AI chating completion fails</span>
 <span class="w">  </span><span class="nt">TOOL_CALL_MAX_RETRIES</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># Maximum number of executing tool retries with LLM</span>
@@ -1909,7 +1911,7 @@
 </ul>
 </div>
 <h3 id="agent-configurations">Agent configurations<a class="headerlink" href="#agent-configurations" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="nt">seaqa-ai</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">seaticket-ai</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">AGENT</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># --- Max records counter ---</span>
 <span class="w">    </span><span class="nt">max_tickets_per_run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># Maximum tickets analyzed per agent run</span>
@@ -1924,14 +1926,14 @@
 <span class="w">    </span><span class="nt">timed_scan_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3600</span><span class="w"> </span><span class="c1"># Timed scanner execution interval</span>
 <span class="w">    </span><span class="nt">timed_scan_project_cooldown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span><span class="w"> </span><span class="c1"># Cooldown before re-scanning the same project</span>
 </code></pre></div>
-<h2 id="seaqa-events-settings-optional">seaqa-events settings (Optional)<a class="headerlink" href="#seaqa-events-settings-optional" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><span class="nt">seaqa-events</span><span class="p">:</span>
+<h2 id="seaticket-events-settings-optional">seaticket-events settings (Optional)<a class="headerlink" href="#seaticket-events-settings-optional" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="nt">seaticket-events</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">AI_STATS</span><span class="p">:</span><span class="w"> </span><span class="c1"># optional</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># Enable AI tokens usage statistics (default is `true`)</span>
 </code></pre></div>
-<h2 id="seaqa-web-notification-settings-optional">seaqa-web notification settings (Optional)<a class="headerlink" href="#seaqa-web-notification-settings-optional" title="Permanent link">&para;</a></h2>
+<h2 id="seaticket-notification-settings-optional">seaticket notification settings (Optional)<a class="headerlink" href="#seaticket-notification-settings-optional" title="Permanent link">&para;</a></h2>
 <p>The Docker examples set this value through <code>.env</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="nt">seaqa-web</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">seaticket</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ENABLE_NOTIFICATION_SERVER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
 

@@ -10,7 +10,7 @@
         <meta name="author" content="seaticket">
       
       
-        <link rel="canonical" href="https://manual.seaticket.ai/1.0/configuration/seaqa_web_settings/">
+        <link rel="canonical" href="https://manual.seaticket.ai/1.0/configuration/seaticket_settings/">
       
       
         <link rel="prev" href="../sending_email/">
@@ -27,7 +27,7 @@
     
     
       
-        <title>seaqa_web_settings.py - SeaTicket Admin Manual</title>
+        <title>seaticket_settings.py - SeaTicket Admin Manual</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#seaqa_web_settingspy" class="md-skip">
+        <a href="#seaticket_settingspy" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              seaqa_web_settings.py
+              seaticket_settings.py
             
           </span>
         </div>
@@ -796,7 +796,7 @@
   <span class="md-ellipsis">
     
   
-    seaqa_web_settings.py
+    seaticket_settings.py
   
 
     
@@ -814,7 +814,7 @@
   <span class="md-ellipsis">
     
   
-    seaqa_web_settings.py
+    seaticket_settings.py
   
 
     
@@ -1881,8 +1881,8 @@
   
 
 
-<h1 id="seaqa_web_settingspy">seaqa_web_settings.py<a class="headerlink" href="#seaqa_web_settingspy" title="Permanent link">&para;</a></h1>
-<p><code>seaqa_web_settings.py</code> is used to customize the SeaTicket web (<code>seaticket</code>) settings.</p>
+<h1 id="seaticket_settingspy">seaticket_settings.py<a class="headerlink" href="#seaticket_settingspy" title="Permanent link">&para;</a></h1>
+<p><code>seaticket_settings.py</code> is used to customize the SeaTicket web (<code>seaticket</code>) settings.</p>
 <h2 id="team-role-permissions">Team role permissions<a class="headerlink" href="#team-role-permissions" title="Permanent link">&para;</a></h2>
 <p>SeaTicket provides built-in <strong>team roles</strong>, and each role has a set of permissions. You can customize these permissions with the <code>ENABLED_ROLE_PERMISSIONS</code> setting.</p>
 <p>Built-in team roles:</p>
@@ -1927,7 +1927,7 @@
 </tbody>
 </table>
 <h3 id="configuration-example">Configuration example<a class="headerlink" href="#configuration-example" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="c1"># seaqa_web_settings.py</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># seaticket_settings.py</span>
 <span class="n">ENABLED_ROLE_PERMISSIONS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">'free'</span><span class="p">:</span> <span class="p">{</span>
         <span class="s1">'can_add_project'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
@@ -2004,7 +2004,7 @@
 <span class="n">APPLE_TOUCH_ICON_PATH</span> <span class="o">=</span> <span class="s1">'favicons/favicon.ico'</span>
 </code></pre></div>
 <h3 id="custom-asset-overrides">Custom asset overrides<a class="headerlink" href="#custom-asset-overrides" title="Permanent link">&para;</a></h3>
-<p><code>CUSTOM_*</code> paths are optional overrides that take effect only when the files exist under <code>seaqa-web-data</code>. Use them if you prefer to keep defaults untouched and swap assets by placing files in the <code>custom/</code> directory.</p>
+<p><code>CUSTOM_*</code> paths are optional overrides that take effect only when the files exist under <code>/shared/seaticket-data</code> in the SeaTicket container. Use them if you prefer to keep defaults untouched and swap assets by placing files in the <code>custom/</code> directory.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Custom branding assets (optional overrides when files exist)</span>
 <span class="n">CUSTOM_LOGO_PATH</span> <span class="o">=</span> <span class="s1">'custom/mylogo.png'</span>
 <span class="n">CUSTOM_FAVICON_PATH</span> <span class="o">=</span> <span class="s1">'custom/favicon.ico'</span>
@@ -2110,7 +2110,7 @@
 <p>SeaTicket supports Two-Factor Authentication to enhance account security. There are two ways to enable this feature:</p>
 <ol>
 <li>System admin can enable it in the system settings page.</li>
-<li>Or add the following settings to <code>seaqa_web_settings.py</code> and restart SeaTicket.</li>
+<li>Or add the following settings to <code>seaticket_settings.py</code> and restart SeaTicket.</li>
 </ol>
 <p>After that, users will see a “Two-Factor Authentication” section in the user profile page and can bind an authenticator app (e.g., Google Authenticator) via QR code.</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Enable TOTP-based two factor</span>
