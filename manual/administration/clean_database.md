@@ -1,16 +1,18 @@
 # Clean Database
 
+The SQL examples below use the default database name `seaticket_db`. If you have customized `MYSQL_DB_NAME`, use your configured database name instead.
+
 ## Session
 
-Use the following command to clear expired session records in sea_qa database:
+Use the following command to clear expired session records in the SeaTicket database:
 
 ```
-cd seaqa-web
+cd /opt/seaticket/seaticket
 python3 manage.py clearsessions
 ```
 
 !!! tip
-    Enter into the docker image, then go to `/opt/seaticket/seaqa-web`
+    Enter the SeaTicket container, then go to `/opt/seaticket/seaticket`.
 
 ## SeaTicket Indexer periodic cleanup
 
@@ -34,7 +36,7 @@ SeaTicket Indexer runs periodic cleanup tasks (default: every 24 hours). The tas
 Use the following command to clean the login records:
 
 ```
-use sea_qa;
+use seaticket_db;
 DELETE FROM sysadmin_extra_userloginlog WHERE to_days(now()) - to_days(login_date) > 90;
 ```
 
@@ -43,7 +45,7 @@ DELETE FROM sysadmin_extra_userloginlog WHERE to_days(now()) - to_days(login_dat
 SeaTicket Web provides a management command to clean old chat data in batches. By default, it keeps the last 90 days.
 
 !!! tip
-    Enter into the docker image, then go to `/opt/seaticket/seaqa-web`
+    Enter the SeaTicket container, then go to `/opt/seaticket/seaticket`.
 
 ```
 python3 manage.py clean_chat_sessions
@@ -75,7 +77,7 @@ This task deletes old records in batches from:
 You can also clean these tables manually as follows.
 
 ```
-use sea_qa;
+use seaticket_db;
 DELETE FROM user_notifications WHERE `timestamp` < '<cutoff_date>';
 
 DELETE FROM project_notification WHERE `timestamp` < '<cutoff_date>';
