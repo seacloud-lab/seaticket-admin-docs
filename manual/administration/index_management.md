@@ -1,6 +1,6 @@
 # Index Management Guide
 
-This document provides instructions for rebuilding indices within the SeaQA Indexer system.
+This document provides instructions for rebuilding indices within the SeaTicket Indexer system.
 
 ## Rebuilding Indices
 
@@ -12,7 +12,7 @@ Use these commands to rebuild the index for a specific connection.
 
 1.  **Navigate to the script directory:**
     ```shell
-    cd /opt/seaticket/seaqa-indexer/seaqa_indexer/script
+    cd /opt/seaticket/seaticket-indexer/seaqa_indexer/script
     ```
 
 2.  **Clear the existing index:**
@@ -31,7 +31,7 @@ Use these commands to rebuild the index for a specific project.
 
 1.  **Navigate to the script directory:**
     ```shell
-    cd /opt/seaqa-indexer/seaqa_indexer/index/script
+    cd /opt/seaticket/seaticket-indexer/seaqa_indexer/index/script
     ```
 
 2.  **Clear the existing index:**

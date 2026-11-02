@@ -124,7 +124,7 @@ APPLE_TOUCH_ICON_PATH = 'favicons/favicon.ico'
 
 ### Custom asset overrides
 
-`CUSTOM_*` paths are optional overrides that take effect only when the files exist under `seaqa-web-data`. Use them if you prefer to keep defaults untouched and swap assets by placing files in the `custom/` directory.
+`CUSTOM_*` paths are optional overrides that take effect only when the files exist under `/shared/seaticket-data` in the SeaTicket container. Use them if you prefer to keep defaults untouched and swap assets by placing files in the `custom/` directory.
 
 ```python
 # Custom branding assets (optional overrides when files exist)

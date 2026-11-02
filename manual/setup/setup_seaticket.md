@@ -111,7 +111,7 @@ System administrators are optional maintenance accounts. See [Account Management
 
 - `conf`: SeaTicket configuration files.
 - `logs`: SeaTicket logs, including `seaticket.log`.
-- `seaqa-web-data`: Avatar files and custom media.
+- `seaticket-data`: Avatar files and custom media.
 - `data/attachments`: Project and connection attachments when using the `disk` backend.
 
 ### `/opt/seasearch-data`
