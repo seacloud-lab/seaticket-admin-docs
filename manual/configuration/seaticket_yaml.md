@@ -53,6 +53,7 @@ global:
       tier: # optional, accepts one of three values — `low`, `medium`, or `high` — and is used to specify the model's inference strength, allowing for flexible invocation across different tasks.
       price: # required only need to specify this when you need to track user token usage.
         input_tokens: 1 # dollars / 1 M tokens (non-cached)
+        cached_tokens: 0.1 # dollars / 1 M tokens (cached)
         output_tokens: 10 # dollars / 1 M tokens
 
     # <model 2 configuration>
