@@ -41,15 +41,12 @@ theme:
 plugins:
   - search
   - awesome-pages
-  - mike
 
 # Customization
 extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/haiwen/seaticket-admin-docs/
-  version:
-    provider: mike
   status:
     new: Work in progress
 
@@ -104,6 +101,9 @@ nav:
     - Discord: integrations/discord.md
     - Gmail: integrations/gmail.md
     - Microsoft 365 and Outlook: integrations/microsoft-email.md
+  - Upgrade:
+    - How to upgrade: upgrade/upgrade-manual.md
+    - Extra Upgrade Notices: upgrade/extra-upgrade-notice.md
   - Administration:
     - Overview: administration/overview.md
     - Backup and Restore: administration/backup_restore.md

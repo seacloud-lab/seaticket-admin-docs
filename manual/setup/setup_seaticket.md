@@ -24,12 +24,12 @@ SeaTicket uses `.env` and Docker Compose files from the same directory. Download
 mkdir -p /opt/seaticket/seaticket-data/conf
 cd /opt/seaticket
 
-wget -O .env https://manual.seaticket.ai/1.0/repo/docker/env
-wget https://manual.seaticket.ai/1.0/repo/docker/caddy.yml
-wget https://manual.seaticket.ai/1.0/repo/docker/seadb.yml
-wget https://manual.seaticket.ai/1.0/repo/docker/seaticket.yml
-wget https://manual.seaticket.ai/1.0/repo/docker/seasearch.yml
-wget -O seaticket-data/conf/seaticket_config.yaml https://manual.seaticket.ai/1.0/repo/docker/seaticket_config.yaml
+wget -O .env https://manual.seaticket.ai/repo/docker/env
+wget https://manual.seaticket.ai/repo/docker/caddy.yml
+wget https://manual.seaticket.ai/repo/docker/seadb.yml
+wget https://manual.seaticket.ai/repo/docker/seaticket.yml
+wget https://manual.seaticket.ai/repo/docker/seasearch.yml
+wget -O seaticket-data/conf/seaticket_config.yaml https://manual.seaticket.ai/repo/docker/seaticket_config.yaml
 ```
 
 `seaticket.yml` includes the main web service, AI, Events, Indexer, MariaDB, and Redis. SeaTicket images default to `1.0-latest` on Docker Hub.

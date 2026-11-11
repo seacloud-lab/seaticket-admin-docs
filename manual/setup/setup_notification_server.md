@@ -42,7 +42,7 @@ Download `seaticket-notification.yml` into the same directory as the other SeaTi
 
 ```bash
 cd /opt/seaticket
-wget https://manual.seaticket.ai/1.0/repo/docker/seaticket-notification.yml
+wget https://manual.seaticket.ai/repo/docker/seaticket-notification.yml
 ```
 
 ### Modify `.env`
