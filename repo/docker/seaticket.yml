@@ -48,7 +48,7 @@ services:
     volumes:
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
-      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - SEATICKET_LOG_TO_STDOUT=${SEATICKET_LOG_TO_STDOUT:-false}
       - TZ=${TIME_ZONE:-UTC}
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
       - SECRET_KEY=${SECRET_KEY:?Variable is not set or empty}
@@ -58,7 +58,7 @@ services:
       - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
       - SEADB_USER=${SEADB_USERNAME:-${MYSQL_DB_USER:-seaticket}}
       - SEADB_PASSWORD=${SEADB_PASSWORD:-${MYSQL_DB_PASSWORD:?Variable is not set or empty}}
-      - SEAQA_CONFIG_NAME=${SEAQA_CONFIG_NAME:-seaticket_config.yaml}
+      - SEATICKET_CONFIG_NAME=${SEATICKET_CONFIG_NAME:-seaticket_config.yaml}
       - CONF_PATH=${CONF_PATH:-/opt/seaticket/conf}
       - MYSQL_DB_HOST=${MYSQL_DB_HOST:-db}
       - MYSQL_DB_PORT=${MYSQL_DB_PORT:-3306}
@@ -112,7 +112,8 @@ services:
     volumes:
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
-      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - SEATICKET_LOG_TO_STDOUT=${SEATICKET_LOG_TO_STDOUT:-false}
+      - SEATICKET_CONFIG_NAME=${SEATICKET_CONFIG_NAME:-seaticket_config.yaml}
       - TZ=${TIME_ZONE:-UTC}
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
       - SEATICKET_SERVER_PROTOCOL=${SEATICKET_SERVER_PROTOCOL:-http}
@@ -157,7 +158,8 @@ services:
     volumes:
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
-      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - SEATICKET_LOG_TO_STDOUT=${SEATICKET_LOG_TO_STDOUT:-false}
+      - SEATICKET_CONFIG_NAME=${SEATICKET_CONFIG_NAME:-seaticket_config.yaml}
       - TZ=${TIME_ZONE:-UTC}
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
       - SEADB_SERVER_URL=${SEADB_SERVER_URL:-http://seadb:8888}
@@ -194,7 +196,8 @@ services:
     volumes:
       - ${SEATICKET_VOLUME:-/opt/seaticket/seaticket-data}:/shared
     environment:
-      - LOG_TO_STDOUT=${LOG_TO_STDOUT:-false}
+      - SEATICKET_LOG_TO_STDOUT=${SEATICKET_LOG_TO_STDOUT:-false}
+      - SEATICKET_CONFIG_NAME=${SEATICKET_CONFIG_NAME:-seaticket_config.yaml}
       - TZ=${TIME_ZONE:-UTC}
       - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY:?Variable is not set or empty}
       - SECRET_KEY=${SECRET_KEY:?Variable is not set or empty}
