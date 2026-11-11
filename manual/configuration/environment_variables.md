@@ -124,5 +124,6 @@ On a new deployment, SeaTicket automatically creates the first team, its team ad
 ## Advanced system systems
 | Variable                        | Description                                                                                                   | Default Value                   |  
 | ------------------------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| `SEATICKET_CONFIG_NAME`          | YAML configuration filename under `CONF_PATH`, shared by all SeaTicket services                               | `seaticket_config.yaml`          |
 | `SEATICKET_LOG_TO_STDOUT`           | Record logs to container standard output                                                                      | `false`                         |
 | `TIME_ZONE`                     | Timezone of SeaTicket server                                                                                  | `UTC`                      |

@@ -4,7 +4,7 @@ Besides [`.env`](./environment_variables.md) for general settings, the `seaticke
 
 ## File structure of seaticket_config.yaml
 
-`seaticket_config.yaml` consists of `global` and component-specific sections. The section names below are configuration identifiers read by the source code, not Docker Compose service names. Use the `seaqa-*` section names and `SEAQA_*` setting names shown here for the `seaticket` and `seaticket-*` Docker services.
+`seaticket_config.yaml` consists of `global` and component-specific sections. Use `seaticket` for the web component (without `-web`) and `seaticket-*` for the other components. Internal setting names such as `SEAQA_*` remain unchanged, except for `SEATICKET_CONFIG_NAME`, `SEATICKET_LOG_LEVEL`, and `SEATICKET_LOG_TO_STDOUT`.
 
 For an initial deployment, only `global.LLM_MODELS` and `global.EMBEDDING_MODEL` are required. All other settings and component-specific sections are optional and can be omitted to use their defaults.
 
@@ -15,16 +15,18 @@ global:
   EMBEDDING_MODEL:
     # ... embedding model configuration (required)
   # ... other global settings (optional)
-seaqa-ai: # optional
-  # ... special configurations for seaqa-ai
-seaqa-events: # optional
-  # ... special configurations for seaqa-events
-seaqa-indexer: # optional
-  # ... special configurations for seaqa-indexer
-seaqa-notification: # optional
-  # ... special configurations for seaqa-notification
-seaqa-web: # optional
-  # ... special configurations for seaqa-web
+seaticket-ai: # optional
+  # ... special configurations for seaticket-ai
+seaticket-events: # optional
+  # ... special configurations for seaticket-events
+seaticket-indexer: # optional
+  # ... special configurations for seaticket-indexer
+seaticket-notification: # optional
+  # ... special configurations for seaticket-notification
+seaticket: # optional
+  # ... special configurations for seaticket
+seaticket-io: # optional
+  # ... special configurations for seaticket-io
 ```
 
 ## Global settings
@@ -51,6 +53,7 @@ global:
       tier: # optional, accepts one of three values — `low`, `medium`, or `high` — and is used to specify the model's inference strength, allowing for flexible invocation across different tasks.
       price: # required only need to specify this when you need to track user token usage.
         input_tokens: 1 # dollars / 1 M tokens (non-cached)
+        cached_tokens: 0.1 # dollars / 1 M tokens (cached)
         output_tokens: 10 # dollars / 1 M tokens
 
     # <model 2 configuration>
@@ -62,7 +65,7 @@ global:
 
 !!! note "Futher information about `tier` of a model"
     - When multiple LLMs have the same `tier`, the system will use only the LLM that explicitly specifies that `tier`, with priority given to the first entry in the `LLM_MODELS` list.
-    - If the tier specified for a service in [AI_UTILS_TIER](#seaqa-ai-settings-optional) is not defined in `LLM_MODELS`, then the default model in `LLM_MODELS` or the first valid model in the list will be used.
+    - If the tier specified for a service in [AI_UTILS_TIER](#seaticket-ai-settings-optional) is not defined in `LLM_MODELS`, then the default model in `LLM_MODELS` or the first valid model in the list will be used.
 
 #### LLMs reference configuration
 
@@ -211,7 +214,7 @@ global:
 
 Please refer [here](../integrations/overview.md) for the details.
 
-## seaqa-ai settings (Optional)
+## seaticket-ai settings (Optional)
 
 The following are the default values, normally, you don't need to make any additional settings for this part
 
@@ -262,7 +265,7 @@ seaqa-ai:
 ### Agent configurations
 
 ```yaml
-seaqa-ai:
+seaticket-ai:
   AGENT:
     # --- Max records counter ---
     max_tickets_per_run: 100 # Maximum tickets analyzed per agent run
@@ -276,19 +279,19 @@ seaqa-ai:
     timed_scan_project_cooldown: 86400 # Cooldown before re-scanning the same project
 ```
 
-## seaqa-events settings (Optional)
+## seaticket-events settings (Optional)
 
 ```yaml
-seaqa-events:
+seaticket-events:
   AI_STATS: # optional
     enabled: true # Enable AI tokens usage statistics (default is `true`)
 ```
 
-## seaqa-web notification settings (Optional)
+## seaticket notification settings (Optional)
 
 The Docker examples set this value through `.env`.
 
 ```yaml
-seaqa-web:
+seaticket:
   ENABLE_NOTIFICATION_SERVER: false
 ```
