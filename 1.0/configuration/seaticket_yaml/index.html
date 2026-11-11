@@ -23,7 +23,7 @@
       
       
       <link rel="icon" href="../../media/favicon.ico">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.8.1">
     
     
       
@@ -896,6 +896,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#execution-and-record-reading-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution and record-reading limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#agent-configurations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1626,6 +1637,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#execution-and-record-reading-limits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execution and record-reading limits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#agent-configurations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1885,7 +1907,13 @@
 <p>Please refer <a href="../../integrations/overview/">here</a> for the details.</p>
 <h2 id="seaticket-ai-settings-optional">seaticket-ai settings (Optional)<a class="headerlink" href="#seaticket-ai-settings-optional" title="Permanent link">&para;</a></h2>
 <p>The following are the default values, normally, you don't need to make any additional settings for this part</p>
-<div class="highlight"><pre><span></span><code><span class="nt">seaticket-ai</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">seaqa-ai</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">MAX_STEPS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w"> </span><span class="c1"># Maximum Chat execution steps per request</span>
+<span class="w">  </span><span class="nt">AGENT_MAX_STEPS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w"> </span><span class="c1"># Default maximum execution steps per Agent phase</span>
+<span class="w">  </span><span class="nt">MAX_TOOL_CALLS_PER_RESPONSE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"> </span><span class="c1"># Maximum tool calls executed from one Chat model response</span>
+<span class="w">  </span><span class="nt">GET_RECORDS_MAX_RECORDS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"> </span><span class="c1"># Shared successful record-reading budget per Chat request or complete Agent task</span>
+<span class="w">  </span><span class="nt">SEARCH_TOOL_CONTENT_MAX_SIZE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20000</span><span class="w"> </span><span class="c1"># Maximum content length per record, in characters (not tokens)</span>
+<span class="w">  </span><span class="nt">SEARCH_TOOL_ISSUES_MAX_COMMENTS</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50</span><span class="w"> </span><span class="c1"># Maximum issue comments included when reading a record</span>
 <span class="w">  </span><span class="nt">COMPLETION_MAX_RETRIES</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># Maximum number of chating completion retries with LLM</span>
 <span class="w">  </span><span class="nt">COMPLETION_RETRY_INTERVAL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w"> </span><span class="c1"># Retry interval when AI chating completion fails</span>
 <span class="w">  </span><span class="nt">TOOL_CALL_MAX_RETRIES</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># Maximum number of executing tool retries with LLM</span>
@@ -1895,6 +1923,56 @@
 <span class="w">    </span><span class="nt">generate_summary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">low</span>
 <span class="w">    </span><span class="nt">rerank_relevance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">medium</span>
 </code></pre></div>
+<h3 id="execution-and-record-reading-limits">Execution and record-reading limits<a class="headerlink" href="#execution-and-record-reading-limits" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Default</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MAX_STEPS</code></td>
+<td><code>20</code></td>
+<td>Maximum execution steps for a Chat request. Existing explicit configuration overrides this default.</td>
+</tr>
+<tr>
+<td><code>AGENT_MAX_STEPS</code></td>
+<td><code>20</code></td>
+<td>Default maximum execution steps for each Agent phase, not for the entire task. A phase can override this limit.</td>
+</tr>
+<tr>
+<td><code>MAX_TOOL_CALLS_PER_RESPONSE</code></td>
+<td><code>3</code></td>
+<td>Maximum tool calls executed from a single Chat model response. This is separate from the execution-step limit.</td>
+</tr>
+<tr>
+<td><code>GET_RECORDS_MAX_RECORDS</code></td>
+<td><code>10</code></td>
+<td>Maximum distinct records successfully read and provided per Chat request or complete Agent task, shared across all Agent phases.</td>
+</tr>
+<tr>
+<td><code>SEARCH_TOOL_CONTENT_MAX_SIZE</code></td>
+<td><code>20000</code></td>
+<td>Content budget for a single record read by <code>get_records</code>, measured in characters, not tokens.</td>
+</tr>
+<tr>
+<td><code>SEARCH_TOOL_ISSUES_MAX_COMMENTS</code></td>
+<td><code>50</code></td>
+<td>Maximum issue comments included when reading a record. The content budget still applies.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">About <code>GET_RECORDS_MAX_RECORDS</code></p>
+<p>Search tools return metadata, summaries, and available snippets rather than full record content. Chat and Agent use <code>get_records(targets=[...])</code> to selectively read records. Repeated reads of the same record do not consume additional record budget; invalid targets and failed reads do not consume it either. Once the record budget is exhausted, additional records cannot be read, even if execution steps remain.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">About <code>MAX_STEPS</code></p>
+<p><code>MAX_STEPS</code>, <code>AGENT_MAX_STEPS</code>, and <code>MAX_TOOL_CALLS_PER_RESPONSE</code> must be positive integers. These are upper limits: Chat and Agent can finish earlier when enough evidence is available. Increasing execution limits can increase latency and token usage; it does not increase the shared record-reading budget.</p>
+</div>
 <div class="admonition tip">
 <p class="admonition-title">Model selection</p>
 <ul>
@@ -1917,8 +1995,6 @@
 <span class="w">    </span><span class="c1"># --- Max records counter ---</span>
 <span class="w">    </span><span class="nt">max_tickets_per_run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># Maximum tickets analyzed per agent run</span>
 <span class="w">    </span><span class="nt">max_github_issues_per_run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"> </span><span class="c1"># Maximum GitHub issues analyzed per agent run</span>
-<span class="w">    </span><span class="nt">max_analysis_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span><span class="w"> </span><span class="c1"># Maximum analysis steps per agent task</span>
-<span class="w">    </span><span class="nt">max_handling_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"> </span><span class="c1"># Maximum handling steps per agent task</span>
 
 <span class="w">    </span><span class="c1"># --- Agent manager timing (seconds) ---</span>
 <span class="w">    </span><span class="nt">enqueue_pending_events_check_intetval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span><span class="w"> </span><span class="c1"># Interval to check and flush pending events</span>
@@ -2055,7 +2131,7 @@
       <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.footer", "navigation.tracking", "navigation.sections", "navigation.tabs", "navigation.top", "search.suggest", "search.highlight", "search.share", "math", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.a7633da7.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.c21346df.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a5f9d56c.min.js"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
       
