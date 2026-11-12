@@ -73,6 +73,9 @@ SITE_NAME = 'SeaTicket'
 # Browser tab's title
 SITE_TITLE = 'SeaTicket'
 
+# Enable cloud mode to show the registration agreement prompt
+CLOUD_MODE = True
+
 # privacy policy link and service link
 PRIVACY_POLICY_LINK = 'https://your-domain/policy'
 TERMS_OF_SERVICE_LINK = 'https://your-domain/terms'
@@ -93,6 +96,8 @@ FORCE_DEFAULT_LANGUAGE = ''
 # Path to the background image file of login page(relative to the media path)
 LOGIN_BG_IMAGE_PATH = 'img/login-bg.jpg'
 ```
+
+The registration agreement prompt is shown only when `CLOUD_MODE = True`. In cloud mode, it displays the configured privacy policy and terms of service links, so it can show 0, 1, or 2 links depending on which links are configured. Restart SeaTicket after changing these settings.
 
 ## UI customization
 
